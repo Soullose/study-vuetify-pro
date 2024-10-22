@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-main>
-      <v-btn>测试123</v-btn>
+      <v-btn @click="showRoutes">测试123</v-btn>
       <router-view />
     </v-main>
 
@@ -10,5 +10,14 @@
 </template>
 
 <script lang="ts" setup>
-  //
+import { w2Router } from '@/stores/router';
+
+const router = w2Router();
+
+function showRoutes() {
+  const routes = router.getRouter;
+  console.log(routes.router);
+  const route = routes.router;
+  console.log(route[0]);
+}
 </script>

@@ -5,10 +5,10 @@
  */
 
 // Composables
+import { w2Router } from '@/stores/router';
 import { setupLayouts } from 'virtual:generated-layouts';
 import { createRouter, createWebHistory } from 'vue-router/auto';
 import { routes } from 'vue-router/auto-routes';
-console.log('routes:', routes);
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: setupLayouts(routes)
@@ -31,6 +31,10 @@ router.onError((err, to) => {
 
 router.isReady().then(() => {
   localStorage.removeItem('vuetify:dynamic-reload');
+  const router = w2Router();
+  // const {w2Router} = storeToRefs(router);
+  router.setRouter(routes);
+  console.log('routes:', routes);
 });
 
 export default router;
