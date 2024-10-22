@@ -19,8 +19,6 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive, ref } from 'vue';
-
 const valid = ref(false);
 const firstname = ref('');
 const lastname = ref('');
