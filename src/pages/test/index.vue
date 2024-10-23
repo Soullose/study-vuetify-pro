@@ -19,6 +19,14 @@
 </template>
 
 <script lang="ts" setup>
+/// https://uvr.esm.is/guide/extending-routes
+definePage({
+  alias: ['/n/:name'],
+  meta: {
+    requiresAuth: true,
+    keepAlive: true
+  }
+});
 const valid = ref(false);
 const firstname = ref('');
 const lastname = ref('');
