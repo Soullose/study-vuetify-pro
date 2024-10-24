@@ -25,7 +25,10 @@ export default defineConfig({
         };
       }
     }),
-    Layouts(),
+    Layouts({
+      layoutsDirs: 'src/layouts',
+      defaultLayout: 'default'
+    }),
     AutoImport({
       imports: [
         'vue',
@@ -77,6 +80,7 @@ export default defineConfig({
     port: 3000,
     watch: {
       usePolling: true
-    }
+    },
+    hmr: true
   }
 });

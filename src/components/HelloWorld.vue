@@ -1,14 +1,26 @@
 <template>
   <v-container class="fill-height">
-    <v-responsive
-      class="align-centerfill-height mx-auto"
-      max-width="900"
-    >
-      <v-img
-        class="mb-4"
-        height="150"
-        src="@/assets/logo.png"
-      />
+    <v-app-bar id="app-bar" border="b" class="px-md-3" logo="vuetify" flat color="#FFFFFF">
+      <template #prepend>
+        <a class="d-flex ps-2 ml-3" style="text-decoration: none" href="/">
+          <v-responsive style="width: 128px" max-width="128">
+            <v-img class="" src="https://cdn.vuetifyjs.com/docs/images/one/logos/vuetify-logo-light.png" />
+          </v-responsive>
+        </a>
+        <div class="px-1" />
+        <!-- <v-btn @click="showRoutes" block>测试123</v-btn> -->
+      </template>
+      <template #append>
+        <v-btn @click="showRoutes" block>
+          测试12345
+          <template v-slot:append>
+            <v-icon color="warning"></v-icon>
+          </template>
+        </v-btn>
+      </template>
+    </v-app-bar>
+    <v-responsive class="align-centerfill-height mx-auto" max-width="900">
+      <v-img class="mb-4" height="150" src="@/assets/logo.png" />
 
       <div class="text-center">
         <div class="text-body-2 font-weight-light mb-n1">Welcome to</div>
@@ -38,17 +50,19 @@
 
             <template #subtitle>
               <div class="text-subtitle-1">
-                Replace this page by removing <v-kbd>{{ `<HelloWorld />` }}</v-kbd> in <v-kbd>pages/index.vue</v-kbd>.
+                Replace this page by removing
+                <v-kbd>
+                  {{ `
+                  <HelloWorld />
+                  ` }}
+                </v-kbd>
+                in
+                <v-kbd>pages/index.vue</v-kbd>
+                .
               </div>
             </template>
 
-            <v-overlay
-              opacity=".12"
-              scrim="primary"
-              contained
-              model-value
-              persistent
-            />
+            <v-overlay opacity=".12" scrim="primary" contained model-value persistent />
           </v-card>
         </v-col>
 
@@ -66,13 +80,7 @@
             title="Documentation"
             variant="text"
           >
-            <v-overlay
-              opacity=".06"
-              scrim="primary"
-              contained
-              model-value
-              persistent
-            />
+            <v-overlay opacity=".06" scrim="primary" contained model-value persistent />
           </v-card>
         </v-col>
 
@@ -90,13 +98,7 @@
             title="Features"
             variant="text"
           >
-            <v-overlay
-              opacity=".06"
-              scrim="primary"
-              contained
-              model-value
-              persistent
-            />
+            <v-overlay opacity=".06" scrim="primary" contained model-value persistent />
           </v-card>
         </v-col>
 
@@ -114,13 +116,7 @@
             title="Components"
             variant="text"
           >
-            <v-overlay
-              opacity=".06"
-              scrim="primary"
-              contained
-              model-value
-              persistent
-            />
+            <v-overlay opacity=".06" scrim="primary" contained model-value persistent />
           </v-card>
         </v-col>
 
@@ -138,13 +134,7 @@
             title="Community"
             variant="text"
           >
-            <v-overlay
-              opacity=".06"
-              scrim="primary"
-              contained
-              model-value
-              persistent
-            />
+            <v-overlay opacity=".06" scrim="primary" contained model-value persistent />
           </v-card>
         </v-col>
       </v-row>
@@ -153,5 +143,15 @@
 </template>
 
 <script setup lang="ts">
-  //
+//
+import { w2Router } from '@/stores/router';
+
+const router = w2Router();
+
+function showRoutes() {
+  const routes = router.getRouter;
+  console.log(routes.router);
+  const route = routes.router;
+  console.log(route[0]);
+}
 </script>
