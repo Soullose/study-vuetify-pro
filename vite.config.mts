@@ -31,7 +31,8 @@ export default defineConfig({
         'vue',
         {
           'vue-router/auto': ['useRoute', 'useRouter']
-        }
+        },
+        'pinia'
       ],
       dts: 'src/auto-imports.d.ts',
       eslintrc: {
@@ -66,11 +67,16 @@ export default defineConfig({
   define: { 'process.env': {} },
   resolve: {
     alias: {
+      '~': fileURLToPath(new URL('./', import.meta.url)),
       '@': fileURLToPath(new URL('./src', import.meta.url))
     },
     extensions: ['.js', '.json', '.jsx', '.mjs', '.ts', '.tsx', '.vue']
   },
   server: {
-    port: 3000
+    host: '0.0.0.0',
+    port: 3000,
+    watch: {
+      usePolling: true
+    }
   }
 });
