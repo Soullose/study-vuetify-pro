@@ -51,8 +51,8 @@ router.isReady().then(() => {
 router.beforeEach((to, from, next) => {
   console.log('to:', to.name);
 
-  if (to.name !== '/') next({ name: '/' });
-  else next();
+  // if (to.name !== '/') next({ name: '/' });
+  // else next();
   // 返回 false 以取消导航
   // return false;
   next();

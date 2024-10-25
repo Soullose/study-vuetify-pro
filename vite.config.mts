@@ -4,7 +4,7 @@ import AutoImport from 'unplugin-auto-import/vite';
 import Fonts from 'unplugin-fonts/vite';
 import Components from 'unplugin-vue-components/vite';
 import VueRouter from 'unplugin-vue-router/vite';
-import Layouts from 'vite-plugin-vue-layouts';
+import Layouts, { ClientSideLayout } from 'vite-plugin-vue-layouts';
 import Vuetify, { transformAssetUrls } from 'vite-plugin-vuetify';
 // Utilities
 import { fileURLToPath, URL } from 'node:url';
@@ -17,17 +17,32 @@ export default defineConfig({
       dts: 'src/typed-router.d.ts',
       /// 在配置文件中拓展路由,在组件内使用definePage将失效 https://uvr.esm.is/guide/extending-routes
       extendRoute(route) {
-        route.meta = {
-          name: route.name || '',
-          title: route.meta?.title || route.name || '',
-          requireAuth: route.meta?.requireAuth || false,
-          keepAlive: route.meta?.keepAlive || false
-        };
+        if (route.path === '/') {
+          route.meta = {
+            layout: 'home',
+            name: route.name || '',
+            title: route.meta?.title || route.name || '',
+            requireAuth: route.meta?.requireAuth || false,
+            keepAlive: route.meta?.keepAlive || false
+          };
+        } else {
+          route.meta = {
+            name: route.name || '',
+            title: route.meta?.title || route.name || '',
+            requireAuth: route.meta?.requireAuth || false,
+            keepAlive: route.meta?.keepAlive || false
+          };
+        }
       }
     }),
     Layouts({
       layoutsDirs: 'src/layouts',
       defaultLayout: 'default'
+    }),
+    ClientSideLayout({
+      layoutDir: 'src/layouts',
+      defaultLayout: 'default',
+      importMode: 'async'
     }),
     AutoImport({
       imports: [

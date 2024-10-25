@@ -1,6 +1,6 @@
 <template>
-  <v-container class="fill-height">
-    <v-app-bar id="app-bar" border="b" class="px-md-3" logo="vuetify" flat color="#FFFFFF">
+  <v-container>
+    <!-- <v-app-bar :elevation="2" border="b" flat color="#FFFFFF">
       <template #prepend>
         <a class="d-flex ps-2 ml-3" style="text-decoration: none" href="/">
           <v-responsive style="width: 128px" max-width="128">
@@ -8,7 +8,6 @@
           </v-responsive>
         </a>
         <div class="px-1" />
-        <!-- <v-btn @click="showRoutes" block>测试123</v-btn> -->
       </template>
       <template #append>
         <v-btn @click="showRoutes" block>
@@ -18,7 +17,7 @@
           </template>
         </v-btn>
       </template>
-    </v-app-bar>
+    </v-app-bar> -->
     <v-responsive class="align-centerfill-height mx-auto" max-width="900">
       <v-img class="mb-4" height="150" src="@/assets/logo.png" />
 
@@ -114,6 +113,42 @@
             subtitle="Discover components in the API Explorer."
             target="_blank"
             title="Components"
+            variant="text"
+          >
+            <v-overlay opacity=".06" scrim="primary" contained model-value persistent />
+          </v-card>
+        </v-col>
+
+        <v-col cols="6">
+          <v-card
+            append-icon="mdi-open-in-new"
+            class="py-4"
+            color="surface-variant"
+            href="https://discord.vuetifyjs.com"
+            prepend-icon="mdi-account-group-outline"
+            rel="noopener noreferrer"
+            rounded="lg"
+            subtitle="Connect with Vuetify developers."
+            target="_blank"
+            title="Community"
+            variant="text"
+          >
+            <v-overlay opacity=".06" scrim="primary" contained model-value persistent />
+          </v-card>
+        </v-col>
+
+        <v-col cols="6">
+          <v-card
+            append-icon="mdi-open-in-new"
+            class="py-4"
+            color="surface-variant"
+            href="https://discord.vuetifyjs.com"
+            prepend-icon="mdi-account-group-outline"
+            rel="noopener noreferrer"
+            rounded="lg"
+            subtitle="Connect with Vuetify developers."
+            target="_blank"
+            title="Community"
             variant="text"
           >
             <v-overlay opacity=".06" scrim="primary" contained model-value persistent />
