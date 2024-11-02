@@ -19,6 +19,7 @@ export default defineConfig(({ command, mode }) => {
   const env = loadEnv(mode, envDir);
   return {
     envDir: envDir,
+    esbuild: { drop: command === 'serve' ? ['debugger', 'console'] : [] },
     plugins: [
       VueRouter({
         dts: 'src/typed-router.d.ts',
@@ -105,9 +106,12 @@ export default defineConfig(({ command, mode }) => {
       },
       hmr: true,
       /// 设为 true 时若端口已被占用则会直接退出，而不是尝试下一个可用端口。
-      strictPort: false
+      strictPort: false,
+      open: '/'
     },
     /// 构建选项
-    build: {}
+    build: {
+      reportCompressedSize: true
+    }
   };
 });
