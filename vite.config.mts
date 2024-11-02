@@ -11,6 +11,8 @@ import path from 'node:path';
 import { fileURLToPath, URL } from 'node:url';
 import { defineConfig, loadEnv } from 'vite';
 
+import { compression } from 'vite-plugin-compression2';
+
 const envDir = path.resolve(__dirname, 'env');
 // https://vitejs.dev/config/
 export default defineConfig(({ command, mode }) => {
@@ -88,7 +90,8 @@ export default defineConfig(({ command, mode }) => {
             }
           ]
         }
-      })
+      }),
+      compression()
     ],
     define: { 'process.env': {} },
     resolve: {
