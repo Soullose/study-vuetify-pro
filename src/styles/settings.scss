@@ -3,8 +3,9 @@
  *
  * Configures SASS variables and Vuetify overwrites
  */
-
+@use 'font';
 // https://vuetifyjs.com/features/sass-variables/`
-// @use 'vuetify/settings' with (
-//   $color-pack: false
-// );
+@use 'vuetify/settings' with (
+  $color-pack: false,
+  $body-font-family: font.$zcoolqingkehuangyou
+);
