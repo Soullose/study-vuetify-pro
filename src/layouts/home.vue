@@ -1,5 +1,6 @@
 <template>
   <v-app>
+    <v-navigation-drawer></v-navigation-drawer>
     <v-app-bar :elevation="2" border="b" flat color="#FFFFFF">
       <template #prepend>
         <a class="d-flex ps-2 ml-3" style="text-decoration: none" href="/">
