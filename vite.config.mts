@@ -115,6 +115,7 @@ export default defineConfig(({ command, mode }) => {
       compression(),
       esToolkitPlugin()
     ],
+    base: '/',
     define: { 'process.env': {} },
     resolve: {
       alias: {

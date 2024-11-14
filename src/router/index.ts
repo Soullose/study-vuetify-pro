@@ -17,6 +17,12 @@ import { handleHotUpdate, routes } from 'vue-router/auto-routes';
 //     requiresAuth?: boolean;
 //   }
 // }
+routes.unshift({ path: '/', redirect: '/test/' });
+// routes.push({
+//   path: import.meta.env.BASE_URL,
+//   redirect: (to) => '/test/'
+// });
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: setupLayouts(routes)
@@ -55,7 +61,7 @@ router.isReady().then(() => {
 /// from: 当前导航正要离开的路由
 router.beforeEach((to, from, next) => {
   console.log('to:', to.name);
-
+  // if (to.name == '/') next({ name: '/test/' });
   // if (to.name !== '/') next({ name: '/' });
   // else next();
   // 返回 false 以取消导航
