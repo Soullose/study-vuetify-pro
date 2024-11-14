@@ -28,6 +28,10 @@ export default defineConfig(({ command, mode }) => {
       VueRouter({
         importMode: 'async',
         dts: 'src/typed-router.d.ts',
+        routesFolder: [
+          { src: 'src/pages' }
+          // , { src: 'src/layouts' }
+        ],
         /// 在配置文件中拓展路由,在组件内使用definePage将失效 https://uvr.esm.is/guide/extending-routes
         async extendRoute(route) {
           // console.log('path', route.path);
@@ -88,6 +92,7 @@ export default defineConfig(({ command, mode }) => {
         dts: 'src/components.d.ts'
       }),
       Vue({
+        include: ['**/*.vue', '*.vue'],
         template: { transformAssetUrls }
       }),
       // https://github.com/vuetifyjs/vuetify-loader/tree/master/packages/vite-plugin#readme
