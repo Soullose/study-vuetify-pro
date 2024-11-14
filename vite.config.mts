@@ -3,6 +3,7 @@ import Vue from '@vitejs/plugin-vue';
 import AutoImport from 'unplugin-auto-import/vite';
 import Fonts from 'unplugin-fonts/vite';
 import Components from 'unplugin-vue-components/vite';
+import { VueRouterAutoImports } from 'unplugin-vue-router';
 import VueRouter from 'unplugin-vue-router/vite';
 import Layouts, { ClientSideLayout } from 'vite-plugin-vue-layouts';
 import Vuetify, { transformAssetUrls } from 'vite-plugin-vuetify';
@@ -12,6 +13,7 @@ import { fileURLToPath, URL } from 'node:url';
 import { defineConfig, loadEnv } from 'vite';
 
 import { compression } from 'vite-plugin-compression2';
+import esToolkitPlugin from 'vite-plugin-es-toolkit';
 
 const envDir = path.resolve(__dirname, 'env');
 // https://vitejs.dev/config/
@@ -21,13 +23,17 @@ export default defineConfig(({ command, mode }) => {
   const env = loadEnv(mode, envDir);
   return {
     envDir: envDir,
-    esbuild: { drop: command === 'serve' ? ['debugger', 'console'] : [] },
+    esbuild: { drop: command === 'serve' ? [] : ['debugger', 'console'] },
     plugins: [
       VueRouter({
+        importMode: 'async',
         dts: 'src/typed-router.d.ts',
         /// 在配置文件中拓展路由,在组件内使用definePage将失效 https://uvr.esm.is/guide/extending-routes
-        extendRoute(route) {
+        async extendRoute(route) {
+          // console.log('path', route.path);
+          // console.log('name', route.name);
           if (route.path === '/') {
+            // route.addAlias('/');
             route.meta = {
               layout: 'home',
               name: route.name || '',
@@ -35,32 +41,42 @@ export default defineConfig(({ command, mode }) => {
               requireAuth: route.meta?.requireAuth || false,
               keepAlive: route.meta?.keepAlive || false
             };
-          } else {
+          } else if (route.path === '/test') {
+            // route.addAlias('/test');
             route.meta = {
+              layout: 'default',
               name: route.name || '',
               title: route.meta?.title || route.name || '',
               requireAuth: route.meta?.requireAuth || false,
               keepAlive: route.meta?.keepAlive || false
             };
           }
+        },
+
+        // modify routes before writing
+        async beforeWriteFiles(rootRoute) {
+          // ...
         }
       }),
       Layouts({
         layoutsDirs: 'src/layouts',
-        defaultLayout: 'default'
+        pagesDirs: ['src/pages'],
+        defaultLayout: 'home',
+        importMode: () => 'async'
       }),
       ClientSideLayout({
         layoutDir: 'src/layouts',
-        defaultLayout: 'default',
+        defaultLayout: 'home',
         importMode: 'async'
       }),
       AutoImport({
         imports: [
           'vue',
-          {
-            'vue-router/auto': ['useRoute', 'useRouter']
-          },
-          'pinia'
+          // {
+          //   'vue-router/auto': ['useRoute', 'useRouter']
+          // },
+          'pinia',
+          VueRouterAutoImports
         ],
         dts: 'src/auto-imports.d.ts',
         eslintrc: {
@@ -91,7 +107,8 @@ export default defineConfig(({ command, mode }) => {
           ]
         }
       }),
-      compression()
+      compression(),
+      esToolkitPlugin()
     ],
     define: { 'process.env': {} },
     resolve: {
