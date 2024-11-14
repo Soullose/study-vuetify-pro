@@ -5,12 +5,12 @@
  */
 
 // Composables
-import { w2Router } from '@/stores/router';
+import { w2RouterStore } from '@/stores/router';
+
 import { setupLayouts } from 'virtual:generated-layouts';
 // import 'vue-router';
 import { createRouter, createWebHistory } from 'vue-router/auto';
-import { routes } from 'vue-router/auto-routes';
-
+import { handleHotUpdate, routes } from 'vue-router/auto-routes';
 // declare module 'vue-router' {
 //   interface RouteMeta {
 //     name?: string;
@@ -21,6 +21,10 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: setupLayouts(routes)
 });
+
+if (import.meta.hot) {
+  handleHotUpdate(router);
+}
 
 // Workaround for https://github.com/vitejs/vite/issues/11804
 /// 路由导航异常会执行onError
@@ -39,8 +43,9 @@ router.onError((err, to) => {
 });
 
 router.isReady().then(() => {
+  console.log('router ready');
   localStorage.removeItem('vuetify:dynamic-reload');
-  const routerStore = w2Router();
+  const routerStore = w2RouterStore();
   routerStore.setRouter(routes);
   console.log('routes:', routes);
 });
