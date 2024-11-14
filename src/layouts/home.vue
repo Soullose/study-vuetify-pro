@@ -34,15 +34,17 @@
       </template>
       <template #append>
         <v-btn @click="showRoutes" block>
-          测试1234567
-          <template v-slot:append>
+          测试123
+          <!-- <template v-slot:append>
             <v-icon color="warning"></v-icon>
-          </template>
+          </template> -->
         </v-btn>
       </template>
     </v-app-bar>
 
     <v-main>
+      <!-- 渲染 txxx -->
+      <component :is="txxx" />
       <router-view />
     </v-main>
   </v-app>
@@ -50,15 +52,16 @@
 
 <script setup lang="ts">
 //
-import { w2Router } from '@/stores/router';
+import { w2RouterStore } from '@/stores/router';
 
 import { themeStore } from '@/stores/framework/theme';
 
 const theme = themeStore();
 
-const router = w2Router();
+const router = w2RouterStore();
 
 function showRoutes() {
+  console.log('showRoutes');
   const routes = router.getRouter;
   console.log(routes.router);
   const route = routes.router;
@@ -66,4 +69,6 @@ function showRoutes() {
 }
 
 const rail = ref(false);
+
+const txxx = h('div', 'xxxxxxxxxxxxxxxxxx');
 </script>

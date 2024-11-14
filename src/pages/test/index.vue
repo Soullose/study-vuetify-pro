@@ -1,5 +1,6 @@
 <template>
   <v-form v-model="valid">
+    <v-btn @click="xxxx"></v-btn>
     <v-container>
       <v-row>
         <v-col cols="12" md="4">
@@ -20,13 +21,13 @@
 
 <script lang="ts" setup>
 /// https://uvr.esm.is/guide/extending-routes
-definePage({
-  alias: ['/n/:name'],
-  meta: {
-    requiresAuth: true,
-    keepAlive: true
-  }
-});
+// definePage({
+//   alias: ['/n/:name'],
+//   meta: {
+//     requiresAuth: true,
+//     keepAlive: true
+//   }
+// });
 const valid = ref(false);
 const firstname = ref('');
 const lastname = ref('');
@@ -53,4 +54,9 @@ const emailRules = reactive([
     return 'E-mail must be valid.';
   }
 ]);
+
+function xxxx() {
+  // alert('xxxx');
+  console.log('xxxx');
+}
 </script>

@@ -179,9 +179,9 @@
 
 <script setup lang="ts">
 //
-import { w2Router } from '@/stores/router';
+import { w2RouterStore } from '@/stores/router';
 
-const router = w2Router();
+const router = w2RouterStore();
 
 function showRoutes() {
   const routes = router.getRouter;
