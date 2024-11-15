@@ -3,7 +3,7 @@ import Vue from '@vitejs/plugin-vue';
 import AutoImport from 'unplugin-auto-import/vite';
 import Fonts from 'unplugin-fonts/vite';
 import Components from 'unplugin-vue-components/vite';
-import { VueRouterAutoImports } from 'unplugin-vue-router';
+import { getFileBasedRouteName, VueRouterAutoImports } from 'unplugin-vue-router';
 import VueRouter from 'unplugin-vue-router/vite';
 import Layouts, { ClientSideLayout } from 'vite-plugin-vue-layouts';
 import Vuetify, { transformAssetUrls } from 'vite-plugin-vuetify';
@@ -26,15 +26,17 @@ export default defineConfig(({ command, mode }) => {
     esbuild: { drop: command === 'serve' ? [] : ['debugger', 'console'] },
     plugins: [
       VueRouter({
-        importMode: 'async',
+        // 指定一个目录或者多个目录生成基于文件的路由，默认是src/pages
+        routesFolder: [{ src: 'src/pages' }, { src: 'src/public/pages', path: 'public/' }],
+        // 指定typed-router.d.ts的生成路径，如果项目中用到了typescript；可以通过false禁用
         dts: 'src/typed-router.d.ts',
-        routesFolder: [
-          { src: 'src/pages' }
-          // , { src: 'src/layouts' }
-        ],
+        // 指定需要排除的目录，默认为空
+        exclude: [],
+        // 提供路由策略
+        getRouteName: (route) => getFileBasedRouteName(route),
         /// 在配置文件中拓展路由,在组件内使用definePage将失效 https://uvr.esm.is/guide/extending-routes
         async extendRoute(route) {
-          // console.log('path', route.path);
+          console.log('path', route.path);
           // console.log('name', route.name);
           if (route.path === '/') {
             // route.addAlias('/');
@@ -54,13 +56,24 @@ export default defineConfig(({ command, mode }) => {
               requireAuth: route.meta?.requireAuth || false,
               keepAlive: route.meta?.keepAlive || false
             };
+          } else if (route.path === '/public') {
+            route.meta = {
+              layout: 'default',
+              name: route.name || '',
+              title: route.meta?.title || route.name || '',
+              requireAuth: route.meta?.requireAuth || false,
+              keepAlive: route.meta?.keepAlive || false
+            };
           }
         },
 
         // modify routes before writing
         async beforeWriteFiles(rootRoute) {
           // ...
-        }
+          // console.log('rootRoute:', rootRoute);
+        },
+        // 更改页面组件的导入模式，默认async
+        importMode: 'async'
       }),
       Layouts({
         layoutsDirs: 'src/layouts',

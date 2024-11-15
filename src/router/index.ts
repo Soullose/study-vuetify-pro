@@ -17,7 +17,7 @@ import { handleHotUpdate, routes } from 'vue-router/auto-routes';
 //     requiresAuth?: boolean;
 //   }
 // }
-routes.unshift({ path: '/', redirect: '/test/' });
+// routes.unshift({ path: '/', redirect: '/test' });
 // routes.push({
 //   path: import.meta.env.BASE_URL,
 //   redirect: (to) => '/test/'
@@ -32,22 +32,6 @@ if (import.meta.hot) {
   handleHotUpdate(router);
 }
 
-// Workaround for https://github.com/vitejs/vite/issues/11804
-/// 路由导航异常会执行onError
-router.onError((err, to) => {
-  if (err?.message?.includes?.('Failed to fetch dynamically imported module')) {
-    if (!localStorage.getItem('vuetify:dynamic-reload')) {
-      console.log('Reloading page to fix dynamic import error');
-      localStorage.setItem('vuetify:dynamic-reload', 'true');
-      location.assign(to.fullPath);
-    } else {
-      console.error('Dynamic import error, reloading page did not fix it', err);
-    }
-  } else {
-    console.error(err);
-  }
-});
-
 router.isReady().then(() => {
   console.log('router ready');
   localStorage.removeItem('vuetify:dynamic-reload');
@@ -60,7 +44,16 @@ router.isReady().then(() => {
 /// to: 即将要进入的目标
 /// from: 当前导航正要离开的路由
 router.beforeEach((to, from, next) => {
-  console.log('to:', to.name);
+  console.log('to:', to);
+  console.log('to.name:', to.name);
+  console.log('to1:', router.getRoutes());
+  const routeExists = router.getRoutes().some((route) => route.path === to.path);
+  console.log('routeExists:', routeExists);
+  if (!routeExists && to.name === undefined) {
+    next(Error('错误'));
+  } else {
+    next();
+  }
   // if (to.name == '/') next({ name: '/test/' });
   // if (to.name !== '/') next({ name: '/' });
   // else next();
@@ -82,4 +75,23 @@ router.beforeResolve(async (to) => {
   console.log('requiresCamera:', to.meta.requiresCamera);
 });
 
+// Workaround for https://github.com/vitejs/vite/issues/11804
+/// 路由导航异常会执行onError
+router.onError((err, to) => {
+  // console.log('onError:', err);
+  if (err?.message?.includes?.('错误')) {
+    console.log('onError-错误');
+  }
+  if (err?.message?.includes?.('Failed to fetch dynamically imported module')) {
+    if (!localStorage.getItem('vuetify:dynamic-reload')) {
+      console.log('Reloading page to fix dynamic import error');
+      localStorage.setItem('vuetify:dynamic-reload', 'true');
+      location.assign(to.fullPath);
+    } else {
+      console.error('Dynamic import error, reloading page did not fix it', err);
+    }
+  } else {
+    console.error(err);
+  }
+});
 export default router;
