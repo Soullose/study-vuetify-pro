@@ -27,7 +27,7 @@ export default defineConfig(({ command, mode }) => {
     plugins: [
       VueRouter({
         // 指定一个目录或者多个目录生成基于文件的路由，默认是src/pages
-        routesFolder: [{ src: 'src/pages' }, { src: 'src/public/pages', path: 'public/' }],
+        routesFolder: [{ src: 'src/pages' }, { src: 'src/platform/pages', path: 'platform/' }],
         // 指定typed-router.d.ts的生成路径，如果项目中用到了typescript；可以通过false禁用
         dts: 'src/typed-router.d.ts',
         // 指定需要排除的目录，默认为空
@@ -56,7 +56,7 @@ export default defineConfig(({ command, mode }) => {
               requireAuth: route.meta?.requireAuth || false,
               keepAlive: route.meta?.keepAlive || false
             };
-          } else if (route.path === '/public') {
+          } else if (route.path === '/platform') {
             route.meta = {
               layout: 'default',
               name: route.name || '',

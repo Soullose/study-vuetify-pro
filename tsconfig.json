@@ -21,7 +21,7 @@
     "isolatedModules": true,
     "skipLibCheck": true
   },
-  "include": ["src/**/*", "src/**/*.vue", "./typed-router.d.ts"],
+  "include": ["src/**/*", "src/**/*.vue", "./typed-router.d.ts", "src/platform/pages/farmework/404/...index.vue"],
   "exclude": ["dist", "node_modules", "cypress"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

@@ -44,11 +44,13 @@ router.isReady().then(() => {
 /// to: 即将要进入的目标
 /// from: 当前导航正要离开的路由
 router.beforeEach((to, from, next) => {
-  console.log('to:', to);
-  console.log('to.name:', to.name);
-  console.log('to1:', router.getRoutes());
+  // console.log('to:', to);
+  // console.log('to.name:', to.name);
+  // console.log('to1:', router.getRoutes());
+  // console.log('from:', from);
+
   const routeExists = router.getRoutes().some((route) => route.path === to.path);
-  console.log('routeExists:', routeExists);
+  // console.log('routeExists:', routeExists);
   if (!routeExists && to.name === undefined) {
     next(Error('错误'));
   } else {
@@ -59,7 +61,7 @@ router.beforeEach((to, from, next) => {
   // else next();
   // 返回 false 以取消导航
   // return false;
-  next();
+  // next();
 });
 
 /// 全局解析守卫
@@ -73,6 +75,18 @@ router.beforeEach((to, from, next) => {
  */
 router.beforeResolve(async (to) => {
   console.log('requiresCamera:', to.meta.requiresCamera);
+});
+
+router.afterEach((to, from) => {
+  console.log('afterEach-to:', to);
+  if (to?.name === '/[...path]') {
+    document.title = '404';
+  } else if (to.meta.title) {
+    console.log('to:', to);
+    if (typeof to.meta.title === 'string') {
+      document.title = to.meta.title;
+    }
+  }
 });
 
 // Workaround for https://github.com/vitejs/vite/issues/11804
