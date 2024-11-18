@@ -38,7 +38,7 @@ export default defineConfig(({ command, mode }) => {
         async extendRoute(route) {
           console.log('path', route.path);
           // console.log('name', route.name);
-          if (route.path === '/') {
+          if (route.path === '/[name]') {
             // route.addAlias('/');
             route.meta = {
               layout: 'home',
@@ -47,16 +47,17 @@ export default defineConfig(({ command, mode }) => {
               requireAuth: route.meta?.requireAuth || false,
               keepAlive: route.meta?.keepAlive || false
             };
-          } else if (route.path === '/test') {
-            // route.addAlias('/test');
-            route.meta = {
-              layout: 'default',
-              name: route.name || '',
-              title: route.meta?.title || route.name || '',
-              requireAuth: route.meta?.requireAuth || false,
-              keepAlive: route.meta?.keepAlive || false
-            };
-          } else if (route.path === '/platform') {
+          }
+          // else if (route.path === '/test') {
+          //   route.meta = {
+          //     layout: 'default',
+          //     name: route.name || '',
+          //     title: route.meta?.title || route.name || '',
+          //     requireAuth: route.meta?.requireAuth || false,
+          //     keepAlive: route.meta?.keepAlive || false
+          //   };
+          // }
+          else if (route.path === '/platform/[name]') {
             route.meta = {
               layout: 'default',
               name: route.name || '',

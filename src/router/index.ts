@@ -23,6 +23,23 @@ import { handleHotUpdate, routes } from 'vue-router/auto-routes';
 //   redirect: (to) => '/test/'
 // });
 
+routes.map((route) => {
+  console.log('route:', route);
+  if (route?.path === '/') {
+    if (!route.meta) {
+      route.meta = {};
+    }
+    route.meta.title = '首页';
+  }
+  // else if (route?.path === '/test') {
+  //   if (!route.meta) {
+  //     route.meta = {};
+  //   }
+  //   route.meta.title = '测试';
+  // }
+  // route.meta.requiresAuth = true;
+});
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: setupLayouts(routes)
@@ -78,6 +95,7 @@ router.beforeResolve(async (to) => {
 });
 
 router.afterEach((to, from) => {
+  console.log('afterEach-from:', from);
   console.log('afterEach-to:', to);
   if (to?.name === '/[...path]') {
     document.title = '404';

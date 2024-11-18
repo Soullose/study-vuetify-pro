@@ -14,6 +14,15 @@
 
       <v-list density="compact" nav>
         <v-list-item prepend-icon="mdi-folder" title="My Files" value="myfiles"></v-list-item>
+        <v-list-group value="Users">
+          <template v-slot:activator="{ props }">
+            <v-list-item v-bind="props" prepend-icon="mdi-account-circle">
+              <v-list-item-title class="font-weight-bold">测试</v-list-item-title>
+            </v-list-item>
+          </template>
+          <v-list-item prepend-icon="mdi-plus-outline" title="Create" value="Create"></v-list-item>
+          <v-list-item prepend-icon="mdi-file-outline" title="Read" value="Read"></v-list-item>
+        </v-list-group>
         <v-list-item prepend-icon="mdi-account-multiple" title="Shared with me" value="shared"></v-list-item>
         <v-list-item prepend-icon="mdi-star" title="Starred" value="starred"></v-list-item>
       </v-list>

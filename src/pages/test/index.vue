@@ -59,4 +59,9 @@ function xxxx() {
   // alert('xxxx');
   console.log('xxxx');
 }
+definePage({
+  meta: {
+    title: '测试'
+  }
+});
 </script>
