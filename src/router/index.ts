@@ -60,7 +60,7 @@ router.isReady().then(() => {
 /// 导航守卫
 /// to: 即将要进入的目标
 /// from: 当前导航正要离开的路由
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
   // console.log('to:', to);
   // console.log('to.name:', to.name);
   // console.log('to1:', router.getRoutes());

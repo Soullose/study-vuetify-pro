@@ -179,14 +179,14 @@
 
 <script setup lang="ts">
 //
-import { w2RouterStore } from '@/stores/router';
+// import { w2RouterStore } from '@/stores/router';
 
-const router = w2RouterStore();
+// const router = w2RouterStore();
 
-function showRoutes() {
-  const routes = router.getRouter;
-  console.log(routes.router);
-  const route = routes.router;
-  console.log(route[0]);
-}
+// function showRoutes() {
+//   const routes = router.getRouter;
+//   console.log(routes.router);
+//   const route = routes.router;
+//   console.log(route[0]);
+// }
 </script>

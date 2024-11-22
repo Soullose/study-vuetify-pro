@@ -14,7 +14,9 @@
     "allowJs": true,
     "strict": true,
     "strictNullChecks": true,
+    // 检查未使用的变量
     "noUnusedLocals": true,
+    // 检查未使用的函数
     "noUnusedParameters": false,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,

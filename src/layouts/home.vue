@@ -20,8 +20,8 @@
               <v-list-item-title class="font-weight-bold">测试</v-list-item-title>
             </v-list-item>
           </template>
-          <v-list-item prepend-icon="mdi-plus-outline" title="Create" value="Create"></v-list-item>
-          <v-list-item prepend-icon="mdi-file-outline" title="Read" value="Read"></v-list-item>
+          <v-list-item prepend-icon="mdi-plus-outline" title="Home" value="Home" to="/"></v-list-item>
+          <v-list-item prepend-icon="mdi-file-outline" title="Test" value="Test" to="/test"</v-list-item>
         </v-list-group>
         <v-list-item prepend-icon="mdi-account-multiple" title="Shared with me" value="shared"></v-list-item>
         <v-list-item prepend-icon="mdi-star" title="Starred" value="starred"></v-list-item>
@@ -54,7 +54,11 @@
     <v-main>
       <!-- 渲染 txxx -->
       <component :is="txxx" />
-      <router-view />
+      <router-view v-slot="{ Component, route }">
+        <transition name="slide">
+          <component :is="Component" :key="route" />
+        </transition>
+      </router-view>
     </v-main>
   </v-app>
 </template>
@@ -77,7 +81,7 @@ function showRoutes() {
   console.log(route[0]);
 }
 
-const rail = ref(false);
+// const rail = ref(false);
 
 const txxx = h('div', 'xxxxxxxxxxxxxxxxxx');
 </script>
