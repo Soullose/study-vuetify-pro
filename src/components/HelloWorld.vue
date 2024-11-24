@@ -21,6 +21,10 @@
     <v-responsive class="align-centerfill-height mx-auto" max-width="900">
       <v-img class="mb-4" height="150" src="@/assets/logo.png" />
 
+      <!-- <i-carbon-accessibility /> -->
+      <div class="i-mdi-alarm text-orange-400" />
+      <v-icon class="i-mdi:home"></v-icon>
+      <v-icon class="i-carbon:information-filled"></v-icon>
       <div class="text-center">
         <div class="text-body-2 font-weight-light mb-n1">Welcome to</div>
 

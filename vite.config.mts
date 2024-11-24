@@ -12,9 +12,11 @@ import path from 'node:path';
 import { fileURLToPath, URL } from 'node:url';
 import { defineConfig, loadEnv } from 'vite';
 
+import UnoCSS from 'unocss/vite';
+import IconsResolver from 'unplugin-icons/resolver';
+import Icons from 'unplugin-icons/vite';
 import { compression } from 'vite-plugin-compression2';
 import esToolkitPlugin from 'vite-plugin-es-toolkit';
-
 const envDir = path.resolve(__dirname, 'env');
 // https://vitejs.dev/config/
 export default defineConfig(({ command, mode }) => {
@@ -103,7 +105,15 @@ export default defineConfig(({ command, mode }) => {
         vueTemplate: true
       }),
       Components({
-        dts: 'src/components.d.ts'
+        dts: 'src/components.d.ts',
+        resolvers: [
+          IconsResolver({
+            prefix: 'i-',
+            alias: {
+              md: 'material-design-icons-iconfont'
+            }
+          })
+        ]
       }),
       Vue({
         include: ['**/*.vue', '*.vue'],
@@ -127,7 +137,12 @@ export default defineConfig(({ command, mode }) => {
         }
       }),
       compression(),
-      esToolkitPlugin()
+      esToolkitPlugin(),
+      Icons({
+        compiler: 'vue3',
+        autoInstall: true
+      }),
+      UnoCSS()
     ],
     base: '/',
     define: { 'process.env': {} },
