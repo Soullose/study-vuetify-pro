@@ -22,6 +22,8 @@ import { handleHotUpdate, routes } from 'vue-router/auto-routes';
 //   path: import.meta.env.BASE_URL,
 //   redirect: (to) => '/test/'
 // });
+/// 标题前缀
+const titlePrefix = 'W2-';
 
 routes.map((route) => {
   console.log('route:', route);
@@ -98,11 +100,11 @@ router.afterEach((to, from) => {
   console.log('afterEach-from:', from);
   console.log('afterEach-to:', to);
   if (to?.name === '/[...path]') {
-    document.title = '404';
+    document.title = titlePrefix + '404';
   } else if (to.meta.title) {
     console.log('to:', to);
     if (typeof to.meta.title === 'string') {
-      document.title = to.meta.title;
+      document.title = titlePrefix + to.meta.title;
     }
   }
 });
