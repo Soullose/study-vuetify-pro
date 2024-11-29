@@ -5,7 +5,14 @@
  */
 @use 'font';
 // https://vuetifyjs.com/features/sass-variables/`
+// @use 'vuetify/_variables';
+@use 'test';
 @use 'vuetify/settings' with (
+  $spacer: test.$spacer,
   $color-pack: false,
-  $body-font-family: font.$notoserifsc
+  $body-font-family: font.$notoserifsc,
+  //nav
+  $list-item-nav-title-font-size: 0.875rem,
+  $list-item-nav-title-font-weight: 600,
+  $list-item-nav-margin-top: 0
 );
