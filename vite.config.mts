@@ -38,10 +38,11 @@ export default defineConfig(({ command, mode }) => {
         getRouteName: (route) => getFileBasedRouteName(route),
         /// 在配置文件中拓展路由,在组件内使用definePage将失效 https://uvr.esm.is/guide/extending-routes
         async extendRoute(route) {
-          console.log('path', route.path);
+          // console.log('path', route.path);
+          // console.log('meta:', route.meta);
           // console.log('name', route.name);
           if (route.path === '/[name]') {
-            // route.addAlias('/');
+            console.log('route-name:', route.name);
             route.meta = {
               layout: 'home',
               name: route.name || '',
@@ -49,17 +50,7 @@ export default defineConfig(({ command, mode }) => {
               requireAuth: route.meta?.requireAuth || false,
               keepAlive: route.meta?.keepAlive || false
             };
-          }
-          // else if (route.path === '/test') {
-          //   route.meta = {
-          //     layout: 'default',
-          //     name: route.name || '',
-          //     title: route.meta?.title || route.name || '',
-          //     requireAuth: route.meta?.requireAuth || false,
-          //     keepAlive: route.meta?.keepAlive || false
-          //   };
-          // }
-          else if (route.path === '/platform/[name]') {
+          } else if (route.path === '/platform') {
             route.meta = {
               layout: 'default',
               name: route.name || '',
@@ -80,7 +71,7 @@ export default defineConfig(({ command, mode }) => {
       }),
       Layouts({
         layoutsDirs: 'src/layouts',
-        pagesDirs: ['src/pages'],
+        pagesDirs: ['src/pages', 'src/platform'],
         defaultLayout: 'home',
         importMode: () => 'async'
       }),
