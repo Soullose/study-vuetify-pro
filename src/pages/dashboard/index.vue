@@ -2,7 +2,7 @@
 
 <script lang="ts" setup>
 definePage({
-  alias: '/w2-dashboard/',
+  // alias: '/w2-dashboard/',
   // name:'',
   meta: {
     title: '仪表盘'

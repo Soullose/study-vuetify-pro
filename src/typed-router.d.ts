@@ -23,7 +23,7 @@ declare module 'vue-router/auto-routes' {
     '/dashboard/': RouteRecordInfo<'/dashboard/', '/dashboard', Record<never, never>, Record<never, never>>,
     '/platform/[...path]': RouteRecordInfo<'/platform/[...path]', '/platform/:path(.*)', { path: ParamValue<true> }, { path: ParamValue<false> }>,
     '/platform/farmework/icon/': RouteRecordInfo<'/platform/farmework/icon/', '/platform/farmework/icon', Record<never, never>, Record<never, never>>,
-    'portal1': RouteRecordInfo<'portal1', '/platform/portal', Record<never, never>, Record<never, never>>,
+    '/portal1': RouteRecordInfo<'/portal1', '/platform/portal', Record<never, never>, Record<never, never>>,
     '/test/': RouteRecordInfo<'/test/', '/test', Record<never, never>, Record<never, never>>,
   }
 }

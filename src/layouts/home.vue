@@ -20,6 +20,13 @@
               <v-list-item-title class="font-weight-bold">测试</v-list-item-title>
             </v-list-item>
           </template>
+          <v-list-item class="d-flex align-center ml-0" link title="Dashboard" value="dashboard" to="/dashboard">
+            <template v-slot:prepend>
+              <!-- <div class="d-flex align-center ml-4"> -->
+              <v-icon dense>mdi-plus-outline</v-icon>
+              <!-- </div> -->
+            </template>
+          </v-list-item>
           <v-list-item class="d-flex align-center ml-0" link title="Home" value="Home" to="/">
             <template v-slot:prepend>
               <!-- <div class="d-flex align-center ml-4"> -->
@@ -70,6 +77,7 @@
 </template>
 
 <script setup lang="ts">
+import { useRoute } from 'vue-router/auto';
 //
 import { w2RouterStore } from '@/stores/router';
 
@@ -77,11 +85,21 @@ import { themeStore } from '@/stores/framework/theme';
 
 const theme = themeStore();
 
-const router = w2RouterStore();
+const w2Router = w2RouterStore();
+
+const route = useRoute();
+
+watch(
+  () => route.path,
+  (newRoute, oldRoute) => {
+    console.log('newRoute', newRoute);
+    console.log('oldRoute', oldRoute);
+  }
+);
 
 function showRoutes() {
   console.log('showRoutes');
-  const routes = router.getRouter;
+  const routes = w2Router.getRouter;
   console.log(routes.router);
   const route = routes.router;
   console.log(route[0]);

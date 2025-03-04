@@ -11,35 +11,17 @@ import { setupLayouts } from 'virtual:generated-layouts';
 // import 'vue-router';
 import { createRouter, createWebHistory } from 'vue-router/auto';
 import { handleHotUpdate, routes } from 'vue-router/auto-routes';
-// declare module 'vue-router' {
-//   interface RouteMeta {
-//     name?: string;
-//     requiresAuth?: boolean;
-//   }
-// }
-// routes.unshift({ path: '/', redirect: '/test' });
-// routes.push({
-//   path: import.meta.env.BASE_URL,
-//   redirect: (to) => '/test/'
-// });
 /// 标题前缀
 const titlePrefix = 'W2-';
 
 routes.map((route) => {
-  console.log('route:', route);
-  if (route?.path === '/') {
+  console.log('route1:', route);
+  if (route?.path === import.meta.env.BASE_URL) {
     if (!route.meta) {
       route.meta = {};
     }
     route.meta.title = '首页';
   }
-  // else if (route?.path === '/test') {
-  //   if (!route.meta) {
-  //     route.meta = {};
-  //   }
-  //   route.meta.title = '测试';
-  // }
-  // route.meta.requiresAuth = true;
 });
 
 const router = createRouter({
@@ -63,24 +45,20 @@ router.isReady().then(() => {
 /// to: 即将要进入的目标
 /// from: 当前导航正要离开的路由
 router.beforeEach(async (to, from, next) => {
-  // console.log('to:', to);
-  // console.log('to.name:', to.name);
-  // console.log('to1:', router.getRoutes());
-  // console.log('from:', from);
-
   const routeExists = router.getRoutes().some((route) => route.path === to.path);
   // console.log('routeExists:', routeExists);
   if (!routeExists && to.name === undefined) {
     next(Error('错误'));
+  }
+  if (to.path === '/platform/portal') {
+    next();
+  }
+  if (to.path === '/dashboard') {
+    router.replace('/platform/portal');
+    // next();
   } else {
     next();
   }
-  // if (to.name == '/') next({ name: '/test/' });
-  // if (to.name !== '/') next({ name: '/' });
-  // else next();
-  // 返回 false 以取消导航
-  // return false;
-  // next();
 });
 
 /// 全局解析守卫
