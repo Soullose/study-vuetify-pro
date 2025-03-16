@@ -148,7 +148,7 @@
     <v-footer app height="48">
       <v-spacer />
       <span class="text-body-2 mr-2">版权所有</span>
-      <span class="text-body-2">W2</span>
+      <span class="text-body-2">W2.com</span>
     </v-footer>
   </v-app>
 </template>
@@ -156,13 +156,13 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router/auto';
 //
-import { w2RouterStore } from '@/stores/router';
+// import { w2RouterStore } from '@/stores/router';
 
 import { themeStore } from '@/stores/framework/theme';
 
 const theme = themeStore();
 
-const w2Router = w2RouterStore();
+// const w2Router = w2RouterStore();
 
 const route = useRoute();
 
@@ -176,13 +176,13 @@ watch(
   }
 );
 
-function showRoutes() {
-  console.log('showRoutes');
-  const routes = w2Router.getRouter;
-  console.log(routes.router);
-  const route = routes.router;
-  console.log(route[0]);
-}
+// function showRoutes() {
+//   console.log('showRoutes');
+//   const routes = w2Router.getRouter;
+//   console.log(routes.router);
+//   const route = routes.router;
+//   console.log(route[0]);
+// }
 
 // const rail = ref(false);
 

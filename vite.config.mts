@@ -81,14 +81,7 @@ export default defineConfig(({ command, mode }) => {
         importMode: 'async'
       }),
       AutoImport({
-        imports: [
-          'vue',
-          // {
-          //   'vue-router/auto': ['useRoute', 'useRouter']
-          // },
-          'pinia',
-          VueRouterAutoImports
-        ],
+        imports: ['vue', 'pinia', VueRouterAutoImports],
         dts: 'src/auto-imports.d.ts',
         eslintrc: {
           enabled: true
@@ -157,7 +150,15 @@ export default defineConfig(({ command, mode }) => {
     },
     /// 构建选项
     build: {
-      reportCompressedSize: true
+      reportCompressedSize: true,
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            vuetify: ['vuetify'],
+            utils: ['lodash-es']
+          }
+        }
+      }
     }
   };
 });
