@@ -8,8 +8,8 @@
 // import { DataLoaderPlugin } from 'unplugin-vue-router/data-loaders';
 import router from '../router';
 import pinia from '../stores';
+import './grid';
 import vuetify from './vuetify';
-
 // Types
 import type { App } from 'vue';
 

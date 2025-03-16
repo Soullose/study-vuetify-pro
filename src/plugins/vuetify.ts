@@ -12,6 +12,8 @@ import 'vuetify/styles';
 import { createVuetify } from 'vuetify';
 import { md3 } from 'vuetify/blueprints';
 
+import { zhHans } from 'vuetify/locale';
+
 // import 'unplugin-icons/'; // Iconify 图标样式
 
 // https://vuetifyjs.com/en/introduction/why-vuetify/#feature-guides
@@ -21,7 +23,8 @@ export default createVuetify({
     defaultTheme: 'light'
   },
   locale: {
-    locale: 'zhHans'
+    locale: 'zhHans',
+    messages: { zhHans }
   },
   icons: {
     aliases: {

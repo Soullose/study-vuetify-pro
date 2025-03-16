@@ -66,8 +66,8 @@ export default defineConfig(({ command, mode }) => {
           // ...
           // console.log('rootRoute:', rootRoute);
         },
-        // 更改页面组件的导入模式，默认async
-        importMode: 'async'
+        // 更改页面组件的导入模式，默认async sync
+        importMode: 'sync'
       }),
       Layouts({
         layoutsDirs: 'src/layouts',

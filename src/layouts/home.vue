@@ -44,6 +44,7 @@
         <v-list-item prepend-icon="mdi-cog" title="Settings" value="settings"></v-list-item>
       </template>
     </v-navigation-drawer>
+
     <v-app-bar :elevation="2" border="b" flat color="#FFFFFF">
       <template #prepend>
         <v-app-bar-nav-icon @click.stop="theme.toggleAsideMenuFolded"></v-app-bar-nav-icon>
@@ -54,13 +55,83 @@
         </a>
         <div class="px-1" />
       </template>
+
       <template #append>
-        <v-btn @click="showRoutes" block>
-          测试123
-          <!-- <template v-slot:append>
-            <v-icon color="warning"></v-icon>
-          </template> -->
-        </v-btn>
+        <v-menu min-width="260" transition="slide-y-transition">
+          <template v-slot:activator="{ props }">
+            <v-btn class="text-none" v-bind="props">
+              <v-badge color="error" dot bordered :content="messages.length">
+                <v-icon>mdi-email-outline</v-icon>
+              </v-badge>
+            </v-btn>
+          </template>
+          <v-card>
+            <v-list class="pa-0">
+              <v-list-subheader>消息中心</v-list-subheader>
+              <v-divider />
+              <v-list-item>
+                <v-list-item-title>
+                  <div class="text-truncate">
+                    <span class="font-weight-medium">New message</span>
+                    <span class="caption text--secondary">&mdash; Jane Doe</span>
+                  </div>
+                </v-list-item-title>
+              </v-list-item>
+            </v-list>
+          </v-card>
+        </v-menu>
+
+        <v-menu min-width="260" transition="slide-y-transition">
+          <template v-slot:activator="{ props }">
+            <v-btn class="text-none" v-bind="props">
+              <v-badge color="error" dot bordered :content="messages.length">
+                <v-icon>mdi-bell-outline</v-icon>
+              </v-badge>
+            </v-btn>
+          </template>
+          <v-card>
+            <v-list class="pa-0">
+              <v-list-subheader>系统通知</v-list-subheader>
+              <v-divider />
+              <v-list-item>
+                <v-list-item-title>
+                  <div class="text-truncate">
+                    <span class="font-weight-medium">New message</span>
+                    <span class="caption text--secondary">&mdash; Jane Doe</span>
+                  </div>
+                </v-list-item-title>
+              </v-list-item>
+            </v-list>
+          </v-card>
+        </v-menu>
+
+        <v-menu transition="slide-y-transition">
+          <template v-slot:activator="{ props }">
+            <v-btn color="primary" class="ma-2" tonal depressed v-bind="props">
+              Login
+              <v-icon right dark>mdi-login</v-icon>
+            </v-btn>
+          </template>
+          <v-card class="mx-auto" max-width="200">
+            <v-card-text>
+              <div>Word of the Day</div>
+
+              <p class="text-h4 font-weight-black">be•nev•o•lent</p>
+
+              <p>adjective</p>
+
+              <div class="text-medium-emphasis">
+                well meaning and kindly.
+                <br />
+                "a benevolent smile"
+              </div>
+            </v-card-text>
+
+            <v-card-actions>
+              <v-btn color="deep-purple-accent-4" text="Learn More" variant="text"></v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-menu>
       </template>
     </v-app-bar>
 
@@ -73,6 +144,12 @@
         </transition>
       </router-view>
     </v-main>
+
+    <v-footer app height="48">
+      <v-spacer />
+      <span class="text-body-2 mr-2">版权所有</span>
+      <span class="text-body-2">W2</span>
+    </v-footer>
   </v-app>
 </template>
 
@@ -88,6 +165,8 @@ const theme = themeStore();
 const w2Router = w2RouterStore();
 
 const route = useRoute();
+
+const messages = ref([]);
 
 watch(
   () => route.path,
