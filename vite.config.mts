@@ -5,7 +5,8 @@ import Fonts from 'unplugin-fonts/vite';
 import Components from 'unplugin-vue-components/vite';
 import { getFileBasedRouteName, VueRouterAutoImports } from 'unplugin-vue-router';
 import VueRouter from 'unplugin-vue-router/vite';
-import Layouts, { ClientSideLayout } from 'vite-plugin-vue-layouts';
+import { ClientSideLayout } from 'vite-plugin-vue-layouts';
+// import { ClientSideLayout } from 'vite-plugin-vue-layouts-next';
 import Vuetify, { transformAssetUrls } from 'vite-plugin-vuetify';
 // Utilities
 import path from 'node:path';
@@ -69,16 +70,16 @@ export default defineConfig(({ command, mode }) => {
         // 更改页面组件的导入模式，默认async sync
         importMode: 'sync'
       }),
-      Layouts({
-        layoutsDirs: 'src/layouts',
-        pagesDirs: ['src/pages', 'src/platform'],
-        defaultLayout: 'home',
-        importMode: () => 'async'
-      }),
+      // Layouts({
+      //   layoutsDirs: 'src/layouts',
+      //   pagesDirs: ['src/pages', 'src/platform'],
+      //   defaultLayout: 'home',
+      //   importMode: () => 'sync'
+      // }),
       ClientSideLayout({
         layoutDir: 'src/layouts',
         defaultLayout: 'home',
-        importMode: 'async'
+        importMode: 'sync'
       }),
       AutoImport({
         imports: ['vue', 'pinia', VueRouterAutoImports],
