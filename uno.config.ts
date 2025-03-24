@@ -1,3 +1,4 @@
+import presetAttributify from '@unocss/preset-attributify';
 import presetIcons from '@unocss/preset-icons';
 import presetWebFonts from '@unocss/preset-web-fonts';
 import { createLocalFontProcessor } from '@unocss/preset-web-fonts/local';
@@ -5,6 +6,9 @@ import { defineConfig, presetUno } from 'unocss';
 export default defineConfig({
   presets: [
     presetUno({}), // 添加 UnoCSS 的默认样式预设
+    presetAttributify({
+      /* preset options */
+    }),
     presetIcons({
       collections: {
         carbon: () => import('@iconify/json/json/carbon.json').then((i) => i.default),
