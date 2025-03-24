@@ -111,14 +111,14 @@ export default defineConfig(({ command, mode }) => {
         }
       }),
       Fonts({
-        google: {
-          families: [
-            {
-              name: 'Roboto',
-              styles: 'wght@100;300;400;500;700;900'
-            }
-          ]
-        }
+        // google: {
+        //   families: [
+        //     {
+        //       name: 'Roboto',
+        //       styles: 'wght@100;300;400;500;700;900'
+        //     }
+        //   ]
+        // }
       }),
       compression(),
       esToolkitPlugin(),
