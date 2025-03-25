@@ -157,7 +157,7 @@
 
     <v-main>
       <!-- 渲染 txxx -->
-      <component :is="txxx" />
+      <!-- <component :is="txxx" /> -->
       <router-view v-slot="{ Component, route }">
         <transition name="slide">
           <component :is="Component" :key="route" />
@@ -207,7 +207,7 @@ watch(
 
 // const rail = ref(false);
 
-const txxx = h('div', 'xxxxxxxxxxxxxxxxxx');
+// const txxx = h('div', 'xxxxxxxxxxxxxxxxxx');
 </script>
 <style lang="scss" scoped>
 @use '@/styles/test';
