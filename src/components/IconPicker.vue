@@ -28,16 +28,7 @@
         <div v-if="!currentIcons.length" class="text-center text-gray-500 py-4">未找到匹配的图标</div>
 
         <div v-else class="grid grid-cols-8 gap-2">
-          <div
-            v-for="(icon, index) in currentIcons"
-            :key="index"
-            class="icon-item cursor-pointer p-2 rounded-lg transition-all"
-            :class="{
-              'bg-primary/20': modelValue === `${activeTab}:${icon}`,
-              'hover:bg-primary/10': modelValue !== `${activeTab}:${icon}`
-            }"
-            @click="selectIcon(icon)"
-          >
+          <div v-for="(icon, index) in currentIcons" :key="index" class="icon-item cursor-pointer p-2 rounded-lg transition-all" @click="selectIcon(icon)">
             <div class="flex flex-col items-center">
               <span class="text-2xl mb-1" :class="theme.global.name.value === 'dark' ? 'text-white' : 'text-gray-800'">
                 <div :class="getIconClass(icon)"></div>
@@ -59,9 +50,9 @@
 // import { ref, computed, watch } from 'vue'
 import { useTheme } from 'vuetify';
 type CollectionType = 'carbon' | 'mdi' | 'fa';
-const props = defineProps({
-  modelValue: String
-});
+// const props = defineProps({
+//   modelValue: String
+// });
 
 const emit = defineEmits(['update:modelValue']);
 
