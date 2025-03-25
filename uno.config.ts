@@ -4,10 +4,12 @@ import presetIcons from '@unocss/preset-icons';
 import presetWebFonts from '@unocss/preset-web-fonts';
 import { createLocalFontProcessor } from '@unocss/preset-web-fonts/local';
 import { defineConfig, presetUno } from 'unocss';
+import { getIconJson } from './dynamic.icon.scan';
 
 const iconSets = ['carbon', 'mdi', 'fa'] as const;
 
-const safelist: any = [...iconSets.flatMap((iconSet) => [`i-${iconSet}:*`, new RegExp(`^i-${iconSet}:.*`)])];
+const safelist: any = await getIconJson();
+console.log('获取:', safelist);
 export default defineConfig({
   content: {
     pipeline: {
@@ -75,5 +77,5 @@ export default defineConfig({
       })
     })
   ],
-  safelist: [['carbon', 'mdi', 'fa'].map((iconSet) => `i-${iconSet}:*`) as any]
+  safelist: [...safelist]
 });
