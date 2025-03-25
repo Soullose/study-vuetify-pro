@@ -1,13 +1,13 @@
 <template>
   <v-app>
-    <v-main>
-      <!-- <router-view v-slot="{ Component, route }">
+    <!-- <v-main> -->
+    <!-- <router-view v-slot="{ Component, route }">
     <transition name="slide">
       <component :is="Component" :key="route" />
     </transition>
   </router-view> -->
-      <router-view />
-    </v-main>
+    <router-view />
+    <!-- </v-main> -->
   </v-app>
 </template>
 

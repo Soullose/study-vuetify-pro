@@ -1,5 +1,6 @@
 <template>
-  <v-app>
+  <div class="fill-height d-flex">
+    <!-- <v-app> -->
     <!-- v-model:rail="theme.getRail" -->
     <v-navigation-drawer light v-model="theme.getAsideMenuFolded" expand-on-hover :rail="theme.getRail" permanent @click="theme.toggleRail">
       <v-list>
@@ -169,7 +170,8 @@
       <span class="text-body-2 mr-2">版权所有</span>
       <span class="text-body-2">W2.com</span>
     </v-footer>
-  </v-app>
+    <!-- </v-app> -->
+  </div>
 </template>
 
 <script setup lang="ts">

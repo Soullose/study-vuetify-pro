@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col border rounded full-heigh">
+  <div class="flex flex-col border rounded h-full">
     <div class="px-4">
       <v-tabs v-model="activeTab" density="compact">
         <v-tab value="carbon">Carbon</v-tab>
@@ -7,13 +7,17 @@
         <v-tab value="fa">Font Awesome</v-tab>
       </v-tabs>
 
-      <v-text-field v-model="searchMap[activeTab]" density="compact" placeholder="搜索图标..." prepend-inner-icon="mdi-magnify" hide-details class="mb-2" />
-      <!-- <div :class="`i-carbon:3d-cursor`"></div>
-      <div :class="`i-carbon:3d-cursor-alt`"></div> -->
-      <Icon icon="mdi:account-circle" width="24" height="24" />
+      <v-text-field
+        class="mt-2 mb-2"
+        v-model="searchMap[activeTab]"
+        density="compact"
+        placeholder="搜索图标..."
+        prepend-inner-icon="mdi-magnify"
+        hide-details
+      />
     </div>
 
-    <div class="flex flex-grow-1 overflow-y-auto pa-4">
+    <div class="flex flex-grow-1 h-0px overflow-y-auto pa-2">
       <template v-if="loadingStates[activeTab]">
         <div class="text-center py-4">
           <v-progress-circular indeterminate />
