@@ -1,15 +1,40 @@
 import presetAttributify from '@unocss/preset-attributify';
 import presetIcons from '@unocss/preset-icons';
+// import presetIcons from '@unocss/preset-icons/browser';
 import presetWebFonts from '@unocss/preset-web-fonts';
 import { createLocalFontProcessor } from '@unocss/preset-web-fonts/local';
 import { defineConfig, presetUno } from 'unocss';
+
+const iconSets = ['carbon', 'mdi', 'fa'] as const;
+
+const safelist: any = [...iconSets.flatMap((iconSet) => [`i-${iconSet}:*`, new RegExp(`^i-${iconSet}:.*`)])];
 export default defineConfig({
+  content: {
+    pipeline: {
+      include: [
+        // 默认
+        /\.(vue|svelte|[jt]sx|mdx?|astro|elm|php|phtml|html)($|\?)/,
+        // 包括 js/ts 文件
+        'src/**/*.{js,ts}'
+      ]
+      // 排除文件
+      // exclude: []
+    }
+  },
   presets: [
     presetUno({}), // 添加 UnoCSS 的默认样式预设
     presetAttributify({
       /* preset options */
     }),
     presetIcons({
+      scale: 1.2,
+      prefix: 'i-',
+      extraProperties: {
+        display: 'inline-block',
+        'vertical-align': 'middle'
+        // ...
+      },
+      autoInstall: true,
       collections: {
         carbon: () => import('@iconify/json/json/carbon.json').then((i) => i.default),
         mdi: () => import('@iconify/json/json/mdi.json').then((i) => i.default),
@@ -49,5 +74,6 @@ export default defineConfig({
         fontServeBaseUrl: '/assets/fonts'
       })
     })
-  ]
+  ],
+  safelist: [['carbon', 'mdi', 'fa'].map((iconSet) => `i-${iconSet}:*`) as any]
 });

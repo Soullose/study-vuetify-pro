@@ -194,7 +194,8 @@ export default defineConfig(({ command, mode }) => {
     resolve: {
       alias: {
         '~': fileURLToPath(new URL('./', import.meta.url)),
-        '@': fileURLToPath(new URL('./src', import.meta.url))
+        '@': fileURLToPath(new URL('./src', import.meta.url)),
+        '@iconify/json': fileURLToPath(new URL('./node_modules/@iconify/json/json', import.meta.url))
       },
       extensions: ['.js', '.json', '.jsx', '.mjs', '.ts', '.tsx', '.vue']
     },

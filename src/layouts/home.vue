@@ -30,10 +30,21 @@
           <v-list-item class="d-flex align-center ml-0" link title="Home" value="Home" to="/">
             <template v-slot:prepend>
               <!-- <div class="d-flex align-center ml-4"> -->
-              <v-icon dense>mdi-plus-outline</v-icon>
+              <v-icon dense class="i-mdi:magnify-expand"></v-icon>
               <!-- </div> -->
             </template>
           </v-list-item>
+
+          <v-list-item value="Icon" to="/icon">
+            <template v-slot:prepend>
+              <!-- <div class="d-flex align-center ml-4"> -->
+              <v-icon dense i-carbon:3d-cursor></v-icon>
+              <!-- </div> -->
+            </template>
+            <v-list-item-title>Icon选择器</v-list-item-title>
+            <v-list-item-subtitle>Icon选择器</v-list-item-subtitle>
+          </v-list-item>
+
           <v-list-item value="Test" to="/test">
             <template v-slot:prepend>
               <!-- <div class="d-flex align-center ml-4"> -->
