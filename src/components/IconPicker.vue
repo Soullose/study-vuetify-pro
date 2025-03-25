@@ -1,6 +1,6 @@
 <template>
-  <div class="icon-picker-container border rounded">
-    <div class="px-4 pt-2 bg-grey-lighten-4">
+  <div class="flex flex-col border rounded full-heigh">
+    <div class="px-4">
       <v-tabs v-model="activeTab" density="compact">
         <v-tab value="carbon">Carbon</v-tab>
         <v-tab value="mdi">Material</v-tab>
@@ -13,7 +13,7 @@
       <Icon icon="mdi:account-circle" width="24" height="24" />
     </div>
 
-    <div class="icon-grid-container pa-4">
+    <div class="flex flex-grow-1 overflow-y-auto pa-4">
       <template v-if="loadingStates[activeTab]">
         <div class="text-center py-4">
           <v-progress-circular indeterminate />
