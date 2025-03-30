@@ -11,7 +11,6 @@ declare module 'vue' {
     copy: typeof import('./components/IconPicker copy.vue')['default']
     HelloWorld: typeof import('./components/HelloWorld.vue')['default']
     IconPicker: typeof import('./components/IconPicker.vue')['default']
-    'IconPicker copy': typeof import('./components/IconPicker copy.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
   }

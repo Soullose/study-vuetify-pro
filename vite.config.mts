@@ -82,7 +82,14 @@ export default defineConfig(({ command, mode }) => {
         importMode: 'sync'
       }),
       AutoImport({
-        imports: ['vue', 'pinia', VueRouterAutoImports],
+        imports: [
+          'vue',
+          'pinia',
+          VueRouterAutoImports,
+          {
+            vuetify: ['useTheme', 'useRtl', 'useLocale', 'useDisplay', 'useLayout']
+          }
+        ],
         dts: 'src/auto-imports.d.ts',
         eslintrc: {
           enabled: true
@@ -102,7 +109,10 @@ export default defineConfig(({ command, mode }) => {
       }),
       Vue({
         include: ['**/*.vue', '*.vue'],
-        template: { transformAssetUrls }
+        template: { transformAssetUrls },
+        features: {
+          propsDestructure: true
+        }
       }),
       // https://github.com/vuetifyjs/vuetify-loader/tree/master/packages/vite-plugin#readme
       Vuetify({

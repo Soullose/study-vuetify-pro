@@ -85,6 +85,11 @@
     "setMapStoreSuffix": true,
     "storeToRefs": true,
     "onBeforeRouteLeave": true,
-    "onBeforeRouteUpdate": true
+    "onBeforeRouteUpdate": true,
+    "useDisplay": true,
+    "useLayout": true,
+    "useLocale": true,
+    "useRtl": true,
+    "useTheme": true
   }
 }
