@@ -65,7 +65,7 @@
       </template>
     </v-navigation-drawer>
 
-    <v-app-bar :elevation="2" border="b" flat light>
+    <v-app-bar class="bg-#1576F7" :elevation="2" border="b" flat>
       <template #prepend>
         <v-app-bar-nav-icon @click.stop="theme.toggleAsideMenuFolded"></v-app-bar-nav-icon>
         <a class="d-flex ps-2 ml-3" style="text-decoration: none" href="/">
@@ -158,11 +158,11 @@
     <v-main>
       <!-- 渲染 txxx -->
       <!-- <component :is="txxx" /> -->
-      <router-view v-slot="{ Component, route }">
-        <transition name="slide">
+      <v-slide-x-transition>
+        <router-view v-slot="{ Component, route }">
           <component :is="Component" :key="route" />
-        </transition>
-      </router-view>
+        </router-view>
+      </v-slide-x-transition>
     </v-main>
 
     <v-footer light app height="48">
