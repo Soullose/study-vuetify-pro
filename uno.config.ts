@@ -3,13 +3,13 @@ import presetIcons from '@unocss/preset-icons';
 // import presetIcons from '@unocss/preset-icons/browser';
 import presetWebFonts from '@unocss/preset-web-fonts';
 import { createLocalFontProcessor } from '@unocss/preset-web-fonts/local';
-import { defineConfig, presetUno } from 'unocss';
-import { getIconJson } from './dynamic.icon.scan';
+import { defineConfig, presetUno, presetWind3 } from 'unocss';
+// import { getIconJson } from './dynamic.icon.scan';
 
 const iconSets = ['carbon', 'mdi', 'fa'] as const;
 
-const safelist: any = await getIconJson();
-console.log('获取:', safelist);
+// const safelist: any = await getIconJson();
+// console.log('获取:', safelist);
 export default defineConfig({
   content: {
     pipeline: {
@@ -24,6 +24,7 @@ export default defineConfig({
     }
   },
   presets: [
+    presetWind3(),
     presetUno({}), // 添加 UnoCSS 的默认样式预设
     presetAttributify({
       /* preset options */
@@ -76,6 +77,6 @@ export default defineConfig({
         fontServeBaseUrl: '/assets/fonts'
       })
     })
-  ],
-  safelist: [...safelist]
+  ]
+  // safelist: [...safelist]
 });
