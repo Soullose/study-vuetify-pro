@@ -5,8 +5,8 @@ import Fonts from 'unplugin-fonts/vite';
 import Components from 'unplugin-vue-components/vite';
 import { getFileBasedRouteName, VueRouterAutoImports } from 'unplugin-vue-router';
 import VueRouter from 'unplugin-vue-router/vite';
-import { ClientSideLayout } from 'vite-plugin-vue-layouts';
-// import { ClientSideLayout } from 'vite-plugin-vue-layouts-next';
+// import { ClientSideLayout } from 'vite-plugin-vue-layouts';
+import { ClientSideLayout } from 'vite-plugin-vue-layouts-next';
 import Vuetify, { transformAssetUrls } from 'vite-plugin-vuetify';
 // Utilities
 import path from 'node:path';
