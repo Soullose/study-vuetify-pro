@@ -159,6 +159,7 @@
       <!-- 渲染 txxx -->
       <!-- <component :is="txxx" /> -->
       <router-view v-slot="{ Component, route }">
+        {{ route.meta }}
         <v-slide-x-transition mode="out-in">
           <component :is="Component" :key="route" />
         </v-slide-x-transition>

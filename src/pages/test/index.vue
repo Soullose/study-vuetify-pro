@@ -61,7 +61,11 @@ function xxxx() {
 }
 definePage({
   meta: {
-    title: '测试'
+    layout: 'home',
+    title: '测试',
+    requiresAuth: false,
+    description: 'dashboard description',
+    keepAlive: false
   }
 });
 </script>
