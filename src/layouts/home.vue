@@ -158,11 +158,11 @@
     <v-main>
       <!-- 渲染 txxx -->
       <!-- <component :is="txxx" /> -->
-      <v-slide-x-transition>
-        <router-view v-slot="{ Component, route }">
+      <router-view v-slot="{ Component, route }">
+        <v-slide-x-transition mode="out-in">
           <component :is="Component" :key="route" />
-        </router-view>
-      </v-slide-x-transition>
+        </v-slide-x-transition>
+      </router-view>
     </v-main>
 
     <v-footer light app height="48">
