@@ -12,7 +12,7 @@
     "@mdi/font": "7.4.47",
     "ag-grid-vue3": "^33.1.1",
     "core-js": "^3.41.0",
-    "es-toolkit": "^1.27.0",
+    "es-toolkit": "^1.39.7",
     "lodash-es": "^4.17.21",
     "roboto-fontface": "*",
     "vue": "^3.5.16",
