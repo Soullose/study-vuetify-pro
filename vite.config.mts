@@ -42,21 +42,23 @@ export default defineConfig(({ command, mode }) => {
           // console.log('path', route.path);
           // console.log('meta:', route.meta);
           // console.log('name', route.name);
-          if (route.path === '/[name]') {
+          
+          if (route.name === '/[name]') {
             console.log('route-name:', route.name);
             route.meta = {
               layout: 'home',
               name: route.name || '',
               title: route.meta?.title || route.name || '',
-              requireAuth: route.meta?.requireAuth || false,
+              requireAuth: true,
               keepAlive: route.meta?.keepAlive || false
             };
-          } else if (route.path === '/platform') {
+          } else if (route.name.startsWith('/platform')) {
+            console.log('route-name1:', route.name);
             route.meta = {
               layout: 'default',
               name: route.name || '',
               title: route.meta?.title || route.name || '',
-              requireAuth: route.meta?.requireAuth || false,
+              requireAuth: false,
               keepAlive: route.meta?.keepAlive || false
             };
           }
