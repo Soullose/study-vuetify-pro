@@ -27,4 +27,60 @@ declare module 'vue-router/auto-routes' {
     '/portal1': RouteRecordInfo<'/portal1', '/platform/portal', Record<never, never>, Record<never, never>>,
     '/test/': RouteRecordInfo<'/test/', '/test', Record<never, never>, Record<never, never>>,
   }
+
+  /**
+   * Route file to route info map by unplugin-vue-router.
+   * Used by the volar plugin to automatically type useRoute()
+   *
+   * Each key is a file path relative to the project root with 2 properties:
+   * - routes: union of route names of the possible routes when in this page (passed to useRoute<...>())
+   * - views: names of nested views (can be passed to <RouterView name="...">)
+   *
+   * @internal
+   */
+  export interface _RouteFileInfoMap {
+    'src/pages/index.vue': {
+      routes: '/'
+      views: never
+    }
+    'src/pages/[...path].vue': {
+      routes: '/[...path]'
+      views: never
+    }
+    'src/pages/dashboard/index.vue': {
+      routes: '/dashboard/'
+      views: never
+    }
+    'src/pages/icon/index.vue': {
+      routes: '/icon/'
+      views: never
+    }
+    'src/platform/pages/[...path].vue': {
+      routes: '/platform/[...path]'
+      views: never
+    }
+    'src/platform/pages/farmework/icon/index.vue': {
+      routes: '/platform/farmework/icon/'
+      views: never
+    }
+    'src/platform/pages/portal/index.vue': {
+      routes: '/portal1'
+      views: never
+    }
+    'src/pages/test/index.vue': {
+      routes: '/test/'
+      views: never
+    }
+  }
+
+  /**
+   * Get a union of possible route names in a certain route component file.
+   * Used by the volar plugin to automatically type useRoute()
+   *
+   * @internal
+   */
+  export type _RouteNamesForFilePath<FilePath extends string> =
+    _RouteFileInfoMap extends Record<FilePath, infer Info>
+      ? Info['routes']
+      : keyof RouteNamedMap
 }

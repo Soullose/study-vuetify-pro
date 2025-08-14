@@ -42,7 +42,7 @@ export default defineConfig(({ command, mode }) => {
           // console.log('path', route.path);
           // console.log('meta:', route.meta);
           // console.log('name', route.name);
-          
+
           if (route.name === '/[name]') {
             console.log('route-name:', route.name);
             route.meta = {
@@ -52,7 +52,7 @@ export default defineConfig(({ command, mode }) => {
               requireAuth: true,
               keepAlive: route.meta?.keepAlive || false
             };
-          } else if (route.name.startsWith('/platform')) {
+          } else if (typeof route.name === 'string' && route.name.startsWith('/platform')) {
             console.log('route-name1:', route.name);
             route.meta = {
               layout: 'default',
@@ -90,7 +90,8 @@ export default defineConfig(({ command, mode }) => {
           VueRouterAutoImports,
           {
             vuetify: ['useTheme', 'useRtl', 'useLocale', 'useDisplay', 'useLayout']
-          }
+          },
+          'vitest'
         ],
         dts: 'src/auto-imports.d.ts',
         eslintrc: {
@@ -237,6 +238,9 @@ export default defineConfig(({ command, mode }) => {
           }
         }
       }
+    },
+    test: {
+      include: ['test/**/*.test.ts']
     }
   };
 });
