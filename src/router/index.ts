@@ -12,11 +12,11 @@ import { setupLayouts } from 'virtual:generated-layouts';
 import { createRouter, createWebHistory } from 'vue-router/auto';
 import { handleHotUpdate, routes } from 'vue-router/auto-routes';
 /// 标题前缀
-const titlePrefix = 'W2-';
+const titlePrefix = 'W3-';
 
 routes.map((route) => {
   console.log('route1:', route);
-  if (route?.path === import.meta.env.BASE_URL) {
+  if (route?.path === '/w3') {
     if (!route.meta) {
       route.meta ??= {};
     }
@@ -24,10 +24,9 @@ routes.map((route) => {
   }
 });
 
-
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
-  routes: setupLayouts(routes)
+  routes: [...setupLayouts(routes)]
 });
 
 if (import.meta.hot) {
@@ -46,9 +45,10 @@ router.isReady().then(() => {
 /// to: 即将要进入的目标
 /// from: 当前导航正要离开的路由
 router.beforeEach(async (to, from, next) => {
+  console.log('to1:', to);
   const routeExists = router.getRoutes().some((route) => route.path === to.path);
   // console.log('routeExists:', routeExists);
-  if (!routeExists && to.name === undefined) {
+  if (!to.matched.length && !to.name) {
     next(Error('错误'));
   }
   if (to.path === '/platform/portal') {
@@ -57,7 +57,11 @@ router.beforeEach(async (to, from, next) => {
   if (to.path === '/dashboard') {
     router.replace('/platform/portal');
     // next();
-  } else {
+  }
+  // else if (to.path === '/') {
+  //   router.replace('/w3');
+  // }
+  else {
     next();
   }
 });
@@ -72,7 +76,7 @@ router.beforeEach(async (to, from, next) => {
  * 属性确保用户访问摄像头的权限：
  */
 router.beforeResolve(async (to) => {
-  if(to.meta?.requireAuth) {
+  if (to.meta?.requireAuth) {
     console.log('beforeResolve', to.fullPath);
   }
 });
@@ -83,7 +87,7 @@ router.afterEach((to, from) => {
   if (to?.name === '/[...path]') {
     document.title = titlePrefix + '404';
   } else if (to.meta.title) {
-    console.log('to:', to);
+    console.log('to2:', to);
     if (typeof to.meta.title === 'string') {
       document.title = titlePrefix + to.meta.title;
     }
