@@ -233,8 +233,14 @@ export default defineConfig(({ command, mode }) => {
       rollupOptions: {
         output: {
           manualChunks: {
+            vue: ['vue'],
+            pinia: ['pinia'],
             vuetify: ['vuetify'],
-            utils: ['lodash-es']
+            'lodash-es': ['lodash-es'],
+            'vue-router': ['vue-router'],
+            'ag-grid-vue3': ['ag-grid-vue3'],
+            'es-toolkit': ['es-toolkit'],
+            'roboto-fontface': ['roboto-fontface'],
           }
         }
       }
