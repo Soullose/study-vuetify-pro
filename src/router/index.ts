@@ -22,6 +22,18 @@ routes.map((route) => {
     }
     route.meta.title = '首页';
   }
+  if (route?.path === '/login') {
+    if (route.meta) {
+      route.meta.layout = 'default';
+      route.meta.isLayout = false;
+    }
+  }
+  if (route?.path === '/login/') {
+    if (route.meta) {
+      route.meta.layout = 'default';
+      route.meta.isLayout = false;
+    }
+  }
 });
 
 const router = createRouter({
@@ -46,24 +58,39 @@ router.isReady().then(() => {
 /// from: 当前导航正要离开的路由
 router.beforeEach(async (to, from, next) => {
   console.log('to1:', to);
-  const routeExists = router.getRoutes().some((route) => route.path === to.path);
-  // console.log('routeExists:', routeExists);
-  if (!to.matched.length && !to.name) {
-    next(Error('错误'));
-  }
-  if (to.path === '/platform/portal') {
+  // redirect login page
+  // const redirectData: { path: string; replace: boolean; query?: any } = {
+  //   path: '',
+  //   replace: true
+  // };
+  if (true && to.path !== '/login') {
+    // if (!to.meta?.requireAuth) {
+    //   next();
+    //   // return;
+    // }
+
+    next({ path: '/login', replace: true });
+  } else {
     next();
   }
-  if (to.path === '/dashboard') {
-    router.replace('/platform/portal');
-    // next();
-  }
+  // const routeExists = router.getRoutes().some((route) => route.path === to.path);
+  // console.log('routeExists:', routeExists);
+  // if (!to.matched.length && !to.name) {
+  //   next(Error('错误'));
+  // }
+  // if (to.path === '/platform/portal') {
+  //   next();
+  // }
+  // if (to.path === '/dashboard') {
+  //   router.replace('/platform/portal');
+  //   // next();
+  // }
   // else if (to.path === '/') {
   //   router.replace('/w3');
   // }
-  else {
-    next();
-  }
+  // else {
+  //   next();
+  // }
 });
 
 /// 全局解析守卫

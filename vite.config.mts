@@ -52,6 +52,16 @@ export default defineConfig(({ command, mode }) => {
               requireAuth: route.meta?.requireAuth || true,
               keepAlive: route.meta?.keepAlive || false
             };
+          } else if ((typeof route.name === 'string' && route.path === '/login') || route.path === '/login/') {
+            console.log('login');
+            route.meta = {
+              layout: 'default',
+              name: route.name || '',
+              title: route.meta?.title || route.name || '',
+              requireAuth: false,
+              keepAlive: route.meta?.keepAlive || false,
+              isLayout: false
+            };
           } else if (typeof route.name === 'string' && route.name.startsWith('/platform')) {
             console.log('route-name1:', route.name);
             route.meta = {
@@ -240,7 +250,7 @@ export default defineConfig(({ command, mode }) => {
             'vue-router': ['vue-router'],
             'ag-grid-vue3': ['ag-grid-vue3'],
             'es-toolkit': ['es-toolkit'],
-            'roboto-fontface': ['roboto-fontface'],
+            'roboto-fontface': ['roboto-fontface']
           }
         }
       }
