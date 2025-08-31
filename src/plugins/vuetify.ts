@@ -14,14 +14,14 @@ import { md3 } from 'vuetify/blueprints';
 
 import { zhHans } from 'vuetify/locale';
 
+import theme from './vuetify/theme';
+
 // import 'unplugin-icons/'; // Iconify 图标样式
 
 // https://vuetifyjs.com/en/introduction/why-vuetify/#feature-guides
 export default createVuetify({
   blueprint: md3,
-  theme: {
-    defaultTheme: 'light'
-  },
+  theme: theme,
   locale: {
     locale: 'zhHans',
     messages: { zhHans }

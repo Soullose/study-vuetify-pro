@@ -65,7 +65,7 @@
       </template>
     </v-navigation-drawer>
 
-    <v-app-bar class="bg-#1576F7" :elevation="2" border="b" flat>
+    <v-app-bar color="background" :elevation="2" border="b" flat>
       <template #prepend>
         <v-app-bar-nav-icon @click.stop="theme.toggleAsideMenuFolded"></v-app-bar-nav-icon>
         <a class="d-flex ps-2 ml-3" style="text-decoration: none" href="/">
