@@ -13,15 +13,15 @@
 
       <v-divider></v-divider>
 
-      <v-list nav slim density="compact" lines="one">
+      <v-list nav slim density="compact" lines="one" indent="0">
         <v-list-item prepend-icon="mdi-folder" title="My Files" value="myfiles"></v-list-item>
-        <v-list-group dense link fluid>
+        <v-list-group fluid>
           <template v-slot:activator="{ props }">
             <v-list-item v-bind="props" prepend-icon="mdi-account-circle">
               <v-list-item-title class="font-weight-bold">测试</v-list-item-title>
             </v-list-item>
           </template>
-          <v-list-item class="d-flex align-center ml-0" link title="Dashboard" value="dashboard" to="/dashboard">
+          <v-list-item nav class="d-flex align-center ml-0" link title="Dashboard" value="dashboard" to="/dashboard">
             <template v-slot:prepend>
               <!-- <div class="d-flex align-center ml-4"> -->
               <v-icon dense>mdi-plus-outline</v-icon>
@@ -176,7 +176,7 @@
 </template>
 
 <script setup lang="ts">
-import { useRoute } from 'vue-router/auto';
+import { useRoute } from 'vue-router';
 //
 // import { w2RouterStore } from '@/stores/router';
 

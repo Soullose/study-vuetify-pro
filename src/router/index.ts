@@ -9,7 +9,7 @@ import { w2RouterStore } from '@/stores/router';
 
 import { setupLayouts } from 'virtual:generated-layouts';
 // import 'vue-router';
-import { createRouter, createWebHistory } from 'vue-router/auto';
+import { createRouter, createWebHistory } from 'vue-router';
 import { handleHotUpdate, routes } from 'vue-router/auto-routes';
 /// 标题前缀
 const titlePrefix = 'W3-';
