@@ -18,6 +18,7 @@ import IconsResolver from 'unplugin-icons/resolver';
 import Icons from 'unplugin-icons/vite';
 import { compression } from 'vite-plugin-compression2';
 import esToolkitPlugin from 'vite-plugin-es-toolkit';
+import { viteMockServe } from 'vite-plugin-mock';
 const envDir = path.resolve(__dirname, 'env');
 // https://vitejs.dev/config/
 export default defineConfig(({ command, mode }) => {
@@ -210,7 +211,15 @@ export default defineConfig(({ command, mode }) => {
         compiler: 'vue3',
         autoInstall: true
       }),
-      UnoCSS()
+      UnoCSS(),
+      // Mock 服务 - 仅在开发环境启用
+      viteMockServe({
+        mockPath: 'src/mock/modules',
+        enable: command === 'serve',
+        watchFiles: true,
+        logger: true,
+        cors: true
+      })
     ],
     base: '/',
     define: { 'process.env': {} },
