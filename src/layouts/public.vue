@@ -1,12 +1,17 @@
 <template>
   <v-app>
     <v-main>
-      <div>3214fdsfsfsa</div>
       <router-view />
     </v-main>
-
-    <AppFooter />
   </v-app>
 </template>
 
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+// 公共布局 - 用于登录、注册等无需侧边栏的页面
+</script>
+
+<style scoped>
+.v-main {
+  min-height: 100vh;
+}
+</style>

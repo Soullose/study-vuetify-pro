@@ -1,16 +1,10 @@
 <template>
   <v-app>
-    <!-- <v-main> -->
-    <!-- <router-view v-slot="{ Component, route }">
-      <v-slide-x-transition mode="out-in">
-        <component :is="Component" :key="route" />
-      </v-slide-x-transition>
-    </router-view> -->
     <router-view />
-    <!-- </v-main> -->
+    <AppSnackbar />
   </v-app>
 </template>
 
 <script lang="ts" setup>
-//
+import AppSnackbar from '@/components/common/AppSnackbar/index.vue';
 </script>

@@ -1,0 +1,21 @@
+<template>
+  <v-container fluid class="fill-height bg-background">
+    <v-row align="center" justify="center">
+      <v-col cols="12" md="6" class="text-center">
+        <h1 class="text-h1 font-weight-bold text-primary mb-4">404</h1>
+        <h2 class="text-h5 text-medium-emphasis mb-8">抱歉，您访问的页面不存在</h2>
+        <v-btn color="primary" size="large" prepend-icon="mdi-home" to="/">返回首页</v-btn>
+      </v-col>
+    </v-row>
+  </v-container>
+</template>
+
+<script lang="ts" setup>
+definePage({
+  meta: {
+    title: '页面未找到',
+    requireAuth: false,
+    layout: 'public'
+  }
+});
+</script>

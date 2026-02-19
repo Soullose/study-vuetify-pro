@@ -37,6 +37,20 @@ declare module 'vue-router/auto-routes' {
       { path: ParamValue<false> },
       | never
     >,
+    '/403': RouteRecordInfo<
+      '/403',
+      '/403',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/404': RouteRecordInfo<
+      '/404',
+      '/404',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
     '/dashboard/': RouteRecordInfo<
       '/dashboard/',
       '/dashboard',
@@ -51,8 +65,8 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
-    '/portal1': RouteRecordInfo<
-      '/portal1',
+    '/login/': RouteRecordInfo<
+      '/login/',
       '/login',
       Record<never, never>,
       Record<never, never>,
@@ -111,6 +125,18 @@ declare module 'vue-router/auto-routes' {
       views:
         | never
     }
+    'src/pages/403.vue': {
+      routes:
+        | '/403'
+      views:
+        | never
+    }
+    'src/pages/404.vue': {
+      routes:
+        | '/404'
+      views:
+        | never
+    }
     'src/pages/dashboard/index.vue': {
       routes:
         | '/dashboard/'
@@ -125,7 +151,7 @@ declare module 'vue-router/auto-routes' {
     }
     'src/pages/login/index.vue': {
       routes:
-        | '/portal1'
+        | '/login/'
       views:
         | never
     }
