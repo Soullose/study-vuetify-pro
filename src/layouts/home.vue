@@ -14,6 +14,13 @@
       <v-divider></v-divider>
 
       <v-list nav slim density="compact" lines="one" indent="0">
+        <v-list-item class="d-flex align-center ml-0" link title="Home" value="Home" to="/">
+          <template v-slot:prepend>
+            <!-- <div class="d-flex align-center ml-4"> -->
+            <v-icon dense class="i-mdi:magnify-expand"></v-icon>
+            <!-- </div> -->
+          </template>
+        </v-list-item>
         <v-list-item prepend-icon="mdi-folder" title="My Files" value="myfiles"></v-list-item>
         <v-list-group fluid>
           <template v-slot:activator="{ props }">
