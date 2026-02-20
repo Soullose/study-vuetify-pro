@@ -56,7 +56,7 @@ export default defineConfig(({ command, mode }) => {
           } else if ((typeof route.name === 'string' && route.path === '/login') || route.path === '/login/') {
             console.log('login');
             route.meta = {
-              layout: 'default',
+              layout: 'public',
               name: route.name || '',
               title: route.meta?.title || route.name || '',
               requireAuth: false,
@@ -66,7 +66,7 @@ export default defineConfig(({ command, mode }) => {
           } else if (typeof route.name === 'string' && route.name.startsWith('/platform')) {
             console.log('route-name1:', route.name);
             route.meta = {
-              layout: 'default',
+              layout: 'public',
               name: route.name || '',
               title: route.meta?.title || route.name || '',
               requireAuth: false,

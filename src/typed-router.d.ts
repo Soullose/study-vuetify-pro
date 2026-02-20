@@ -86,8 +86,8 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
-    '/portal1': RouteRecordInfo<
-      '/portal1',
+    '/platform/portal/': RouteRecordInfo<
+      '/platform/portal/',
       '/platform/portal',
       Record<never, never>,
       Record<never, never>,
@@ -169,7 +169,7 @@ declare module 'vue-router/auto-routes' {
     }
     'src/platform/pages/portal/index.vue': {
       routes:
-        | '/portal1'
+        | '/platform/portal/'
       views:
         | never
     }

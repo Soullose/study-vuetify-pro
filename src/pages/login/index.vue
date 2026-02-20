@@ -102,8 +102,8 @@ const showPassword = ref(false);
 
 // 表单数据
 const formData = reactive({
-  username: '',
-  password: ''
+  username: 'admin',
+  password: 'admin123'
 });
 
 // 验证规则
