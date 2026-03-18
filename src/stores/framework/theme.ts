@@ -17,6 +17,9 @@ export const themeStore = defineStore('theme', {
     },
     toggleRail() {
       this.theme.rail = false;
+    },
+    setRail(value: boolean) {
+      this.theme.rail = value;
     }
   }
 });
