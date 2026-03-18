@@ -107,16 +107,17 @@ export const usePermissionStore = defineStore('permission', () => {
    * 重置权限（登出时调用）
    */
   function resetPermission(): void {
-    isLoaded.value = false;
-    dynamicRoutes.value = [];
-    menus.value = [];
-
-    // 移除动态添加的路由
+    // 先移除动态添加的路由（在清空数组之前）
     dynamicRoutes.value.forEach((route) => {
       if (route.name) {
         router.removeRoute(route.name);
       }
     });
+
+    // 再清空状态
+    isLoaded.value = false;
+    dynamicRoutes.value = [];
+    menus.value = [];
   }
 
   /**

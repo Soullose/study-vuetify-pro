@@ -23,6 +23,9 @@ const WHITE_LIST = ['/login', '/register', '/forgot-password', '/404', '/403'];
 /** 默认首页 */
 const DEFAULT_HOME = '/dashboard';
 
+/** 标记是否已初始化 */
+let isInitialized = false;
+
 // ==================== 创建路由实例 ====================
 
 const router = createRouter({
@@ -72,10 +75,11 @@ function isWhiteListRoute(path: string): boolean {
  * 执行顺序：
  * 1. 设置页面标题
  * 2. 白名单检查
- * 3. 登录状态检查
- * 4. 用户信息获取
- * 5. 动态路由加载
- * 6. 权限检查
+ * 3. 初始化/恢复登录状态
+ * 4. 登录状态检查
+ * 5. 用户信息验证
+ * 6. 动态路由加载
+ * 7. 权限检查
  */
 router.beforeEach(async (to, from, next) => {
   // 1. 设置页面标题
@@ -96,7 +100,13 @@ router.beforeEach(async (to, from, next) => {
   // 4. 获取认证 Store
   const authStore = useAuthStore();
 
-  // 5. 检查登录状态
+  // 5. 首次加载时初始化认证状态（从 localStorage/sessionStorage 恢复）
+  if (!isInitialized) {
+    isInitialized = true;
+    authStore.initialize();
+  }
+
+  // 6. 检查登录状态
   if (!authStore.isLoggedIn) {
     // 未登录，跳转到登录页
     next({
@@ -106,10 +116,26 @@ router.beforeEach(async (to, from, next) => {
     return;
   }
 
-  // 6. 获取权限 Store
+  // 7. 如果没有用户信息，尝试获取（验证 Token 有效性）
+  if (!authStore.hasUserInfo) {
+    try {
+      await authStore.fetchUserInfo();
+    } catch (error) {
+      console.error('获取用户信息失败:', error);
+      // Token 无效，清除状态并跳转登录页
+      authStore.clearAuthState();
+      next({
+        path: '/login',
+        query: { redirect: to.fullPath }
+      });
+      return;
+    }
+  }
+
+  // 8. 获取权限 Store
   const permissionStore = usePermissionStore();
 
-  // 7. 检查是否已加载动态路由
+  // 9. 检查是否已加载动态路由
   if (!permissionStore.hasLoaded) {
     try {
       // 初始化权限（加载动态路由）
@@ -121,6 +147,7 @@ router.beforeEach(async (to, from, next) => {
     } catch (error) {
       console.error('加载动态路由失败:', error);
       authStore.clearAuthState();
+      permissionStore.resetPermission();
       next({
         path: '/login',
         query: { redirect: to.fullPath }
@@ -129,23 +156,23 @@ router.beforeEach(async (to, from, next) => {
     }
   }
 
-  // 8. 检查路由是否存在
+  // 10. 检查路由是否存在
   if (!to.matched.length) {
     next('/404');
     return;
   }
 
-  // 9. 检查权限
+  // 11. 检查权限
   if (!checkRoutePermission(to.meta)) {
     next('/403');
     return;
   }
 
-  // 10. 添加标签页
+  // 12. 添加标签页
   const tagsViewStore = useTagsViewStore();
   tagsViewStore.addView(to);
 
-  // 11. 放行
+  // 13. 放行
   next();
 });
 
@@ -183,5 +210,12 @@ router.onError((error, to) => {
     }
   }
 });
+
+/**
+ * 重置路由初始化状态（用于登出后重新初始化）
+ */
+export function resetRouterInitState(): void {
+  isInitialized = false;
+}
 
 export default router;

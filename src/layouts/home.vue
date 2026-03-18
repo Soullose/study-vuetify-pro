@@ -132,33 +132,8 @@
           </v-card>
         </v-menu>
 
-        <v-menu transition="slide-y-transition">
-          <template v-slot:activator="{ props }">
-            <v-btn color="primary" class="ma-2" tonal depressed v-bind="props">
-              Login
-              <v-icon right dark>mdi-login</v-icon>
-            </v-btn>
-          </template>
-          <v-card class="mx-auto" max-width="200">
-            <v-card-text>
-              <div>Word of the Day</div>
-
-              <p class="text-h4 font-weight-black">be•nev•o•lent</p>
-
-              <p>adjective</p>
-
-              <div class="text-medium-emphasis">
-                well meaning and kindly.
-                <br />
-                "a benevolent smile"
-              </div>
-            </v-card-text>
-
-            <v-card-actions>
-              <v-btn color="deep-purple-accent-4" text="Learn More" variant="text"></v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-menu>
+        <!-- 用户菜单 -->
+        <UserMenu />
       </template>
     </v-app-bar>
 
@@ -188,6 +163,7 @@ import { useRoute } from 'vue-router';
 // import { w2RouterStore } from '@/stores/router';
 
 import { themeStore } from '@/stores/framework/theme';
+import UserMenu from '@/components/common/UserMenu/index.vue';
 
 const theme = themeStore();
 

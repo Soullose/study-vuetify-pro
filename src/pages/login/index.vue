@@ -41,11 +41,14 @@
                 :append-inner-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
                 :rules="passwordRules"
                 :disabled="loading"
-                class="mb-4"
+                class="mb-2"
                 autocomplete="current-password"
                 @click:append-inner="showPassword = !showPassword"
                 @keyup.enter="handleLogin"
               />
+
+              <!-- 记住我复选框 -->
+              <v-checkbox v-model="formData.rememberMe" label="记住我" density="compact" hide-details class="mb-4" color="primary" />
 
               <!-- 登录按钮 -->
               <v-btn type="submit" color="primary" size="large" block :loading="loading" :disabled="!isValid || loading">
@@ -102,14 +105,24 @@ const showPassword = ref(false);
 
 // 表单数据
 const formData = reactive({
-  username: 'admin',
-  password: 'admin123'
+  username: '',
+  password: '',
+  rememberMe: false
 });
 
 // 验证规则
 const usernameRules = [(v: string) => !!v || '请输入用户名', (v: string) => v.length >= 2 || '用户名至少 2 个字符'];
 
 const passwordRules = [(v: string) => !!v || '请输入密码', (v: string) => v.length >= 5 || '密码至少 5 个字符'];
+
+// 初始化时获取记住的用户名
+onMounted(() => {
+  const rememberedUsername = authStore.getRememberedUsername();
+  if (rememberedUsername) {
+    formData.username = rememberedUsername;
+    formData.rememberMe = true;
+  }
+});
 
 // 登录处理
 async function handleLogin() {
@@ -120,10 +133,13 @@ async function handleLogin() {
   loading.value = true;
 
   try {
-    await authStore.login({
-      username: formData.username,
-      password: formData.password
-    });
+    await authStore.login(
+      {
+        username: formData.username,
+        password: formData.password
+      },
+      formData.rememberMe
+    );
 
     snackbar.success('登录成功，正在跳转...');
 
