@@ -20,8 +20,9 @@ const TITLE_PREFIX = 'W3-';
 /** 白名单路由（无需认证） */
 const WHITE_LIST = ['/login', '/register', '/forgot-password', '/404', '/403'];
 
-/** 默认首页 */
-const DEFAULT_HOME = '/dashboard';
+/** 默认首页（后续导航守卫中使用） */
+const _DEFAULT_HOME = '/dashboard';
+void _DEFAULT_HOME;
 
 /** 标记是否已初始化 */
 let isInitialized = false;

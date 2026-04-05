@@ -4,6 +4,10 @@
 
     <AppHeader @toggle-sidebar="theme.toggleAsideMenuFolded" />
 
+    <!--
+      AppMain 内部使用 <slot/> 渲染下方内容，
+      <router-view> 是唯一的页面渲染出口
+    -->
     <AppMain>
       <router-view v-slot="{ Component, route }">
         <v-slide-x-transition mode="out-in">
@@ -17,6 +21,10 @@
 </template>
 
 <script setup lang="ts">
+/**
+ * @description 后台管理布局 - 侧边栏 + 顶部导航 + 内容区 + 页脚
+ * @note 不包含 <v-app>，由 App.vue 统一提供
+ */
 import { useDisplay } from 'vuetify';
 import { themeStore } from '@/stores/framework/theme';
 import AppSidebar from './home/AppSidebar.vue';
@@ -25,7 +33,7 @@ import AppMain from './home/AppMain.vue';
 import AppFooter from './home/AppFooter.vue';
 
 const theme = themeStore();
-const { mobile } = useDisplay();
+const { mobile: _mobile } = useDisplay();
 
 // 侧边栏显示状态
 const drawerVisible = ref(true);

@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
 import type { RouteRecordRaw } from 'vue-router';
-import type { ApiRouteConfig, MenuItem } from '@/api/modules/permission';
+import type { MenuItem } from '@/api/modules/permission';
 import * as permissionApi from '@/api/modules/permission';
 import { transformRoutes, buildMenuTree } from '@/utils/route-transform';
 import router from '@/router';
@@ -86,10 +86,10 @@ export const usePermissionStore = defineStore('permission', () => {
       // 1. 生成动态路由
       const routes = await generateRoutes();
 
-      // 2. 动态添加路由
+      // 2. 动态添加路由（作为顶级路由）
+      // 注意：此处暂不包裹布局组件，完整的布局包裹将在模块注册中心（阶段三）中实现
       routes.forEach((route) => {
-        // 添加到 layout 下
-        router.addRoute('Layout', route);
+        router.addRoute(route);
       });
 
       // 3. 生成菜单

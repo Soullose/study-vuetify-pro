@@ -64,7 +64,7 @@ service.interceptors.response.use(
       return Promise.reject(new Error('网络连接失败，请检查网络'));
     }
 
-    const { status, data } = response;
+    const { status } = response;
 
     switch (status) {
       case 401:

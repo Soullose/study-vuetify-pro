@@ -84,7 +84,6 @@ declare global {
   const useDisplay: typeof import('vuetify').useDisplay
   const useId: typeof import('vue').useId
   const useLayout: typeof import('vuetify').useLayout
-  const useLink: typeof import('vue-router')['useLink']
   const useLocale: typeof import('vuetify').useLocale
   const useModel: typeof import('vue').useModel
   const useRoute: typeof import('vue-router').useRoute

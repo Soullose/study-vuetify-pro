@@ -1,5 +1,5 @@
 import type { RouteRecordRaw, RouteComponent } from 'vue-router';
-import type { ApiRouteConfig, MenuItem } from '@/api/modules/permission';
+import type { ApiRouteConfig } from '@/api/modules/permission';
 
 // 组件映射表（用于动态导入）
 const modules = import.meta.glob('../pages/**/*.vue');

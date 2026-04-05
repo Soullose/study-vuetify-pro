@@ -38,41 +38,38 @@ export default defineConfig(({ command, mode }) => {
         exclude: [],
         // 提供路由策略
         getRouteName: (route) => getFileBasedRouteName(route),
-        /// 在配置文件中拓展路由,在组件内使用definePage将失效 https://uvr.esm.is/guide/extending-routes
+        /// 在配置文件中拓展路由 https://uvr.esm.is/guide/extending-routes
+        /// 注意：如果页面组件中使用了 definePage 设置 meta，extendRoute 中不应覆盖已有值
         async extendRoute(route) {
-          console.log('path', route.path);
-          // console.log('meta:', route.meta);
-          console.log('name', route.name);
+          // 保留已有的 meta（来自 definePage 或 <route> 块），仅补充默认值
+          const existingMeta = route.meta || {};
 
-          if (typeof route.name === 'string' && !route.name.startsWith('/platform')) {
-            console.log('route-name:', route.name);
-            route.meta = {
-              layout: 'home',
-              name: route.name || '',
-              title: route.meta?.title || '',
-              requireAuth: route.meta?.requireAuth || true,
-              keepAlive: route.meta?.keepAlive || false
-            };
-          } else if ((typeof route.name === 'string' && route.path === '/login') || route.path === '/login/') {
-            console.log('login');
-            route.meta = {
-              layout: 'public',
-              name: route.name || '',
-              title: route.meta?.title || route.name || '',
-              requireAuth: false,
-              keepAlive: route.meta?.keepAlive || false,
-              isLayout: false
-            };
+          // 根据路由路径特征确定默认布局
+          let defaultLayout = 'home'; // 后台管理布局（默认）
+          let defaultRequireAuth = true;
+
+          if (route.path === '/login' || route.path === '/login/') {
+            // 登录页使用空白布局
+            defaultLayout = 'public';
+            defaultRequireAuth = false;
           } else if (typeof route.name === 'string' && route.name.startsWith('/platform')) {
-            console.log('route-name1:', route.name);
-            route.meta = {
-              layout: 'public',
-              name: route.name || '',
-              title: route.meta?.title || route.name || '',
-              requireAuth: false,
-              keepAlive: route.meta?.keepAlive || false
-            };
+            // platform 目录下的页面使用空白布局（后续阶段将改为 portal 布局）
+            defaultLayout = 'public';
+            defaultRequireAuth = false;
+          } else if (route.path === '/404' || route.path === '/403') {
+            // 错误页面使用 home 布局
+            defaultLayout = 'home';
+            defaultRequireAuth = false;
           }
+
+          // 合并 meta：已有值优先，缺失的使用默认值
+          route.meta = {
+            ...existingMeta,
+            layout: existingMeta.layout || defaultLayout,
+            title: existingMeta.title || '',
+            requireAuth: existingMeta.requireAuth !== undefined ? existingMeta.requireAuth : defaultRequireAuth,
+            keepAlive: existingMeta.keepAlive || false
+          };
         },
 
         // modify routes before writing
