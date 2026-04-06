@@ -88,7 +88,7 @@ definePage({
   meta: {
     title: '登录',
     requireAuth: false,
-    layout: 'public'
+    layout: 'blank'
   }
 });
 

@@ -1,11 +1,12 @@
 import 'vue-router';
+import type { LayoutName } from '@/core/types';
 
 declare module 'vue-router' {
   interface RouteMeta {
     /** 页面标题 */
     title?: string;
     /** 布局名称 */
-    layout?: 'default' | 'home' | 'public';
+    layout?: LayoutName;
     /** 是否需要认证 */
     requireAuth?: boolean;
     /** 是否缓存页面 */

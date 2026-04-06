@@ -5,7 +5,7 @@ definePage({
   meta: {
     title: '门户网站',
     requireAuth: true,
-    layout: 'public'
+    layout: 'portal'
   }
 });
 </script>

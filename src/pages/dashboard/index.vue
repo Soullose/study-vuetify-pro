@@ -74,13 +74,16 @@
 </template>
 
 <script lang="ts" setup>
-import { useAuthStore } from '@/stores/auth';
+/**
+ * @description 仪表盘首页 - 展示系统概览和快捷操作
+ * @author Architecture Team
+ * @date 2026-04-05
+ *
+ * 注意：本页面由模块注册中心（src/modules/dashboard/index.ts）管理路由，
+ * 不使用 definePage() 宏，因为已被 vite.config.mts 排除在文件路由之外。
+ */
 
-definePage({
-  meta: {
-    title: '仪表盘'
-  }
-});
+import { useAuthStore } from '@/stores/auth';
 
 const authStore = useAuthStore();
 </script>

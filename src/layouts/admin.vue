@@ -1,6 +1,6 @@
 <template>
   <div class="fill-height d-flex">
-    <AppSidebar v-model="drawerVisible" :rail="theme.getRail" @update:rail="theme.setRail" />
+    <AppSidebar v-model="drawerVisible" :rail="theme.rail" @update:rail="theme.setRail" />
 
     <AppHeader @toggle-sidebar="theme.toggleAsideMenuFolded" />
 
@@ -26,13 +26,13 @@
  * @note 不包含 <v-app>，由 App.vue 统一提供
  */
 import { useDisplay } from 'vuetify';
-import { themeStore } from '@/stores/framework/theme';
-import AppSidebar from './home/AppSidebar.vue';
-import AppHeader from './home/AppHeader.vue';
-import AppMain from './home/AppMain.vue';
-import AppFooter from './home/AppFooter.vue';
+import { useThemeStore } from '@/stores/framework/theme';
+import AppSidebar from './admin/AppSidebar.vue';
+import AppHeader from './admin/AppHeader.vue';
+import AppMain from './admin/AppMain.vue';
+import AppFooter from './admin/AppFooter.vue';
 
-const theme = themeStore();
+const theme = useThemeStore();
 const { mobile: _mobile } = useDisplay();
 
 // 侧边栏显示状态

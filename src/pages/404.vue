@@ -15,7 +15,7 @@ definePage({
   meta: {
     title: '页面未找到',
     requireAuth: false,
-    layout: 'public'
+    layout: 'blank'
   }
 });
 </script>

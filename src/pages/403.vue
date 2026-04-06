@@ -24,7 +24,7 @@ definePage({
   meta: {
     title: '无访问权限',
     requireAuth: false,
-    layout: 'public'
+    layout: 'blank'
   }
 });
 </script>

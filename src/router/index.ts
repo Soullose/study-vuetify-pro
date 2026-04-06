@@ -1,6 +1,10 @@
 /**
  * router/index.ts
  * 路由配置 - 支持动态路由和完整的导航守卫
+ *
+ * 双轨路由策略：
+ * - 文件路由：由 unplugin-vue-router 扫描 src/pages 生成，用于公共页面（登录、错误页等）
+ * - 模块路由：由 ModuleRegistry 扫描 src/modules 目录，用于业务模块（仪表盘、系统管理等）
  */
 
 import { setupLayouts } from 'virtual:generated-layouts';
@@ -11,6 +15,7 @@ import { useAuthStore } from '@/stores/auth';
 import { usePermissionStore } from '@/stores/permission';
 import { useTagsViewStore } from '@/stores/tagsView';
 import { checkRoutePermission } from '@/utils/permission';
+import { moduleRegistry } from '@/core/module-registry';
 
 // ==================== 常量配置 ====================
 
@@ -43,6 +48,12 @@ const router = createRouter({
 if (import.meta.hot) {
   handleHotUpdate(router);
 }
+
+// ==================== 注册业务模块路由 ====================
+
+// 通过 ModuleRegistry 扫描 src/modules 目录下的模块配置，
+// 自动包裹布局并注册到路由实例
+moduleRegistry.registerRoutes(router);
 
 // ==================== 辅助函数 ====================
 

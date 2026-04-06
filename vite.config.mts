@@ -34,8 +34,8 @@ export default defineConfig(({ command, mode }) => {
         routesFolder: [{ src: 'src/pages' }, { src: 'src/platform/pages', path: 'platform/' }],
         // 指定typed-router.d.ts的生成路径，如果项目中用到了typescript；可以通过false禁用
         dts: 'src/typed-router.d.ts',
-        // 指定需要排除的目录，默认为空
-        exclude: [],
+        // 排除由模块注册中心管理的业务目录，避免路由重复注册
+        exclude: ['src/pages/dashboard/**', 'src/pages/system/**'],
         // 提供路由策略
         getRouteName: (route) => getFileBasedRouteName(route),
         /// 在配置文件中拓展路由 https://uvr.esm.is/guide/extending-routes
@@ -45,20 +45,20 @@ export default defineConfig(({ command, mode }) => {
           const existingMeta = route.meta || {};
 
           // 根据路由路径特征确定默认布局
-          let defaultLayout = 'home'; // 后台管理布局（默认）
+          let defaultLayout = 'admin'; // 后台管理布局（默认）
           let defaultRequireAuth = true;
 
           if (route.path === '/login' || route.path === '/login/') {
             // 登录页使用空白布局
-            defaultLayout = 'public';
+            defaultLayout = 'blank';
             defaultRequireAuth = false;
           } else if (typeof route.name === 'string' && route.name.startsWith('/platform')) {
-            // platform 目录下的页面使用空白布局（后续阶段将改为 portal 布局）
-            defaultLayout = 'public';
+            // platform 目录下的页面使用 portal 布局
+            defaultLayout = 'portal';
             defaultRequireAuth = false;
           } else if (route.path === '/404' || route.path === '/403') {
-            // 错误页面使用 home 布局
-            defaultLayout = 'home';
+            // 错误页面使用 admin 布局
+            defaultLayout = 'admin';
             defaultRequireAuth = false;
           }
 
@@ -88,7 +88,7 @@ export default defineConfig(({ command, mode }) => {
       // }),
       ClientSideLayout({
         layoutDir: 'src/layouts',
-        defaultLayout: 'home',
+        defaultLayout: 'admin',
         importMode: 'sync'
       }),
       AutoImport({

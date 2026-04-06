@@ -14,6 +14,7 @@ declare module 'vue' {
     IconPicker: typeof import('./components/IconPicker.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    RouterViewWrapper: typeof import('./components/common/RouterViewWrapper/index.vue')['default']
     UserMenu: typeof import('./components/common/UserMenu/index.vue')['default']
   }
 }
