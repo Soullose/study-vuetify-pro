@@ -65,6 +65,27 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
+    '/login/components/LoginForm': RouteRecordInfo<
+      '/login/components/LoginForm',
+      '/login/components/LoginForm',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/login/components/LoginIllustration': RouteRecordInfo<
+      '/login/components/LoginIllustration',
+      '/login/components/LoginIllustration',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/login/components/ThemeToggle': RouteRecordInfo<
+      '/login/components/ThemeToggle',
+      '/login/components/ThemeToggle',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
     '/platform/[...path]': RouteRecordInfo<
       '/platform/[...path]',
       '/platform/:path(.*)',
@@ -139,6 +160,24 @@ declare module 'vue-router/auto-routes' {
     'src/pages/login/index.vue': {
       routes:
         | '/login/'
+      views:
+        | never
+    }
+    'src/pages/login/components/LoginForm.vue': {
+      routes:
+        | '/login/components/LoginForm'
+      views:
+        | never
+    }
+    'src/pages/login/components/LoginIllustration.vue': {
+      routes:
+        | '/login/components/LoginIllustration'
+      views:
+        | never
+    }
+    'src/pages/login/components/ThemeToggle.vue': {
+      routes:
+        | '/login/components/ThemeToggle'
       views:
         | never
     }

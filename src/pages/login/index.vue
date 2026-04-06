@@ -1,79 +1,43 @@
-<!-- 登录页面 -->
+<!--
+  @description 登录页面 - 分屏设计风格
+  @author Architecture Team
+  @date 2026-04-06
+  左侧展示 SVG 抽象科技感插画，右侧为登录表单
+  支持亮色/暗黑主题切换和响应式布局适配
+-->
 <template>
-  <v-container fluid class="login-container fill-height">
-    <v-row align="center" justify="center">
-      <v-col cols="12" sm="8" md="5" lg="4" xl="3">
-        <v-card class="login-card elevation-12 rounded-lg">
-          <!-- 卡片头部 -->
-          <v-card-title class="text-center pt-8 pb-4">
-            <v-avatar size="64" color="primary" class="mb-4">
-              <v-icon icon="mdi-account-circle" size="48" color="white" />
-            </v-avatar>
-            <h1 class="text-h4 font-weight-bold">用户登录</h1>
-            <p class="text-body-2 text-medium-emphasis mt-2 mb-0">请输入您的账号密码</p>
-          </v-card-title>
+  <v-container fluid class="login-page fill-height pa-0">
+    <v-row no-gutters class="fill-height">
+      <!-- 左侧插画区域 - xs 断点隐藏 -->
+      <v-col cols="0" sm="5" md="6" class="illustration-col d-none d-sm-flex">
+        <LoginIllustration />
+      </v-col>
 
-          <v-divider />
+      <!-- 右侧表单区域 -->
+      <v-col cols="12" sm="7" md="6" class="form-col">
+        <div class="form-col-inner">
+          <!-- 顶部工具栏：主题切换 -->
+          <div class="form-toolbar">
+            <ThemeToggle />
+          </div>
 
-          <!-- 登录表单 -->
-          <v-card-text class="px-8 py-6">
-            <v-form ref="formRef" v-model="isValid" @submit.prevent="handleLogin">
-              <!-- 用户名输入框 -->
-              <v-text-field
-                v-model="formData.username"
-                label="用户名"
-                prepend-inner-icon="mdi-account"
-                variant="outlined"
-                :rules="usernameRules"
-                :disabled="loading"
-                class="mb-3"
-                autocomplete="username"
-                @keyup.enter="handleLogin"
-              />
+          <!-- 表单内容区域 -->
+          <div class="form-content">
+            <!-- Logo 区域 -->
+            <div class="logo-area">
+              <v-avatar size="48" rounded="lg" color="primary" variant="flat">
+                <v-icon icon="mdi-shield-check" size="28" color="white" />
+              </v-avatar>
+            </div>
 
-              <!-- 密码输入框 -->
-              <v-text-field
-                v-model="formData.password"
-                label="密码"
-                prepend-inner-icon="mdi-lock"
-                variant="outlined"
-                :type="showPassword ? 'text' : 'password'"
-                :append-inner-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
-                :rules="passwordRules"
-                :disabled="loading"
-                class="mb-2"
-                autocomplete="current-password"
-                @click:append-inner="showPassword = !showPassword"
-                @keyup.enter="handleLogin"
-              />
+            <!-- 登录表单 -->
+            <LoginForm @login-success="onLoginSuccess" />
+          </div>
 
-              <!-- 记住我复选框 -->
-              <v-checkbox v-model="formData.rememberMe" label="记住我" density="compact" hide-details class="mb-4" color="primary" />
-
-              <!-- 登录按钮 -->
-              <v-btn type="submit" color="primary" size="large" block :loading="loading" :disabled="!isValid || loading">
-                <v-icon icon="mdi-login" class="mr-2" />
-                登 录
-              </v-btn>
-            </v-form>
-
-            <!-- 测试账号提示 -->
-            <v-alert type="info" variant="tonal" class="mt-6" density="comfortable" rounded="lg">
-              <template #prepend>
-                <v-icon icon="mdi-information-outline" />
-              </template>
-              <div class="text-body-2">
-                <strong class="d-block mb-2">测试账号：</strong>
-                <v-chip size="small" class="mr-2 mb-1" color="primary" variant="flat">admin / admin123</v-chip>
-                <v-chip size="small" class="mb-1" color="secondary" variant="flat">user / user123</v-chip>
-              </div>
-            </v-alert>
-          </v-card-text>
-        </v-card>
-
-        <!-- 底部版权信息 -->
-        <div class="text-center mt-6 text-white">
-          <p class="text-body-2 mb-0 opacity-70">© 2024 Study Vuetify Pro. All rights reserved.</p>
+          <!-- 底部版权信息 -->
+          <div class="form-footer">
+            <p class="copyright-text">© 2024 Study Vuetify Pro. All rights reserved.</p>
+          </div>
         </div>
       </v-col>
     </v-row>
@@ -81,8 +45,14 @@
 </template>
 
 <script lang="ts" setup>
-import { useSnackbar } from '@/composables/useSnackbar';
-import { useAuthStore } from '@/stores/auth';
+/**
+ * @description 登录页面主入口
+ * 采用分屏设计：左侧 SVG 插画 + 右侧登录表单
+ * 使用 blank 布局，支持主题切换和响应式适配
+ */
+import LoginIllustration from './components/LoginIllustration.vue';
+import LoginForm from './components/LoginForm.vue';
+import ThemeToggle from './components/ThemeToggle.vue';
 
 definePage({
   meta: {
@@ -92,84 +62,98 @@ definePage({
   }
 });
 
-const router = useRouter();
-const route = useRoute();
-const authStore = useAuthStore();
-const snackbar = useSnackbar();
-
-// 表单引用
-const formRef = ref();
-const isValid = ref(false);
-const loading = ref(false);
-const showPassword = ref(false);
-
-// 表单数据
-const formData = reactive({
-  username: '',
-  password: '',
-  rememberMe: false
-});
-
-// 验证规则
-const usernameRules = [(v: string) => !!v || '请输入用户名', (v: string) => v.length >= 2 || '用户名至少 2 个字符'];
-
-const passwordRules = [(v: string) => !!v || '请输入密码', (v: string) => v.length >= 5 || '密码至少 5 个字符'];
-
-// 初始化时获取记住的用户名
-onMounted(() => {
-  const rememberedUsername = authStore.getRememberedUsername();
-  if (rememberedUsername) {
-    formData.username = rememberedUsername;
-    formData.rememberMe = true;
-  }
-});
-
-// 登录处理
-async function handleLogin() {
-  // 验证表单
-  const { valid } = await formRef.value?.validate();
-  if (!valid) return;
-
-  loading.value = true;
-
-  try {
-    await authStore.login(
-      {
-        username: formData.username,
-        password: formData.password
-      },
-      formData.rememberMe
-    );
-
-    snackbar.success('登录成功，正在跳转...');
-
-    // 获取重定向地址或默认首页
-    const redirect = (route.query.redirect as string) || '/dashboard';
-
-    // 延迟跳转，让用户看到成功提示
-    setTimeout(() => {
-      router.push(redirect);
-    }, 500);
-  } catch (error: any) {
-    snackbar.error(error.message || '登录失败，请重试');
-  } finally {
-    loading.value = false;
-  }
+/**
+ * 登录成功回调
+ */
+function onLoginSuccess(): void {
+  // 登录成功后的额外处理（如有需要）
 }
 </script>
 
 <style scoped>
-.login-container {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  min-height: 100vh;
+.login-page {
+  overflow: hidden;
 }
 
-.login-card {
-  backdrop-filter: blur(10px);
-  background: rgba(255, 255, 255, 0.95);
+/* 左侧插画区域 */
+.illustration-col {
+  position: relative;
+  overflow: hidden;
+  min-height: 100%;
 }
 
-:deep(.v-field__prepend-inner) {
-  color: rgb(var(--v-theme-primary));
+/* 右侧表单区域 */
+.form-col {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  background: rgb(var(--v-theme-background));
+  transition: background-color 0.3s ease;
+}
+
+.form-col-inner {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 100%;
+  position: relative;
+}
+
+/* 顶部工具栏 */
+.form-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  padding: 16px 24px;
+}
+
+/* 表单内容区域 - 垂直居中 */
+.form-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 48px;
+}
+
+/* Logo 区域 */
+.logo-area {
+  margin-bottom: 24px;
+}
+
+/* 底部版权信息 */
+.form-footer {
+  padding: 16px 24px;
+  text-align: center;
+}
+
+.copyright-text {
+  font-size: 0.8125rem;
+  opacity: 0.5;
+  margin: 0;
+}
+
+/* ==================== 响应式适配 ==================== */
+
+/* 平板端适配 */
+@media (max-width: 960px) {
+  .form-content {
+    padding: 24px 32px;
+  }
+}
+
+/* 移动端适配 */
+@media (max-width: 600px) {
+  .form-content {
+    padding: 24px 20px;
+  }
+
+  .form-toolbar {
+    padding: 12px 16px;
+  }
+
+  .form-footer {
+    padding: 12px 16px;
+  }
 }
 </style>
