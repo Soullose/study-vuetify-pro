@@ -207,7 +207,7 @@ export const useSettingsStore = defineStore('settings', () => {
   function applyTheme(): void {
     try {
       const theme = useTheme();
-      theme.global.name.value = currentTheme.value;
+      theme.change(currentTheme.value);
     } catch (e) {
       // Vuetify 可能还未初始化
     }
