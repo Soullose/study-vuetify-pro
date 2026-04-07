@@ -81,6 +81,12 @@ const defaultSettings: SettingsState = {
 };
 
 export const useSettingsStore = defineStore('settings', () => {
+  // ==================== Vuetify Theme Instance ====================
+  // 在 setup 上下文中获取 Vuetify 主题实例并缓存
+  // useTheme() 内部使用 inject()，必须在组件 setup 阶段调用
+  // 缓存后可在事件回调、watch 等非 setup 上下文中安全使用
+  const vuetifyTheme = useTheme();
+
   // ==================== State ====================
 
   /** 从本地存储加载设置 */
@@ -203,14 +209,10 @@ export const useSettingsStore = defineStore('settings', () => {
 
   /**
    * 应用主题
+   * 使用缓存的 vuetifyTheme 实例切换 Vuetify 主题
    */
   function applyTheme(): void {
-    try {
-      const theme = useTheme();
-      theme.change(currentTheme.value);
-    } catch (e) {
-      // Vuetify 可能还未初始化
-    }
+    vuetifyTheme.change(currentTheme.value);
 
     // 更新 HTML class（用于 CSS 变量）
     document.documentElement.classList.remove('light', 'dark');
@@ -219,23 +221,18 @@ export const useSettingsStore = defineStore('settings', () => {
 
   /**
    * 应用主题颜色
+   * 使用缓存的 vuetifyTheme 实例更新 light/dark 主题颜色
    */
   function applyThemeColors(): void {
-    try {
-      const theme = useTheme();
+    // 更新 light 主题
+    Object.entries(themeColors.value).forEach(([key, value]) => {
+      vuetifyTheme.themes.value.light.colors[key] = value;
+    });
 
-      // 更新 light 主题
-      Object.entries(themeColors.value).forEach(([key, value]) => {
-        theme.themes.value.light.colors[key] = value;
-      });
-
-      // 更新 dark 主题
-      Object.entries(themeColors.value).forEach(([key, value]) => {
-        theme.themes.value.dark.colors[key] = value;
-      });
-    } catch (e) {
-      // Vuetify 可能还未初始化
-    }
+    // 更新 dark 主题
+    Object.entries(themeColors.value).forEach(([key, value]) => {
+      vuetifyTheme.themes.value.dark.colors[key] = value;
+    });
   }
 
   /**
