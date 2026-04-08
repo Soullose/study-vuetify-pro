@@ -107,6 +107,13 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
+    '/redirect/[...path]': RouteRecordInfo<
+      '/redirect/[...path]',
+      '/redirect/:path(.*)',
+      { path: ParamValue<true> },
+      { path: ParamValue<false> },
+      | never
+    >,
     '/test/': RouteRecordInfo<
       '/test/',
       '/test',
@@ -196,6 +203,12 @@ declare module 'vue-router/auto-routes' {
     'src/platform/pages/portal/index.vue': {
       routes:
         | '/platform/portal/'
+      views:
+        | never
+    }
+    'src/pages/redirect/[...path].vue': {
+      routes:
+        | '/redirect/[...path]'
       views:
         | never
     }
