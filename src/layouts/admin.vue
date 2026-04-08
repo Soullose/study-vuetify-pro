@@ -3,7 +3,7 @@
   <!-- 全高度弹性盒子布局，垂直方向填充 -->
   <div class="fill-height d-flex">
     <!-- 侧边栏组件，v-model绑定drawerVisible，:rail绑定theme.rail，监听更新事件 -->
-    <AppSidebar v-model="drawerVisible" :rail="theme.rail" @update:rail="theme.setRail" />
+    <AppSidebar v-model="drawerVisible" :expand-on-hover="theme.rail" :rail="theme.asideMenuFolded" @update:rail="theme.setRail" />
 
     <!-- 头部组件，监听toggle-sidebar事件以切换侧边栏折叠（通过theme.toggleAsideMenuFolded） -->
     <AppHeader @toggle-sidebar="theme.toggleAsideMenuFolded" />
