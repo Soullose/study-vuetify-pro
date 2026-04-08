@@ -21,12 +21,16 @@
         <!-- 多页签栏：通过 settings.showTagsView 控制显隐 -->
         <TagsView v-if="settingsStore.layout.showTagsView" />
 
+        <!--
+          keep-alive 缓存已访问的页面组件，:include 绑定 tagsViewStore 的缓存列表。
+          注意：不使用 v-slide-x-transition，因为 transition 的 leave 动画与 keep-alive
+          组合会导致切换时页面空白（缓存的组件在过渡期间被隐藏后无法正确恢复）。
+          多页签场景下用户期望即时切换，不需要滑动过渡动画。
+        -->
         <router-view v-slot="{ Component, route }">
-          <v-slide-x-transition mode="out-in">
-            <keep-alive :include="[...tagsViewStore.cachedViews]">
-              <component :is="Component" :key="route.path + refreshSuffix" />
-            </keep-alive>
-          </v-slide-x-transition>
+          <keep-alive :include="[...tagsViewStore.cachedViews]">
+            <component :is="Component" :key="route.path + refreshSuffix" />
+          </keep-alive>
         </router-view>
       </AppMain>
 
