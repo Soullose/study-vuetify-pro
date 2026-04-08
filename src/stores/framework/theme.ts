@@ -11,7 +11,7 @@ import { defineStore } from 'pinia';
  */
 export const useThemeStore = defineStore('theme', () => {
   /** 侧边栏是否折叠 */
-  const asideMenuFolded = ref<boolean>(true);
+  const asideMenuFolded = ref<boolean>(false);
 
   /** 是否使用 Rail 模式（迷你侧边栏） */
   const rail = ref<boolean>(false);
