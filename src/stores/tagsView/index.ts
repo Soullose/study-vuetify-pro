@@ -36,6 +36,12 @@ export const useTagsViewStore = defineStore('tagsView', () => {
   /** 最大标签数量 */
   const maxTags = ref(20);
 
+  /**
+   * 刷新计数器（每次递增触发 router-view 的 key 变化，强制重建组件）
+   * 用于替代 redirect 中转页刷新机制，避免过渡动画竞态条件
+   */
+  const refreshKey = ref(0);
+
   // ==================== Getters ====================
 
   /** 获取所有标签 */
@@ -204,6 +210,15 @@ export const useTagsViewStore = defineStore('tagsView', () => {
     return null;
   }
 
+  /**
+   * 触发页面刷新
+   * 递增 refreshKey，使 router-view 的 :key 发生变化，强制 Vue 销毁并重建组件实例。
+   * 替代原有的 redirect 中转页刷新机制，避免 v-slide-x-transition 过渡动画竞态条件。
+   */
+  function triggerRefresh(): void {
+    refreshKey.value++;
+  }
+
   // ==================== Helper Functions ====================
 
   /**
@@ -227,6 +242,7 @@ export const useTagsViewStore = defineStore('tagsView', () => {
     visitedViews,
     cachedViews,
     maxTags,
+    refreshKey,
 
     // Getters
     getVisitedViews,
@@ -245,6 +261,7 @@ export const useTagsViewStore = defineStore('tagsView', () => {
     delRightViews,
     delAllViews,
     refreshView,
+    triggerRefresh,
     getAdjacentTag
   };
 });

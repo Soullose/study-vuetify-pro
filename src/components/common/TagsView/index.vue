@@ -126,16 +126,17 @@ function openContextMenu(event: MouseEvent, tag: TagView): void {
 
 /**
  * 刷新当前选中的标签页
- * 通过 redirect 路由中转实现：先跳转到 /redirect 页面，
- * redirect 页面立即 replace 回目标路径，从而销毁并重建组件实例。
+ * 通过递增 tagsViewStore.refreshKey 实现：
+ * admin.vue 中 router-view 的 :key 拼接了 refreshKey，
+ * refreshKey 变化后 Vue 会销毁旧组件并创建新组件实例，达到刷新效果。
+ * 替代原有的 redirect 中转页机制，避免 v-slide-x-transition 过渡动画竞态条件。
  */
 function refreshTag(): void {
   if (!ctxTag.value) return;
-  const { fullPath } = ctxTag.value;
   // 先从缓存中移除（虽然当前未使用 keep-alive，保持 store 状态一致性）
   tagsViewStore.refreshView(ctxTag.value);
-  // 通过 redirect 中转页实现刷新
-  router.push(`/redirect${fullPath}`);
+  // 递增 refreshKey，触发 router-view 的 key 变化，强制重建组件
+  tagsViewStore.triggerRefresh();
   menuVisible.value = false;
 }
 

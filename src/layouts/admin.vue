@@ -28,7 +28,12 @@
         -->
         <router-view v-slot="{ Component, route }">
           <v-slide-x-transition mode="out-in">
-            <component :is="Component" :key="route.path" />
+            <!--
+              key 拼接 refreshKey：当 tagsViewStore.triggerRefresh() 被调用时，
+              refreshKey 递增导致 key 变化，Vue 会销毁旧组件并创建新组件实例，
+              实现页面刷新效果。替代原有的 redirect 中转页机制，避免过渡动画竞态条件。
+            -->
+            <component :is="Component" :key="`${route.path}-${tagsViewStore.refreshKey}`" />
           </v-slide-x-transition>
         </router-view>
       </AppMain>
@@ -52,9 +57,11 @@ import AppHeader from './admin/AppHeader.vue'; // 头部组件
 import AppMain from './admin/AppMain.vue'; // 主内容容器
 import AppFooter from './admin/AppFooter.vue'; // 页脚组件
 import TagsView from '@/components/common/TagsView/index.vue'; // 多页签组件
+import { useTagsViewStore } from '@/stores/tagsView'; // 多页签状态store
 
 const theme = useThemeStore(); // 获取主题store，管理rail（侧边栏折叠）状态
 const settingsStore = useSettingsStore(); // 获取设置store，管理页签栏显隐等配置
+const tagsViewStore = useTagsViewStore(); // 获取多页签store，用于读取 refreshKey 实现页面刷新
 const { mobile: _mobile } = useDisplay(); // 获取移动端标志（本例未使用，保留以备后续响应式）
 
 // 侧边栏显示状态（可见/隐藏），默认true
