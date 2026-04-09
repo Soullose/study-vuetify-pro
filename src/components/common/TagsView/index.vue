@@ -72,7 +72,7 @@
  * - 激活标签使用主题色填充，非激活标签透明背景
  * - 关闭按钮仅在 hover 或激活状态显示
  * - 右键菜单通过 v-menu + target 坐标定位
- * - 刷新功能通过 inject 获取父组件提供的刷新方法
+ * - 刷新功能通过 redirect 路由中转实现组件重建
  */
 import { useTagsViewStore } from '@/stores/tagsView';
 import type { TagView } from '@/stores/tagsView';
@@ -80,9 +80,6 @@ import type { TagView } from '@/stores/tagsView';
 const router = useRouter();
 const route = useRoute();
 const tagsViewStore = useTagsViewStore();
-
-// 从 admin.vue 注入的刷新方法（通过改变 key 强制组件重建）
-const refreshPage = inject<(tag: TagView) => void>('refreshPage', () => {});
 
 // ==================== 滚动容器 ====================
 
@@ -129,11 +126,16 @@ function openContextMenu(event: MouseEvent, tag: TagView): void {
 
 /**
  * 刷新当前选中的标签页
- * 调用 admin.vue 提供的 refreshPage 方法
+ * 通过 redirect 路由中转实现：先跳转到 /redirect 页面，
+ * redirect 页面立即 replace 回目标路径，从而销毁并重建组件实例。
  */
 function refreshTag(): void {
   if (!ctxTag.value) return;
-  refreshPage(ctxTag.value);
+  const { fullPath } = ctxTag.value;
+  // 先从缓存中移除（虽然当前未使用 keep-alive，保持 store 状态一致性）
+  tagsViewStore.refreshView(ctxTag.value);
+  // 通过 redirect 中转页实现刷新
+  router.push(`/redirect${fullPath}`);
   menuVisible.value = false;
 }
 
