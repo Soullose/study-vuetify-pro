@@ -55,7 +55,7 @@ export interface SettingsState {
  * 预设主题色
  */
 export const PRESET_COLORS: ThemeColors[] = [
-  { primary: '#007BFF', secondary: '#FF965D', success: '#28C76F', info: '#00CFE8', warning: '#FF9F43', error: '#EA5455' },
+  { primary: '#6750A4', secondary: '#FF965D', success: '#28C76F', info: '#00CFE8', warning: '#FF9F43', error: '#EA5455' },
   { primary: '#7367F0', secondary: '#8A8D93', success: '#28C76F', info: '#00CFE8', warning: '#FF9F43', error: '#EA5455' },
   { primary: '#00A6E0', secondary: '#FF965D', success: '#28C76F', info: '#00CFE8', warning: '#FF9F43', error: '#EA5455' },
   { primary: '#FF6B6B', secondary: '#4ECDC4', success: '#28C76F', info: '#00CFE8', warning: '#FF9F43', error: '#EA5455' },
@@ -89,12 +89,18 @@ export const useSettingsStore = defineStore('settings', () => {
 
   // ==================== State ====================
 
-  /** 从本地存储加载设置 */
+  /** 从本地存储加载设置，并执行旧版本颜色迁移 */
   const loadSettings = (): SettingsState => {
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
       if (stored) {
-        return { ...defaultSettings, ...JSON.parse(stored) };
+        const parsed = JSON.parse(stored) as SettingsState;
+        const result = { ...defaultSettings, ...parsed };
+        // 迁移旧版本 primary 颜色：#007BFF → #6750A4（MD3 标准紫色）
+        if (result.themeColors?.primary === '#007BFF') {
+          result.themeColors = { ...result.themeColors, primary: '#6750A4' };
+        }
+        return result;
       }
     } catch (e) {
       console.warn('加载设置失败:', e);
@@ -224,13 +230,14 @@ export const useSettingsStore = defineStore('settings', () => {
    * 使用缓存的 vuetifyTheme 实例更新 light/dark 主题颜色
    */
   function applyThemeColors(): void {
-    // 更新 light 主题
+    // 更新 light 主题（完整应用所有颜色）
     Object.entries(themeColors.value).forEach(([key, value]) => {
       vuetifyTheme.themes.value.light.colors[key] = value;
     });
 
-    // 更新 dark 主题
+    // 更新 dark 主题（排除 primary 和 on-primary，保持静态定义的中性色）
     Object.entries(themeColors.value).forEach(([key, value]) => {
+      if (key === 'primary' || key === 'on-primary') return;
       vuetifyTheme.themes.value.dark.colors[key] = value;
     });
   }

@@ -1,6 +1,13 @@
 import type { VuetifyOptions } from 'vuetify';
 
-export const staticPrimaryColor = '#007BFF';
+/** 浅色主题默认 primary 颜色，采用 Material Design 3 标准紫色 */
+export const staticPrimaryColor = '#6750A4';
+
+/** 深色主题 primary 颜色，中性浅灰紫，与 dark 主题色调一致 */
+export const staticDarkPrimaryColor = '#D0D4F1';
+
+/** 深色主题 on-primary 颜色，深色文字确保对比度 */
+export const staticDarkOnPrimaryColor = '#1A1A2E';
 
 const theme: VuetifyOptions['theme'] = {
   defaultTheme: 'light',
@@ -67,8 +74,8 @@ const theme: VuetifyOptions['theme'] = {
     dark: {
       dark: true,
       colors: {
-        primary: staticPrimaryColor,
-        'on-primary': '#fff',
+        primary: staticDarkPrimaryColor,
+        'on-primary': staticDarkOnPrimaryColor,
         secondary: '#A8AAAE',
         'on-secondary': '#fff',
         success: '#28C76F',
