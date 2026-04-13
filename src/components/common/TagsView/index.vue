@@ -9,7 +9,7 @@
   - 鼠标滚轮横向滚动
 -->
 <template>
-  <div class="tags-view-container">
+  <div class="tags-view-container bg-background">
     <!-- 可滚动的页签列表 -->
     <div ref="scrollRef" class="tags-view-scroll" @wheel.prevent="onWheel">
       <div
@@ -192,7 +192,6 @@ function closeAll(): void {
   align-items: center;
   height: 34px;
   padding: 0 8px;
-  background: rgb(var(--v-theme-surface));
   border-bottom: 1px solid rgba(var(--v-border-color), var(--v-border-opacity));
   flex-shrink: 0;
 }

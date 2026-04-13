@@ -20,6 +20,7 @@ const theme: VuetifyOptions['theme'] = {
         'on-warning': '#fff',
         error: '#EA5455',
         background: '#F8F7FA',
+        surface: '#FFFFFF',
         'on-background': '#2F2B3D',
         'on-surface': '#2F2B3D',
         'on-surface-variant': '#FFF',

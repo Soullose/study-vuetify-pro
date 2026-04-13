@@ -1,7 +1,7 @@
 <!-- 单个菜单项组件 -->
 <template>
   <!-- Vuetify列表项，支持图标、标题、副标题、值、路由跳转、导航模式、链接状态 -->
-  <v-list-item :prepend-icon="prependIcon" :title="title" :subtitle="subtitle" :value="value" :to="to" :nav="nav" :link="!!to">
+  <v-list-item color="background" :prepend-icon="prependIcon" :title="title" :subtitle="subtitle" :value="value" :to="to" :nav="nav" :link="!!to">
     <!-- 默认插槽，用于自定义内容 -->
     <template v-if="$slots.default" #default>
       <slot />
