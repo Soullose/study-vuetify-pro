@@ -1,13 +1,13 @@
 import type { VuetifyOptions } from 'vuetify';
 
-/** 浅色主题默认 primary 颜色，采用 Material Design 3 标准紫色 */
-export const staticPrimaryColor = '#6750A4';
+/** 浅色主题默认 primary 颜色，Material Design 标准蓝 */
+export const staticPrimaryColor = '#1976D2';
 
-/** 深色主题 primary 颜色，中性浅灰紫，与 dark 主题色调一致 */
-export const staticDarkPrimaryColor = '#D0D4F1';
+/** 深色主题 primary 颜色，使用更亮的蓝色以提高在深色背景上的对比度（WCAG AA 达标） */
+export const staticDarkPrimaryColor = '#42A5F5';
 
-/** 深色主题 on-primary 颜色，深色文字确保对比度 */
-export const staticDarkOnPrimaryColor = '#1A1A2E';
+/** 深色主题 on-primary 颜色，白色文字确保在蓝色背景上的对比度 */
+export const staticDarkOnPrimaryColor = '#FFFFFF';
 
 const theme: VuetifyOptions['theme'] = {
   defaultTheme: 'light',
@@ -43,7 +43,13 @@ const theme: VuetifyOptions['theme'] = {
         'grey-900': '#212121',
         'perfect-scrollbar-thumb': '#DBDADE',
         'skin-bordered-background': '#fff',
-        'skin-bordered-surface': '#fff'
+        'skin-bordered-surface': '#fff',
+
+        // 头部与侧边栏自定义颜色令牌
+        'header-bg': '#1976D2',
+        'on-header-bg': '#FFFFFF',
+        'sidebar-bg': '#FFFFFF',
+        'on-sidebar-bg': '#2F2B3D'
       },
 
       variables: {
@@ -101,7 +107,13 @@ const theme: VuetifyOptions['theme'] = {
         'grey-900': '#E7E9F6',
         'perfect-scrollbar-thumb': '#4A5072',
         'skin-bordered-background': '#2f3349',
-        'skin-bordered-surface': '#2f3349'
+        'skin-bordered-surface': '#2f3349',
+
+        // 头部与侧边栏自定义颜色令牌
+        'header-bg': '#121212',
+        'on-header-bg': '#FFFFFF',
+        'sidebar-bg': '#121212',
+        'on-sidebar-bg': '#FFFFFF'
       },
       variables: {
         'code-color': '#d400ff',

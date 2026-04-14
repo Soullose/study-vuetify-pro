@@ -1,7 +1,7 @@
 <!-- 全局头部组件 -->
 <template>
-  <!-- Vuetify应用栏，背景色为background，带阴影，底部边框，舒适密度 -->
-  <v-app-bar color="background" elevation="2" border="b" density="comfortable">
+  <!-- Vuetify应用栏，背景色使用header-bg主题令牌（浅色蓝/深色黑），子组件自动继承on-header-bg白色文字 -->
+  <v-app-bar color="header-bg" elevation="0" density="comfortable">
     <!-- 前置区域插槽：包含导航菜单图标和Logo -->
     <template #prepend>
       <!-- 点击触发toggle-sidebar事件，用于侧边栏折叠 -->

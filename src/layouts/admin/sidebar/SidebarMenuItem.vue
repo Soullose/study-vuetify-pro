@@ -1,7 +1,17 @@
 <!-- 单个菜单项组件 -->
 <template>
-  <!-- Vuetify列表项，支持图标、标题、副标题、值、路由跳转、导航模式、链接状态 -->
-  <v-list-item color="primary" :prepend-icon="prependIcon" :title="title" :subtitle="subtitle" :value="value" :to="to" :nav="nav" :link="!!to">
+  <!-- Vuetify列表项，color=primary选中态蓝色，baseColor=on-sidebar-bg默认态文字颜色 -->
+  <v-list-item
+    color="primary"
+    base-color="on-sidebar-bg"
+    :prepend-icon="prependIcon"
+    :title="title"
+    :subtitle="subtitle"
+    :value="value"
+    :to="to"
+    :nav="nav"
+    :link="!!to"
+  >
     <!-- 默认插槽，用于自定义内容 -->
     <template v-if="$slots.default" #default>
       <slot />

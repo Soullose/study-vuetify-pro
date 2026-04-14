@@ -1,7 +1,7 @@
 <!-- 侧边栏底部组件 -->
 <template>
-  <!-- 列表项，前置图标为设置图标，标题为“Settings”，值为“settings” -->
-  <v-list-item prepend-icon="mdi-cog" title="Settings" value="settings" />
+  <!-- 列表项，baseColor=on-sidebar-bg默认态文字颜色，color=primary选中态蓝色 -->
+  <v-list-item base-color="on-sidebar-bg" color="primary" prepend-icon="mdi-cog" title="Settings" value="settings" />
 </template>
 
 <script setup lang="ts">

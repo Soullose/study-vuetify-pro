@@ -1,8 +1,8 @@
 侧边栏导航抽屉组件
 <template>
-  <!-- Vuetify导航抽屉，使用background色与头部/内容区统一，双向绑定显示状态和rail（折叠）状态，永久显示，移动端断点960px -->
+  <!-- Vuetify导航抽屉，使用sidebar-bg主题令牌（浅色白/深色黑），双向绑定显示状态和rail（折叠）状态，永久显示，移动端断点960px -->
   <v-navigation-drawer
-    color="background"
+    color="sidebar-bg"
     :expand-on-hover="rail"
     :model-value="modelValue"
     :rail="rail"
@@ -15,7 +15,7 @@
     <SidebarHeader avatar="https://randomuser.me/api/portraits/lego/1.jpg" title="Sandra Adams" subtitle="sandra_a88@gmailcom" />
 
     <!-- 分割线 -->
-    <v-divider />
+    <!-- <v-divider /> -->
 
     <!-- 侧边栏菜单：动态渲染菜单项 -->
     <SidebarMenu />

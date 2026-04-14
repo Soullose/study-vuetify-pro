@@ -1,7 +1,7 @@
 <!-- 侧边栏菜单渲染组件 -->
 <template>
-  <!-- 导航列表，紧凑密度，单行，无缩进 -->
-  <v-list color="primary" nav slim density="compact" lines="one" indent="0">
+  <!-- 导航列表，color=primary控制选中态蓝色，baseColor=on-sidebar-bg控制默认态文字颜色（浅色黑/深色白） -->
+  <v-list color="primary" base-color="on-sidebar-bg" nav slim density="compact" lines="one" indent="0">
     <!-- 遍历菜单store中的adminMenus数组，每个菜单项有唯一的name作为key -->
     <template v-for="item in menuStore.adminMenus" :key="item.name">
       <!-- 有子菜单：渲染分组组件SidebarMenuGroup -->

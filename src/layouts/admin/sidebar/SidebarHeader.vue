@@ -1,7 +1,7 @@
 <!-- 侧边栏头部用户信息组件 -->
 <template>
-  <!-- 列表容器，包裹用户信息 -->
-  <v-list>
+  <!-- 列表容器，baseColor=on-sidebar-bg确保用户信息文字颜色跟随主题 -->
+  <v-list density="default" base-color="on-sidebar-bg">
     <!-- 紧凑型列表项，显示用户头像、副标题、标题，并预留append插槽用于额外操作 -->
     <v-list-item slim :prepend-avatar="avatar" :subtitle="subtitle" :title="title">
       <!-- 附加内容插槽，可用于放置折叠按钮等 -->

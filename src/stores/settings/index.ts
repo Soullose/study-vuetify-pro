@@ -55,7 +55,7 @@ export interface SettingsState {
  * 预设主题色
  */
 export const PRESET_COLORS: ThemeColors[] = [
-  { primary: '#6750A4', secondary: '#FF965D', success: '#28C76F', info: '#00CFE8', warning: '#FF9F43', error: '#EA5455' },
+  { primary: '#1976D2', secondary: '#FF965D', success: '#28C76F', info: '#00CFE8', warning: '#FF9F43', error: '#EA5455' },
   { primary: '#7367F0', secondary: '#8A8D93', success: '#28C76F', info: '#00CFE8', warning: '#FF9F43', error: '#EA5455' },
   { primary: '#00A6E0', secondary: '#FF965D', success: '#28C76F', info: '#00CFE8', warning: '#FF9F43', error: '#EA5455' },
   { primary: '#FF6B6B', secondary: '#4ECDC4', success: '#28C76F', info: '#00CFE8', warning: '#FF9F43', error: '#EA5455' },
@@ -96,9 +96,9 @@ export const useSettingsStore = defineStore('settings', () => {
       if (stored) {
         const parsed = JSON.parse(stored) as SettingsState;
         const result = { ...defaultSettings, ...parsed };
-        // 迁移旧版本 primary 颜色：#007BFF → #6750A4（MD3 标准紫色）
-        if (result.themeColors?.primary === '#007BFF') {
-          result.themeColors = { ...result.themeColors, primary: '#6750A4' };
+        // 迁移旧版本 primary 颜色：#007BFF / #6750A4 → #1976D2（Material Design 标准蓝）
+        if (result.themeColors?.primary === '#007BFF' || result.themeColors?.primary === '#6750A4') {
+          result.themeColors = { ...result.themeColors, primary: '#1976D2' };
         }
         return result;
       }
