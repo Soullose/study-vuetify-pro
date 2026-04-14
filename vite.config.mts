@@ -3,8 +3,6 @@ import Vue from '@vitejs/plugin-vue';
 import AutoImport from 'unplugin-auto-import/vite';
 import Fonts from 'unplugin-fonts/vite';
 import Components from 'unplugin-vue-components/vite';
-import { getFileBasedRouteName, VueRouterAutoImports } from 'unplugin-vue-router';
-import VueRouter from 'unplugin-vue-router/vite';
 // import { ClientSideLayout } from 'vite-plugin-vue-layouts';
 import { ClientSideLayout } from 'vite-plugin-vue-layouts-next';
 import Vuetify, { transformAssetUrls } from 'vite-plugin-vuetify';
@@ -29,57 +27,6 @@ export default defineConfig(({ command, mode }) => {
     envDir: envDir,
     esbuild: { drop: command === 'serve' ? [] : ['debugger', 'console'] },
     plugins: [
-      VueRouter({
-        // 指定一个目录或者多个目录生成基于文件的路由，默认是src/pages
-        routesFolder: [{ src: 'src/pages' }, { src: 'src/platform/pages', path: 'platform/' }],
-        // 指定typed-router.d.ts的生成路径，如果项目中用到了typescript；可以通过false禁用
-        dts: 'src/typed-router.d.ts',
-        // 排除由模块注册中心管理的业务目录，避免路由重复注册
-        exclude: ['src/pages/dashboard/**', 'src/pages/system/**'],
-        // 提供路由策略
-        getRouteName: (route) => getFileBasedRouteName(route),
-        /// 在配置文件中拓展路由 https://uvr.esm.is/guide/extending-routes
-        /// 注意：如果页面组件中使用了 definePage 设置 meta，extendRoute 中不应覆盖已有值
-        async extendRoute(route) {
-          // 保留已有的 meta（来自 definePage 或 <route> 块），仅补充默认值
-          const existingMeta = route.meta || {};
-
-          // 根据路由路径特征确定默认布局
-          let defaultLayout = 'admin'; // 后台管理布局（默认）
-          let defaultRequireAuth = true;
-
-          if (route.path === '/login' || route.path === '/login/') {
-            // 登录页使用空白布局
-            defaultLayout = 'blank';
-            defaultRequireAuth = false;
-          } else if (typeof route.name === 'string' && route.name.startsWith('/platform')) {
-            // platform 目录下的页面使用 portal 布局
-            defaultLayout = 'portal';
-            defaultRequireAuth = false;
-          } else if (route.path === '/404' || route.path === '/403') {
-            // 错误页面使用 admin 布局
-            defaultLayout = 'admin';
-            defaultRequireAuth = false;
-          }
-
-          // 合并 meta：已有值优先，缺失的使用默认值
-          route.meta = {
-            ...existingMeta,
-            layout: existingMeta.layout || defaultLayout,
-            title: existingMeta.title || '',
-            requireAuth: existingMeta.requireAuth !== undefined ? existingMeta.requireAuth : defaultRequireAuth,
-            keepAlive: existingMeta.keepAlive || false
-          };
-        },
-
-        // modify routes before writing
-        async beforeWriteFiles(rootRoute) {
-          // ...
-          // console.log('rootRoute:', rootRoute);
-        },
-        // 更改页面组件的导入模式，默认async sync
-        importMode: 'sync'
-      }),
       // Layouts({
       //   layoutsDirs: 'src/layouts',
       //   pagesDirs: ['src/pages', 'src/platform'],
@@ -95,7 +42,7 @@ export default defineConfig(({ command, mode }) => {
         imports: [
           'vue',
           'pinia',
-          VueRouterAutoImports,
+          'vue-router',
           {
             vuetify: ['useTheme', 'useRtl', 'useLocale', 'useDisplay', 'useLayout']
           },
@@ -230,7 +177,7 @@ export default defineConfig(({ command, mode }) => {
     },
     server: {
       host: '0.0.0.0',
-      port: 3000,
+      port: 4000,
       watch: {
         usePolling: true
       },

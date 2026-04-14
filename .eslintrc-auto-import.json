@@ -95,6 +95,7 @@
     "useDisplay": true,
     "useId": true,
     "useLayout": true,
+    "useLink": true,
     "useLocale": true,
     "useModel": true,
     "useRoute": true,

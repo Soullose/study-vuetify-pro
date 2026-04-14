@@ -20,14 +20,7 @@
 </template>
 
 <script lang="ts" setup>
-/// https://uvr.esm.is/guide/extending-routes
-// definePage({
-//   alias: ['/n/:name'],
-//   meta: {
-//     requiresAuth: true,
-//     keepAlive: true
-//   }
-// });
+// 路由 meta 已移至 src/router/index.ts 手动定义
 const valid = ref(false);
 const firstname = ref('');
 const lastname = ref('');
@@ -59,13 +52,4 @@ function xxxx() {
   // alert('xxxx');
   console.log('xxxx');
 }
-definePage({
-  meta: {
-    layout: 'admin',
-    title: '测试',
-    requiresAuth: false,
-    description: 'dashboard description',
-    keepAlive: false
-  }
-});
 </script>

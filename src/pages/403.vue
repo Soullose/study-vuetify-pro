@@ -20,11 +20,5 @@ function goBack() {
   router.go(-1);
 }
 
-definePage({
-  meta: {
-    title: '无访问权限',
-    requireAuth: false,
-    layout: 'blank'
-  }
-});
+// 路由 meta 已移至 src/router/index.ts 手动定义
 </script>

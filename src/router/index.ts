@@ -2,20 +2,146 @@
  * router/index.ts
  * 路由配置 - 支持动态路由和完整的导航守卫
  *
- * 双轨路由策略：
- * - 文件路由：由 unplugin-vue-router 扫描 src/pages 生成，用于公共页面（登录、错误页等）
+ * 路由策略：
+ * - 静态路由：手动定义的公共页面（首页、登录、错误页、测试页、portal 等）
  * - 模块路由：由 ModuleRegistry 扫描 src/modules 目录，用于业务模块（仪表盘、系统管理等）
  */
 
 import { setupLayouts } from 'virtual:generated-layouts';
-import { createRouter, createWebHistory, type RouteLocationNormalized } from 'vue-router';
-import { handleHotUpdate, routes } from 'vue-router/auto-routes';
+import { createRouter, createWebHistory, type RouteLocationNormalized, type RouteRecordRaw } from 'vue-router';
 
 import { useAuthStore } from '@/stores/auth';
 import { usePermissionStore } from '@/stores/permission';
 import { useTagsViewStore } from '@/stores/tagsView';
 import { checkRoutePermission } from '@/utils/permission';
 import { moduleRegistry } from '@/core/module-registry';
+
+// ==================== 静态路由定义 ====================
+
+/**
+ * 手动定义的静态路由
+ *
+ * 对应 src/pages 和 src/platform/pages 目录下的页面组件。
+ * 每条路由通过 meta.layout 指定布局，由 setupLayouts() 自动包裹布局组件。
+ *
+ * ⚠️ 注意：catch-all 路由（/:path(.*)*）必须放在数组最后，否则会拦截所有请求
+ */
+const staticRoutes: RouteRecordRaw[] = [
+  // ---- 首页 ----
+  {
+    path: '/',
+    name: 'home',
+    component: () => import('@/pages/index.vue'),
+    meta: {
+      title: '首页',
+      layout: 'admin',
+      requireAuth: true
+    }
+  },
+
+  // ---- 登录页 ----
+  {
+    path: '/login',
+    name: 'login',
+    component: () => import('@/pages/login/index.vue'),
+    meta: {
+      title: '登录',
+      layout: 'blank',
+      requireAuth: false
+    }
+  },
+
+  // ---- 错误页面 ----
+  {
+    path: '/403',
+    name: '403',
+    component: () => import('@/pages/403.vue'),
+    meta: {
+      title: '无访问权限',
+      layout: 'blank',
+      requireAuth: false
+    }
+  },
+  {
+    path: '/404',
+    name: '404',
+    component: () => import('@/pages/404.vue'),
+    meta: {
+      title: '页面未找到',
+      layout: 'blank',
+      requireAuth: false
+    }
+  },
+
+  // ---- 功能页面 ----
+  {
+    path: '/test',
+    name: 'test',
+    component: () => import('@/pages/test/index.vue'),
+    meta: {
+      title: '测试',
+      layout: 'admin',
+      requireAuth: false,
+      keepAlive: false
+    }
+  },
+  {
+    path: '/icon',
+    name: 'icon',
+    component: () => import('@/pages/icon/index.vue'),
+    meta: {
+      title: '图标选择器',
+      layout: 'admin',
+      requireAuth: true
+    }
+  },
+
+  // ---- 重定向中转页（用于页签刷新机制） ----
+  {
+    path: '/redirect/:path(.*)*',
+    name: 'redirect',
+    component: () => import('@/pages/redirect/[...path].vue'),
+    meta: {
+      requireAuth: false
+    }
+  },
+
+  // ---- Portal 门户页面 ----
+  {
+    path: '/platform/portal',
+    name: 'platform-portal',
+    component: () => import('@/platform/pages/portal/index.vue'),
+    meta: {
+      title: '门户网站',
+      layout: 'portal',
+      requireAuth: true
+    }
+  },
+
+  // ---- Platform catch-all（platform 目录下未匹配的路径） ----
+  {
+    path: '/platform/:path(.*)*',
+    name: 'platform-catch-all',
+    component: () => import('@/platform/pages/[...path].vue'),
+    meta: {
+      title: '页面未找到',
+      layout: 'blank',
+      requireAuth: false
+    }
+  },
+
+  // ---- 全局 catch-all（⚠️ 必须放在最后） ----
+  {
+    path: '/:path(.*)*',
+    name: 'catch-all',
+    component: () => import('@/pages/[...path].vue'),
+    meta: {
+      title: '页面未找到',
+      layout: 'admin',
+      requireAuth: false
+    }
+  }
+];
 
 // ==================== 常量配置 ====================
 
@@ -36,18 +162,13 @@ let isInitialized = false;
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
-  routes: [...setupLayouts(routes)],
+  routes: [...setupLayouts(staticRoutes)],
   scrollBehavior(to, from, savedPosition) {
     if (savedPosition) return savedPosition;
     if (to.hash) return { el: to.hash, behavior: 'smooth' };
     return { top: 0, behavior: 'smooth' };
   }
 });
-
-// 热更新支持
-if (import.meta.hot) {
-  handleHotUpdate(router);
-}
 
 // ==================== 注册业务模块路由 ====================
 

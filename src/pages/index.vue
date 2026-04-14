@@ -6,9 +6,5 @@
 </template>
 
 <script lang="ts" setup>
-//
+// 路由 meta 已移至 src/router/index.ts 手动定义
 </script>
-<route lang="yaml">
-meta:
-  title: 首页
-</route>

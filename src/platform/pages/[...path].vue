@@ -10,11 +10,5 @@
 </template>
 
 <script lang="ts" setup>
-definePage({
-  meta: {
-    title: '页面未找到',
-    requireAuth: false,
-    layout: 'blank'
-  }
-});
+// 路由 meta 已移至 src/router/index.ts 手动定义
 </script>

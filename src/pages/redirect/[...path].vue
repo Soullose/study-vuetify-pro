@@ -16,12 +16,7 @@
  * @date 2026-04-08
  */
 
-/* 设置路由元信息，跳过认证守卫，避免被添加到 tagsView */
-definePage({
-  meta: {
-    requireAuth: false
-  }
-});
+/* 路由 meta 已移至 src/router/index.ts 手动定义 */
 
 const route = useRoute();
 const router = useRouter();

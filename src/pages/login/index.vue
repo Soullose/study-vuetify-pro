@@ -54,13 +54,7 @@ import LoginIllustration from './components/LoginIllustration.vue';
 import LoginForm from './components/LoginForm.vue';
 import ThemeToggle from './components/ThemeToggle.vue';
 
-definePage({
-  meta: {
-    title: '登录',
-    requireAuth: false,
-    layout: 'blank'
-  }
-});
+// 路由 meta 已移至 src/router/index.ts 手动定义
 
 /**
  * 登录成功回调
