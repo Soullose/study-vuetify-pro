@@ -14,5 +14,50 @@
   //nav
   $list-item-nav-title-font-size: 0.875rem,
   $list-item-nav-title-font-weight: 600,
-  $list-item-nav-margin-top: 0
+  $list-item-nav-margin-top: 0,
+  $utilities: (
+    "fill-height": (
+      property: height,
+      class: fill,
+      values: (
+        height: 100%
+      )
+    ),
+    "height": (
+      property: height,
+      responsive: true,
+      class: h,
+      values: (
+        auto: auto,
+        screen: 100vh,
+        0: 0,
+        25: 25%,
+        50: 50%,
+        75: 75%,
+        100: 100%
+      )
+    ),
+    "height-screen": (
+      property: height,
+      class: h,
+      values: (
+        screen: 100dvh
+      )
+    ),
+    "width": (
+      property: width,
+      responsive: true,
+      class: w,
+      values: (
+        auto: auto,
+        0: 0,
+        25: 25%,
+        33: 33%,
+        50: 50%,
+        66: 66%,
+        75: 75%,
+        100: 100%
+      )
+    )
+  )
 );
