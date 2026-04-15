@@ -3,8 +3,6 @@ import Vue from '@vitejs/plugin-vue';
 import AutoImport from 'unplugin-auto-import/vite';
 import Fonts from 'unplugin-fonts/vite';
 import Components from 'unplugin-vue-components/vite';
-// import { ClientSideLayout } from 'vite-plugin-vue-layouts';
-import { ClientSideLayout } from 'vite-plugin-vue-layouts-next';
 import Vuetify, { transformAssetUrls } from 'vite-plugin-vuetify';
 // Utilities
 import path from 'node:path';
@@ -27,17 +25,6 @@ export default defineConfig(({ command, mode }) => {
     envDir: envDir,
     esbuild: { drop: command === 'serve' ? [] : ['debugger', 'console'] },
     plugins: [
-      // Layouts({
-      //   layoutsDirs: 'src/layouts',
-      //   pagesDirs: ['src/pages', 'src/platform'],
-      //   defaultLayout: 'home',
-      //   importMode: () => 'sync'
-      // }),
-      ClientSideLayout({
-        layoutDir: 'src/layouts',
-        defaultLayout: 'admin',
-        importMode: 'sync'
-      }),
       AutoImport({
         imports: [
           'vue',

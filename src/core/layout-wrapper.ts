@@ -5,7 +5,7 @@
  *
  * 职责：
  * 1. 为模块路由包裹对应的布局组件
- * 2. 模拟 setupLayouts() 的行为，使 router.addRoute() 添加的路由也能使用布局
+ * 2. 使 router.addRoute() 添加的动态路由也能使用布局
  * 3. 支持三种布局：admin（后台管理）、portal（门户网站）、blank（空白）
  */
 
@@ -14,7 +14,7 @@ import type { LayoutName, ModuleRouteRecord } from './types';
 
 /**
  * 布局组件懒加载映射
- * 使用函数式导入确保按需加载，与 vite-plugin-vue-layouts-next 的行为一致
+ * 使用函数式导入确保按需加载，布局组件仅在路由匹配时才被加载
  */
 const layoutComponents: Record<LayoutName, () => Promise<RouteComponent>> = {
   admin: () => import('@/layouts/admin.vue'),
