@@ -5,7 +5,7 @@
  *
  * 职责：
  * 1. 通过 import.meta.glob 自动扫描 modules 目录下的模块
- * 2. 将模块路由包裹布局后注册到 Vue Router
+ * 2. 将模块路由包裹布局后注册到 Vue Router（按 meta.order 排序，确保 catch-all 路由最后注册）
  * 3. 从模块配置中提取菜单数据
  * 4. 支持模块的启用/禁用
  */
@@ -13,6 +13,9 @@
 import type { Router } from 'vue-router';
 import type { ModuleConfig, MenuItem, LayoutName } from './types';
 import { wrapModuleRoutes } from './layout-wrapper';
+
+/** 未设置 order 的模块使用的默认排序值 */
+const DEFAULT_ROUTE_ORDER = 100;
 
 /**
  * 模块注册中心类
@@ -61,7 +64,30 @@ class ModuleRegistry {
   }
 
   /**
+   * 将模块按 meta.order 升序排列，返回排序后的配置数组
+   *
+   * 排序规则：
+   * - order 值越小越先注册
+   * - 未设置 order 的模块使用默认值 100
+   * - catch-all 等通配路由应设置较大的 order（如 9999）确保最后注册
+   *
+   * @returns 按 order 升序排列的模块配置数组
+   * @private
+   */
+  private getSortedModules(): ModuleConfig[] {
+    return Array.from(this.modules.values()).sort((a, b) => {
+      const orderA = a.meta.order ?? DEFAULT_ROUTE_ORDER;
+      const orderB = b.meta.order ?? DEFAULT_ROUTE_ORDER;
+      return orderA - orderB;
+    });
+  }
+
+  /**
    * 将所有模块路由注册到 Router
+   *
+   * 注册顺序按 meta.order 升序排列，确保：
+   * - 普通路由先注册
+   * - catch-all 通配路由（order 值大）最后注册
    *
    * @param router - Vue Router 实例
    */
@@ -73,7 +99,16 @@ class ModuleRegistry {
 
     this.scanModules();
 
-    this.modules.forEach((config, moduleName) => {
+    // 按 meta.order 排序后注册，确保 catch-all 路由最后注册
+    const sortedModules = this.getSortedModules();
+
+    if (import.meta.env.DEV) {
+      console.log('[ModuleRegistry] 模块注册顺序:', sortedModules.map((m) => `${m.meta.name}(order:${m.meta.order ?? DEFAULT_ROUTE_ORDER})`).join(' → '));
+    }
+
+    sortedModules.forEach((config) => {
+      const moduleName = config.meta.name;
+
       // 包裹布局
       const wrappedRoutes = wrapModuleRoutes(config.routes, config.meta.layout);
 

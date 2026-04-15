@@ -5,12 +5,12 @@
  */
 
 import type { ModuleConfig } from '@/core/types';
+import routes from './router';
 
 /**
  * 仪表盘模块配置
  *
- * 路由结构：
- * /dashboard          → 仪表盘首页
+ * 路由定义已抽离至 ./router/index.ts
  */
 const dashboardModule: ModuleConfig = {
   meta: {
@@ -18,23 +18,10 @@ const dashboardModule: ModuleConfig = {
     title: '仪表盘',
     icon: 'mdi-view-dashboard',
     layout: 'admin',
-    order: 1,
+    order: 10,
     description: '后台管理首页，展示数据概览和快捷操作'
   },
-  routes: [
-    {
-      path: '/dashboard',
-      name: 'module-dashboard',
-      component: () => import('@/pages/dashboard/index.vue'),
-      meta: {
-        title: '仪表盘',
-        icon: 'mdi-view-dashboard',
-        requireAuth: true,
-        keepAlive: true,
-        affix: true
-      }
-    }
-  ]
+  routes
 };
 
 export default dashboardModule;
