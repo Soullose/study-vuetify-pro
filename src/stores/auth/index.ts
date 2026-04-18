@@ -126,7 +126,6 @@ export const useAuthStore = defineStore('auth', () => {
   async function login(params: LoginParams, rememberMe: boolean = false): Promise<void> {
     try {
       const result = await authApi.login(params);
-      console.log('登录成功:', result);
 
       // 设置记住我状态
       isRememberMe.value = rememberMe;

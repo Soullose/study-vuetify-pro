@@ -23,8 +23,8 @@ const TOKEN_KEY = 'access_token';
 // 请求拦截器
 service.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
-    // 添加 Token
-    const token = localStorage.getItem(TOKEN_KEY);
+    // 添加 Token（同时检查 localStorage 和 sessionStorage，与 auth store 保持一致）
+    const token = localStorage.getItem(TOKEN_KEY) || sessionStorage.getItem(TOKEN_KEY);
     if (token && config.headers) {
       config.headers.Authorization = `Bearer ${token}`;
     }
