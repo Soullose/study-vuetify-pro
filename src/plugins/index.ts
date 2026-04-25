@@ -8,7 +8,7 @@
 // import { DataLoaderPlugin } from 'unplugin-vue-router/data-loaders';
 import router from '../router';
 import pinia from '../stores';
-import './grid';
+import { installGridPlugin } from './grid';
 import vuetify from './vuetify';
 // Types
 import type { App } from 'vue';
@@ -19,4 +19,7 @@ export function registerPlugins(app: App) {
     .use(vuetify)
     // .use(DataLoaderPlugin, { router })
     .use(router);
+
+  // 注册 Grid 插件（ProGrid、ProColumn 全局组件）
+  installGridPlugin(app);
 }
