@@ -1,45 +1,26 @@
 /**
  * plugins/grid/types/index.ts
  *
- * 类型定义统一导出入口
+ * 类型定义统一导出入口（精简版）
  *
  * @author Architecture Team
- * @date 2026-04-19
+ * @date 2026-05-07
  */
 
 export type {
-  ColumnRendererType,
-  ColumnEditorType,
-  StatusMap,
-  StatusMapItem,
-  SelectOption,
   ProColumnProps,
   ColumnConfig,
   ProGridProps,
   ProGridEmits,
   CellValueChangedEvent
-} from './column';
-
-export type { DataSourceMode, SortParam, FilterParam, GridFetchParams, GridFetchResult, DataSourceConfig, PaginationState } from './datasource';
+} from './column'
 
 export type {
-  CellRendererContext,
-  CheckboxRendererParams,
-  SwitchRendererParams,
-  DateRendererParams,
-  StatusRendererParams,
-  TemplateRendererParams,
-  RendererRegistryItem,
-  RendererRegistry
-} from './renderer';
-
-export type {
-  CellEditorContext,
-  TextEditorParams,
-  SelectEditorParams,
-  DateEditorParams,
-  CheckboxEditorParams,
-  SwitchEditorParams,
-  EditorRegistryItem,
-  EditorRegistry
-} from './editor';
+  DataSourceMode,
+  SortParam,
+  FilterParam,
+  GridFetchParams,
+  GridFetchResult,
+  DataSourceConfig,
+  PaginationState
+} from './datasource'
