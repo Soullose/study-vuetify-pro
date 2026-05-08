@@ -1,18 +1,17 @@
 /**
  * @description 测试功能模块路由定义
  * @author Architecture Team
- * @date 2026-04-15
+ * @date 2026-05-07
  *
  * 路由结构：
- * /test → 测试页（admin 布局）
- * /icon → 图标选择器（admin 布局）
+ * /test          → 测试页（admin 布局）
+ * /icon          → 图标选择器（admin 布局）
+ * /grid-demo     → ProGrid 基础演示（admin 布局）
+ * /grid-demo-full → ProGrid 完整功能演示（admin 布局）
  */
 
-import type { ModuleRouteRecord } from '@/core/types';
+import type { ModuleRouteRecord } from '@/core/types'
 
-/**
- * 测试功能模块路由
- */
 const testRoutes: ModuleRouteRecord[] = [
   {
     path: '/test',
@@ -32,7 +31,25 @@ const testRoutes: ModuleRouteRecord[] = [
       title: '图标选择器',
       requireAuth: true
     }
+  },
+  {
+    path: '/grid-demo',
+    name: 'grid-demo',
+    component: () => import('@/pages/test/grid-demo.vue'),
+    meta: {
+      title: 'ProGrid 基础演示',
+      requireAuth: true
+    }
+  },
+  {
+    path: '/grid-demo-full',
+    name: 'grid-demo-full',
+    component: () => import('@/pages/test/grid-demo-full.vue'),
+    meta: {
+      title: 'ProGrid 完整功能演示',
+      requireAuth: true
+    }
   }
-];
+]
 
-export default testRoutes;
+export default testRoutes

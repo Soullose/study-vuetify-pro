@@ -1,11 +1,11 @@
 <!--
   pages/test/grid-demo.vue
 
-  ProGrid 功能演示页面
-  展示所有渲染器类型、行内编辑、服务端分页等功能
+  ProGrid 功能演示页面（精简版）
+  展示纯 AG Grid 用法：内置 cellRenderer/cellEditor + 自定义 Vue 组件
 
   @author Architecture Team
-  @date 2026-04-19
+  @date 2026-05-07
 -->
 <template>
   <v-container fluid class="pa-4">
@@ -31,50 +31,65 @@
               @cell-value-changed="onServerCellChanged"
               @selection-changed="onServerSelectionChanged"
             >
-              <!-- id 字段无需声明！ProGrid 自动将其设为行标识并隐藏 -->
-
               <!-- 普通文本列 -->
-              <ProColumn field="username" header="用户名" editable :width="120" />
-
-              <!-- 普通文本列 -->
+              <ProColumn field="username" header="用户名" :width="120" />
               <ProColumn field="email" header="邮箱" :width="200" />
-
-              <!-- 部门列 -->
               <ProColumn field="department" header="部门" :width="120" />
 
-              <!-- 状态列 - 使用 v-chip 渲染 -->
+              <!-- 状态列 — 使用自定义 cellRenderer 渲染彩色标签 -->
               <ProColumn
                 field="status"
                 header="状态"
-                type="status"
-                :width="120"
-                :status-map="{
-                  active: { text: '启用', color: 'success' },
-                  disabled: { text: '禁用', color: 'error' },
-                  pending: { text: '待审核', color: 'warning' },
+                :width="100"
+                :col-def="{ cellRenderer: StatusRenderer }"
+              />
+
+              <!-- 开关列 — 使用 AG Grid 内置 cellEditor -->
+              <ProColumn
+                field="enabled"
+                header="启用"
+                :width="80"
+                editable
+                :col-def="{
+                  cellRenderer: 'agCheckboxCellRenderer',
+                  cellEditor: 'agCheckboxCellEditor',
                 }"
               />
 
-              <!-- 开关列 - 使用 v-switch 渲染，可编辑 -->
-              <ProColumn field="enabled" header="启用" type="switch" editable :width="100" />
+              <!-- 复选框列 -->
+              <ProColumn
+                field="isAdmin"
+                header="管理员"
+                :width="80"
+                editable
+                :col-def="{
+                  cellRenderer: 'agCheckboxCellRenderer',
+                  cellEditor: 'agCheckboxCellEditor',
+                }"
+              />
 
-              <!-- 复选框列 - 使用 v-checkbox 渲染 -->
-              <ProColumn field="isAdmin" header="管理员" type="checkbox" editable :width="100" />
+              <!-- 日期列 — 自定义格式化渲染 -->
+              <ProColumn
+                field="createdAt"
+                header="创建时间"
+                :width="180"
+                :col-def="{ cellRenderer: DateRenderer }"
+              />
 
-              <!-- 日期列 - 格式化显示 -->
-              <ProColumn field="createdAt" header="创建时间" type="date" format="YYYY-MM-DD HH:mm:ss" :width="180" />
-
-              <!-- 自定义模板列 - 操作按钮 -->
-              <ProColumn field="operation" header="操作" type="template" :width="180" pinned="right">
-                <template #default="{ data }">
-                  <v-btn size="x-small" color="primary" variant="tonal" @click="handleEdit(data)">
-                    编辑
-                  </v-btn>
-                  <v-btn size="x-small" color="error" variant="tonal" class="ml-2" @click="handleDelete(data)">
-                    删除
-                  </v-btn>
-                </template>
-              </ProColumn>
+              <!-- 操作列 — 自定义渲染器带按钮 -->
+              <ProColumn
+                field="operation"
+                header="操作"
+                :width="160"
+                pinned="right"
+                :col-def="{
+                  cellRenderer: OperationRenderer,
+                  cellRendererParams: {
+                    onEdit: handleEdit,
+                    onDelete: handleDelete,
+                  },
+                }"
+              />
             </ProGrid>
           </v-card-text>
         </v-card>
@@ -97,19 +112,34 @@
             >
               <ProColumn field="name" header="名称" :width="150" />
               <ProColumn field="type" header="类型" :width="120" />
+
+              <!-- 状态列 — 复用同一个 StatusRenderer -->
               <ProColumn
                 field="status"
                 header="状态"
-                type="status"
-                :width="120"
-                :status-map="{
-                  running: { text: '运行中', color: 'success' },
-                  stopped: { text: '已停止', color: 'error' },
-                  paused: { text: '已暂停', color: 'warning' },
+                :width="100"
+                :col-def="{ cellRenderer: StatusRenderer }"
+              />
+
+              <!-- 开关列 — AG Grid 内置 -->
+              <ProColumn
+                field="active"
+                header="激活"
+                :width="80"
+                editable
+                :col-def="{
+                  cellRenderer: 'agCheckboxCellRenderer',
+                  cellEditor: 'agCheckboxCellEditor',
                 }"
               />
-              <ProColumn field="active" header="激活" type="switch" editable :width="100" />
-              <ProColumn field="date" header="日期" type="date" format="YYYY-MM-DD" :width="130" />
+
+              <!-- 日期列 -->
+              <ProColumn
+                field="date"
+                header="日期"
+                :width="130"
+                :col-def="{ cellRenderer: DateRenderer }"
+              />
             </ProGrid>
           </v-card-text>
         </v-card>
@@ -149,18 +179,16 @@
 
 <script setup lang="ts">
 /**
- * Grid Demo 页面
+ * Grid Demo 页面（精简版）
  *
- * 展示 ProGrid 的所有功能：
- * 1. 服务端分页模式（排序、筛选、分页）
- * 2. 前端数据模式
- * 3. 所有渲染器类型（checkbox、switch、date、status、template）
- * 4. 行内编辑
- * 5. 行选择
- * 6. 事件处理
+ * 展示纯 AG Grid 用法：
+ * 1. AG Grid 内置 cellRenderer / cellEditor
+ * 2. 自定义 Vue 组件作为 cellRenderer
+ * 3. 服务端分页模式
+ * 4. 前端数据模式
  */
 
-import { ref, reactive } from 'vue'
+import { ref, reactive, defineComponent, h } from 'vue'
 import type { DataSourceConfig, CellValueChangedEvent } from '@/plugins/grid'
 
 // ==================== 事件日志 ====================
@@ -175,11 +203,124 @@ const eventLog = ref<LogItem[]>([])
 
 function addLog(type: string, message: string, color: string = 'info'): void {
   eventLog.value.push({ type, message, color })
-  // 最多保留 50 条
   if (eventLog.value.length > 50) {
     eventLog.value = eventLog.value.slice(-50)
   }
 }
+
+// ==================== 自定义单元格渲染器 ====================
+
+/**
+ * 状态渲染器 — 纯 HTML/CSS 实现
+ * 替代原来的 Vuetify v-chip 渲染器
+ */
+const STATUS_MAP: Record<string, { label: string; color: string }> = {
+  active: { label: '启用', color: '#4caf50' },
+  disabled: { label: '禁用', color: '#f44336' },
+  pending: { label: '待审核', color: '#ff9800' },
+  running: { label: '运行中', color: '#4caf50' },
+  stopped: { label: '已停止', color: '#f44336' },
+  paused: { label: '已暂停', color: '#ff9800' },
+}
+
+const StatusRenderer = defineComponent({
+  name: 'StatusRenderer',
+  props: ['params'],
+  setup(props) {
+    return () => {
+      const value = String(props.params?.value ?? '')
+      const item = STATUS_MAP[value]
+      if (!item) {
+        return h('span', { style: { color: '#999' } }, value || '-')
+      }
+      return h('span', {
+        style: {
+          display: 'inline-block',
+          padding: '2px 10px',
+          borderRadius: '12px',
+          fontSize: '12px',
+          fontWeight: '500',
+          color: '#fff',
+          backgroundColor: item.color,
+        },
+      }, item.label)
+    }
+  },
+})
+
+/**
+ * 日期渲染器
+ * 将 ISO 日期格式化为 YYYY-MM-DD
+ */
+const DateRenderer = defineComponent({
+  name: 'DateRenderer',
+  props: ['params'],
+  setup(props) {
+    return () => {
+      const value = props.params?.value as string | undefined
+      if (!value) return '-'
+      try {
+        const d = new Date(value)
+        if (isNaN(d.getTime())) return value
+        return d.toLocaleDateString('zh-CN', {
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit',
+        })
+      } catch {
+        return value
+      }
+    }
+  },
+})
+
+/**
+ * 操作列渲染器 — 纯 HTML 按钮
+ */
+const OperationRenderer = defineComponent({
+  name: 'OperationRenderer',
+  props: ['params'],
+  setup(props) {
+    return () => {
+      const data = props.params?.data as Record<string, unknown> | undefined
+      const onEdit = props.params?.onEdit as ((data: Record<string, unknown>) => void) | undefined
+      const onDelete = props.params?.onDelete as ((data: Record<string, unknown>) => void) | undefined
+
+      return h('div', { style: { display: 'flex', gap: '4px' } }, [
+        h('button', {
+          style: {
+            padding: '2px 8px',
+            border: '1px solid #1976d2',
+            borderRadius: '4px',
+            background: '#e3f2fd',
+            color: '#1976d2',
+            cursor: 'pointer',
+            fontSize: '12px',
+          },
+          onClick: (e: Event) => {
+            e.stopPropagation()
+            if (data) onEdit?.(data)
+          },
+        }, '编辑'),
+        h('button', {
+          style: {
+            padding: '2px 8px',
+            border: '1px solid #d32f2f',
+            borderRadius: '4px',
+            background: '#ffebee',
+            color: '#d32f2f',
+            cursor: 'pointer',
+            fontSize: '12px',
+          },
+          onClick: (e: Event) => {
+            e.stopPropagation()
+            if (data) onDelete?.(data)
+          },
+        }, '删除'),
+      ])
+    }
+  },
+})
 
 // ==================== 服务端模式 ====================
 
@@ -190,24 +331,20 @@ const serverDataSource = reactive<DataSourceConfig>({
   pageSizes: [10, 20, 50],
   autoLoad: true,
   fetchData: async (params) => {
-    // 构建查询参数
     const queryParams = new URLSearchParams()
     queryParams.set('page', String(params.page))
     queryParams.set('pageSize', String(params.pageSize))
 
-    // 排序参数
     if (params.sort.length > 0) {
       queryParams.set('sortField', params.sort[0].field)
       queryParams.set('sortOrder', params.sort[0].direction)
     }
 
-    // 筛选参数
     const statusFilter = params.filter.find(f => f.field === 'status')
     if (statusFilter) {
       queryParams.set('filterStatus', String(statusFilter.value))
     }
 
-    // 调用 Mock 接口
     const response = await fetch(`/api/grid-demo/users?${queryParams.toString()}`)
     const result = await response.json()
 
@@ -220,7 +357,6 @@ const serverDataSource = reactive<DataSourceConfig>({
   },
 })
 
-/** 服务端模式单元格值变更 */
 function onServerCellChanged(event: CellValueChangedEvent): void {
   addLog(
     '值变更',
@@ -229,7 +365,6 @@ function onServerCellChanged(event: CellValueChangedEvent): void {
   )
 }
 
-/** 服务端模式行选择变更 */
 function onServerSelectionChanged(selectedRows: Record<string, unknown>[]): void {
   addLog(
     '选择变更',
@@ -240,7 +375,6 @@ function onServerSelectionChanged(selectedRows: Record<string, unknown>[]): void
 
 // ==================== 前端模式 ====================
 
-/** 前端模式静态数据 */
 const clientData = ref([
   { id: 'task-1', name: '数据备份', type: '定时任务', status: 'running', active: true, date: '2026-04-19T08:00:00Z' },
   { id: 'task-2', name: '日志清理', type: '定时任务', status: 'stopped', active: false, date: '2026-04-18T10:30:00Z' },
@@ -251,17 +385,11 @@ const clientData = ref([
 
 // ==================== 操作处理 ====================
 
-/** 编辑操作 */
 function handleEdit(data: Record<string, unknown>): void {
   addLog('操作', `编辑用户: ${data.username}`, 'primary')
 }
 
-/** 删除操作 */
 function handleDelete(data: Record<string, unknown>): void {
   addLog('操作', `删除用户: ${data.username}`, 'error')
 }
 </script>
-
-<style scoped>
-/* 页面样式 */
-</style>
