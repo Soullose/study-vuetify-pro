@@ -152,17 +152,17 @@ router.beforeEach(async (to, from, next) => {
   // 8. 获取权限 Store
   const permissionStore = usePermissionStore();
 
-  // 9. 检查是否已加载动态路由
+  // 9. 首次进入时加载菜单与权限码（侧边栏菜单数据源 + 按钮级权限）
+  //    路由本身由 ModuleRegistry 静态注册，此处不再注册路由
   if (!permissionStore.hasLoaded) {
     try {
-      // 初始化权限（加载动态路由）
       await permissionStore.initPermission();
 
-      // 重新导航到目标路由
+      // 重新导航到目标路由（确保守卫在菜单/权限就绪后重新走一遍）
       next({ ...to, replace: true });
       return;
     } catch (error) {
-      console.error('加载动态路由失败:', error);
+      console.error('加载权限数据失败:', error);
       authStore.clearAuthState();
       permissionStore.resetPermission();
       next({

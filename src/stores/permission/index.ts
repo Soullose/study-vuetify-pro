@@ -1,73 +1,52 @@
 import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
-import type { RouteRecordRaw } from 'vue-router';
 import type { MenuItem } from '@/api/modules/permission';
 import * as permissionApi from '@/api/modules/permission';
-import { transformRoutes, buildMenuTree } from '@/utils/route-transform';
-import router from '@/router';
+import { buildMenuTree } from '@/utils/route-transform';
 
+/**
+ * 权限 Store
+ *
+ * 职责边界（经权限路由收敛后明确）：
+ * - 仅负责「菜单数据」与「按钮级权限码」。
+ * - 路由注册交由 ModuleRegistry 静态管理（src/core/module-registry.ts）。
+ * - 菜单渲染以本 store 的 menus 为唯一数据源，由后端 getUserMenus() 返回，
+ *   从而实现「不同登录用户看到不同菜单」的真实 RBAC。
+ *
+ * 历史背景：本 store 曾同时负责后端动态路由注册（generateRoutes/transformRoutes），
+ * 但那套机制与静态模块路由在 path 上冲突且从不生效，已移除。
+ */
 export const usePermissionStore = defineStore('permission', () => {
   // ==================== State ====================
 
-  /** 是否已加载动态路由 */
+  /** 是否已加载菜单与权限数据 */
   const isLoaded = ref(false);
 
-  /** 动态路由列表 */
-  const dynamicRoutes = ref<RouteRecordRaw[]>([]);
-
-  /** 菜单列表 */
+  /** 菜单列表（后端返回的扁平结构，经 buildMenuTree 转为树形） */
   const menus = ref<MenuItem[]>([]);
+
+  /** 当前用户的权限码列表（用于按钮级权限校验） */
+  const permissions = ref<string[]>([]);
 
   // ==================== Getters ====================
 
   /** 是否已加载 */
   const hasLoaded = computed(() => isLoaded.value);
 
-  /** 获取菜单 */
+  /** 获取菜单树 */
   const getMenuList = computed(() => menus.value);
-
-  /** 获取动态路由 */
-  const getDynamicRoutes = computed(() => dynamicRoutes.value);
 
   // ==================== Actions ====================
 
   /**
-   * 生成路由
-   */
-  async function generateRoutes(): Promise<RouteRecordRaw[]> {
-    try {
-      // 从后端获取路由配置
-      const apiRoutes = await permissionApi.getUserRoutes();
-
-      // 转换为前端路由格式
-      const routes = transformRoutes(apiRoutes);
-
-      // 保存动态路由
-      dynamicRoutes.value = routes;
-
-      return routes;
-    } catch (error) {
-      console.error('获取动态路由失败:', error);
-      // 失败时返回空数组，使用静态路由
-      return [];
-    }
-  }
-
-  /**
-   * 生成菜单
+   * 生成菜单：从后端拉取扁平菜单，转为树形后存储
    */
   async function generateMenus(): Promise<MenuItem[]> {
     try {
-      // 从后端获取菜单
       const apiMenus = await permissionApi.getUserMenus();
-
-      // 转换为树形结构
-      const menuTree = buildMenuTree(apiMenus);
-
-      // 保存菜单
-      menus.value = menuTree;
-
-      return menuTree;
+      // 转换为树形结构，按 sort 排序
+      menus.value = buildMenuTree(apiMenus);
+      return menus.value;
     } catch (error) {
       console.error('获取菜单失败:', error);
       return [];
@@ -75,7 +54,22 @@ export const usePermissionStore = defineStore('permission', () => {
   }
 
   /**
-   * 初始化权限（加载动态路由和菜单）
+   * 生成权限码：从后端拉取当前用户的权限列表
+   */
+  async function generatePermissions(): Promise<string[]> {
+    try {
+      permissions.value = await permissionApi.getUserPermissions();
+      return permissions.value;
+    } catch (error) {
+      console.error('获取权限列表失败:', error);
+      return [];
+    }
+  }
+
+  /**
+   * 初始化权限（登录后由路由守卫调用）
+   *
+   * 仅拉取菜单与权限码，不再注册路由。
    */
   async function initPermission(): Promise<void> {
     if (isLoaded.value) {
@@ -83,19 +77,7 @@ export const usePermissionStore = defineStore('permission', () => {
     }
 
     try {
-      // 1. 生成动态路由
-      const routes = await generateRoutes();
-
-      // 2. 动态添加路由（作为顶级路由）
-      // 注意：此处暂不包裹布局组件，完整的布局包裹将在模块注册中心（阶段三）中实现
-      routes.forEach((route) => {
-        router.addRoute(route);
-      });
-
-      // 3. 生成菜单
-      await generateMenus();
-
-      // 4. 标记已加载
+      await Promise.all([generateMenus(), generatePermissions()]);
       isLoaded.value = true;
     } catch (error) {
       console.error('初始化权限失败:', error);
@@ -107,42 +89,37 @@ export const usePermissionStore = defineStore('permission', () => {
    * 重置权限（登出时调用）
    */
   function resetPermission(): void {
-    // 先移除动态添加的路由（在清空数组之前）
-    dynamicRoutes.value.forEach((route) => {
-      if (route.name) {
-        router.removeRoute(route.name);
-      }
-    });
-
-    // 再清空状态
     isLoaded.value = false;
-    dynamicRoutes.value = [];
     menus.value = [];
+    permissions.value = [];
   }
 
   /**
-   * 检查路由是否存在
+   * 检查是否拥有指定权限码（按钮级权限）
+   *
+   * @param code - 权限码，如 'user:edit'
+   * @returns 是否拥有该权限（'*' 通配视为拥有全部权限）
    */
-  function hasRoute(name: string): boolean {
-    return router.hasRoute(name) || dynamicRoutes.value.some((r) => r.name === name);
+  function hasPermission(code: string): boolean {
+    if (permissions.value.includes('*')) return true;
+    return permissions.value.includes(code);
   }
 
   return {
     // State
     isLoaded,
-    dynamicRoutes,
     menus,
+    permissions,
 
     // Getters
     hasLoaded,
     getMenuList,
-    getDynamicRoutes,
 
     // Actions
-    generateRoutes,
     generateMenus,
+    generatePermissions,
     initPermission,
     resetPermission,
-    hasRoute
+    hasPermission
   };
 });

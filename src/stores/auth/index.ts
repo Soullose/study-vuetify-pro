@@ -218,15 +218,28 @@ export const useAuthStore = defineStore('auth', () => {
 
   /**
    * 检查是否拥有指定权限
+   *
+   * 通配规则：当用户权限列表包含 '*' 时视为拥有全部权限（admin 角色）。
+   * 满足所需权限中的任意一个即返回 true（OR 语义）。
+   *
+   * @param permission - 权限码或权限码数组
+   * @returns 是否拥有该权限
    */
   function hasPermission(permission: string | string[]): boolean {
     if (!permission) return true;
+    // 通配符：拥有 '*' 即拥有全部权限
+    if (permissions.value.includes('*')) return true;
     const perms = Array.isArray(permission) ? permission : [permission];
     return perms.some((p) => permissions.value.includes(p));
   }
 
   /**
    * 检查是否拥有指定角色
+   *
+   * 满足所需角色中的任意一个即返回 true（OR 语义）。
+   *
+   * @param role - 角色码或角色码数组
+   * @returns 是否拥有该角色
    */
   function hasRole(role: string | string[]): boolean {
     if (!role) return true;

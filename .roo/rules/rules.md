@@ -46,7 +46,7 @@
 当用户提出需求时，按以下步骤执行：
 1. 使用 `vuetify-mcp` 查询相关 Vuetify 组件的最新 API 文档与用法示例。
 2. 输出完整可运行的代码，包含组件代码、类型定义、路由配置、测试文件（如涉及）。
-3. 确保代码可直接通过 `npm run build` 和 `npm run test`。
+3. 确保代码必须可直接通过 `npm run build` 、 `npm run test` 和必须通过`npm run dev` 验证测试。
 4. 对不确定的 API 用法，主动通过 `vuetify-mcp` 确认后再输出，禁止凭记忆猜测。
 
 ---

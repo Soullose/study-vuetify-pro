@@ -89,13 +89,17 @@ export const useTagsViewStore = defineStore('tagsView', () => {
 
   /**
    * 添加缓存的路由
+   *
+   * 仅当路由 meta.keepAlive === true 时才加入缓存。
+   * cachedViews 存储的是路由 name，需与组件 defineOptions({ name }) 保持一致
+   * （Vue 3 keep-alive 的 include 按组件 name 匹配）。
    */
   function addCachedView(view: RouteLocationNormalized): void {
     const name = view.name as string;
 
     if (!name) return;
+    if (view.meta?.keepAlive !== true) return;
     if (cachedViews.value.includes(name)) return;
-    if (view.meta?.keepAlive === false) return;
 
     cachedViews.value.push(name);
   }
@@ -232,7 +236,7 @@ export const useTagsViewStore = defineStore('tagsView', () => {
       fullPath: route.fullPath,
       icon: route.meta?.icon as string,
       affix: (route.meta?.affix as boolean) || false,
-      keepAlive: (route.meta?.keepAlive as boolean) !== false,
+      keepAlive: route.meta?.keepAlive === true,
       query: route.query as Record<string, string>
     };
   }

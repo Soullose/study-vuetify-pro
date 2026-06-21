@@ -919,6 +919,11 @@ export function useProductFilter(products: Ref<ProductInfo[]>) {
 
 ## 🧪 测试指南
 
+> ⚠️ **现状说明（2026-06）**：本章节描述的测试体系（`test/` 目录、各模块测试文件、覆盖率要求）**尚未落地**。
+> 项目当前已配置 Vitest 依赖与脚本，但 `test/` 目录尚不存在、测试覆盖率为 0。
+> 下文的目录结构与示例代码为目标设计，供后续补充测试时参考。在测试真正补齐前，
+> 请勿将"测试通过"作为构建/发布的强制门槛。
+
 ### 测试框架配置
 
 项目使用 [Vitest](https://vitest.dev/) 作为测试框架，配置位于 [`vite.config.mts`](vite.config.mts)：

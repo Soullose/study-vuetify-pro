@@ -54,11 +54,15 @@
         <v-card>
           <v-card-title>快速操作</v-card-title>
           <v-card-text>
-            <v-btn color="primary" variant="outlined" class="mr-2 mb-2" to="/profile">
+            <!--
+              「个人中心」「系统设置」对应路由尚未实现，暂禁用以避免点击后落入 404。
+              实现对应页面（/profile、/settings）后移除 disabled 即可启用。
+            -->
+            <v-btn color="primary" variant="outlined" class="mr-2 mb-2" disabled>
               <v-icon icon="mdi-account" class="mr-2" />
               个人中心
             </v-btn>
-            <v-btn color="secondary" variant="outlined" class="mr-2 mb-2" to="/settings">
+            <v-btn color="secondary" variant="outlined" class="mr-2 mb-2" disabled>
               <v-icon icon="mdi-cog" class="mr-2" />
               系统设置
             </v-btn>
@@ -82,6 +86,9 @@
  * 注意：本页面由模块注册中心（src/modules/dashboard/index.ts）管理路由，
  * 不使用 definePage() 宏，因为已被 vite.config.mts 排除在文件路由之外。
  */
+
+// 组件名须与路由 name 一致，keep-alive 的 include 才能正确匹配（见 admin.vue）
+defineOptions({ name: 'module-dashboard' });
 
 import { useAuthStore } from '@/stores/auth';
 

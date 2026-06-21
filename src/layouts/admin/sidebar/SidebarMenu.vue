@@ -1,38 +1,37 @@
 <!-- 侧边栏菜单渲染组件 -->
 <template>
-  <!-- 导航列表，color=primary控制选中态蓝色，baseColor=on-sidebar-bg控制默认态文字颜色（浅色黑/深色白） -->
-  <v-list color="primary" base-color="on-sidebar-bg" nav slim density="compact" lines="one" indent="0">
-    <!-- 遍历菜单store中的adminMenus数组，每个菜单项有唯一的name作为key -->
-    <template v-for="item in menuStore.adminMenus" :key="item.name">
-      <!-- 有子菜单：渲染分组组件SidebarMenuGroup -->
-      <SidebarMenuGroup v-if="item.children && item.children.length > 0" :prepend-icon="item.icon" :title="item.title">
-        <!-- 分组内遍历子菜单，渲染每个子菜单项SidebarMenuItem -->
-        <SidebarMenuItem
-          v-for="child in item.children"
-          :key="child.name"
-          :prepend-icon="child.icon"
-          :title="child.title"
-          :value="child.name"
-          :to="child.path"
-          nav
-        />
-      </SidebarMenuGroup>
-
-      <!-- 无子菜单：直接渲染单级菜单项SidebarMenuItem -->
-      <SidebarMenuItem v-else :prepend-icon="item.icon" :title="item.title" :value="item.name" :to="item.path" nav />
-    </template>
+  <!--
+    导航列表：color=primary 控制选中态，base-color=on-sidebar-bg 控制默认文字颜色。
+    数据源为 permissionStore.menus（后端按角色返回的菜单树），实现菜单级权限隔离。
+  -->
+  <v-list v-if="menus.length" color="primary" base-color="on-sidebar-bg" nav slim density="compact" lines="one" indent="0">
+    <!-- 遍历菜单树根节点，递归渲染交给 SidebarMenuItem -->
+    <SidebarMenuItem
+      v-for="item in menus"
+      :key="item.path || item.id"
+      :item="item"
+    />
   </v-list>
+
+  <!-- 菜单为空时的占位（如权限加载失败或用户无任何可见菜单） -->
+  <div v-else class="text-center text-medium-emphasis pa-4 text-body-2">
+    暂无可用菜单
+  </div>
 </template>
 
 <script setup lang="ts">
 /**
- * @description 侧边栏菜单 - 从菜单 Store 动态渲染菜单项
- * @author Architecture Team
- * @date 2026-04-05
+ * @description 侧边栏菜单 - 以后端菜单树为唯一数据源，按角色做菜单级权限隔离
+ *
+ * 数据流：后端 getUserMenus() → permissionStore.menus（buildMenuTree 转树形）→ 本组件渲染
+ * 路由仍由 ModuleRegistry 静态注册，此处仅决定「显示哪些菜单项」。
  */
-import { useMenuStore } from '@/stores/menu'; // 导入菜单store
-import SidebarMenuItem from './SidebarMenuItem.vue'; // 导入菜单项组件
-import SidebarMenuGroup from './SidebarMenuGroup.vue'; // 导入菜单分组组件
+import { computed } from 'vue';
+import { usePermissionStore } from '@/stores/permission';
+import SidebarMenuItem from './SidebarMenuItem.vue';
 
-const menuStore = useMenuStore(); // 获取菜单store实例，adminMenus为菜单树数据
+const permissionStore = usePermissionStore();
+
+// 菜单树（后端按角色返回，已转为树形结构）
+const menus = computed(() => permissionStore.menus);
 </script>

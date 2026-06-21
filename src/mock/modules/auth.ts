@@ -10,7 +10,7 @@ import type { UserInfo } from '@/api/modules/auth';
  * 模拟用户数据库
  * 可根据需要扩展更多测试账号
  */
-const mockUsers: Array<UserInfo & { password: string }> = [
+export const mockUsers: Array<UserInfo & { password: string }> = [
   {
     id: '1',
     username: 'admin',
@@ -35,11 +35,44 @@ const mockUsers: Array<UserInfo & { password: string }> = [
   }
 ];
 
+/** 含密码的完整用户记录类型 */
+type MockUserRecord = UserInfo & { password: string };
+
 /**
  * 生成 Mock Token
+ *
+ * Token 格式：`mock-token-<username>-<random>`
+ * 将 username 内嵌进 token，便于其他 Mock 接口（如权限/菜单）从请求头反查用户角色，
+ * 使不同登录用户返回不同的菜单/权限数据，从而让 RBAC 在 Mock 层真实生效。
+ *
+ * @param username - 登录用户名
  */
-function generateToken(): string {
-  return Mock.Random.guid();
+function generateToken(username: string): string {
+  return `mock-token-${username}-${Mock.Random.string('lower', 8)}`;
+}
+
+/**
+ * Token 格式正则：匹配 `mock-token-<username>-<random>` 并捕获 username
+ * 注意：username 不含连字符（当前测试账号 admin/user 均满足）
+ */
+const TOKEN_PATTERN = /^mock-token-([^-]+)-/;
+
+/**
+ * 从请求头解析当前用户
+ *
+ * 供 user-info、权限、菜单等需要识别"当前是谁"的 Mock 接口复用。
+ * 解析失败时返回 undefined，调用方可按需回退（如返回默认用户）。
+ *
+ * @param headers - vite-plugin-mock 注入的请求头对象
+ * @returns 匹配到的用户记录（含密码），未匹配返回 undefined
+ */
+export function resolveUserFromRequest(headers: Record<string, string> = {}): MockUserRecord | undefined {
+  // 请求头字段名大小写不统一，需兼容 authorization / Authorization
+  const authHeader = headers?.authorization || headers?.Authorization || '';
+  const token = authHeader.replace(/^Bearer\s+/i, '').trim();
+  const match = token.match(TOKEN_PATTERN);
+  if (!match) return undefined;
+  return mockUsers.find((u) => u.username === match[1]);
 }
 
 export default [
@@ -69,9 +102,9 @@ export default [
         };
       }
 
-      // 生成 Token
-      const accessToken = generateToken();
-      const refreshToken = generateToken();
+      // 生成 Token（内嵌 username，便于其他 Mock 接口反查用户角色）
+      const accessToken = generateToken(user.username);
+      const refreshToken = generateToken(user.username);
 
       // 返回用户信息（排除密码）
       const { password: _, ...userInfo } = user;
@@ -109,15 +142,18 @@ export default [
   /**
    * 获取当前用户信息
    * GET /api/auth/user-info
+   *
+   * 根据请求头 token 解析当前登录用户，返回对应用户信息。
+   * 解析失败时回退到默认 admin 用户（仅作兜底，正常流程不会触发）。
    */
   {
     url: '/api/auth/user-info',
     method: 'get',
     statusCode: 200,
-    response: () => {
-      // 返回默认用户信息
-      const defaultUser = mockUsers[0];
-      const { password: _, ...userInfo } = defaultUser;
+    response: ({ headers }: { headers: Record<string, string> }) => {
+      // 优先按 token 解析当前用户；解析不到则回退默认用户
+      const user = resolveUserFromRequest(headers) ?? mockUsers[0];
+      const { password: _unused, ...userInfo } = user;
 
       return {
         code: 200,
@@ -130,18 +166,21 @@ export default [
   /**
    * 刷新 Token
    * POST /api/auth/refresh
+   *
+   * 刷新时保留原 username（从 token 解析），保证刷新后权限链路不中断。
    */
   {
     url: '/api/auth/refresh',
     method: 'post',
     statusCode: 200,
-    response: () => {
+    response: ({ headers }: { headers: Record<string, string> }) => {
+      const user = resolveUserFromRequest(headers) ?? mockUsers[0];
       return {
         code: 200,
         message: '刷新成功',
         data: {
-          accessToken: generateToken(),
-          refreshToken: generateToken(),
+          accessToken: generateToken(user.username),
+          refreshToken: generateToken(user.username),
           expiresIn: 7200
         }
       };

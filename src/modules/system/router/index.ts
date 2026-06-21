@@ -24,7 +24,9 @@ const systemRoutes: ModuleRouteRecord[] = [
     meta: {
       title: '系统管理',
       icon: 'mdi-cog',
-      requireAuth: true
+      requireAuth: true,
+      // 访问系统管理模块所需权限（admin 的 '*' 通配放行；普通用户无此权限被守卫拦截）
+      permissions: ['system:manage']
     },
     children: [
       {
@@ -35,7 +37,8 @@ const systemRoutes: ModuleRouteRecord[] = [
           title: '用户管理',
           icon: 'mdi-account-multiple',
           requireAuth: true,
-          keepAlive: true
+          keepAlive: true,
+          permissions: ['system:manage']
         }
       },
       {
@@ -46,7 +49,8 @@ const systemRoutes: ModuleRouteRecord[] = [
           title: '角色管理',
           icon: 'mdi-shield-account',
           requireAuth: true,
-          keepAlive: true
+          keepAlive: true,
+          permissions: ['system:manage']
         }
       },
       {
@@ -57,7 +61,8 @@ const systemRoutes: ModuleRouteRecord[] = [
           title: '权限管理',
           icon: 'mdi-lock',
           requireAuth: true,
-          keepAlive: true
+          keepAlive: true,
+          permissions: ['system:manage']
         }
       }
     ]

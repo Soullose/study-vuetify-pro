@@ -14,27 +14,41 @@
         AppMain 内部使用 <slot/> 渲染下方内容。
         v-app-bar 默认 fixed 定位，v-main 会自动为其预留 padding-top，
         因此 TagsView 必须放在 AppMain（v-main）内部，才能在 app bar 下方正确显示。
-        使用 v-slide-x-transition 实现页面切换水平滑动过渡动画。
-        不使用 keep-alive，避免与 Vuetify transition 组件不兼容导致页面空白。
+        路由出口启用 keep-alive 页面缓存（见下方注释，未使用 transition）。
       -->
       <AppMain>
         <!-- 多页签栏：通过 settings.showTagsView 控制显隐 -->
         <TagsView v-if="settingsStore.layout.showTagsView" />
 
         <!--
-          使用 Vuetify v-slide-x-transition 实现水平滑动过渡。
-          mode="out-in"：旧组件滑出完成后再滑入新组件，避免两个组件同时显示。
-          不使用 keep-alive，组件每次切换都会重新创建。
+          路由出口 + keep-alive 缓存。
+
+          keep-alive 的 include 按「组件 name」匹配，取自 tagsViewStore.cachedViews
+          （其中只含 meta.keepAlive === true 的路由 name）。被缓存的页面在页签切换时
+          保留组件状态（列表筛选、表单草稿、滚动位置等）。
+
+          缓存前提：被缓存页面的组件须通过 defineOptions({ name }) 显式设置与路由
+          name 一致的组件名（见 src/pages/dashboard、system/user 等页面）。
+
+          过渡动画：保留 v-slide-x-transition。若实测出现「切换空白」竞态，
+          备选方案是移除 transition（保 keep-alive，牺牲动画换状态保留）。
         -->
         <router-view v-slot="{ Component, route }">
-          <v-slide-x-transition mode="out-in">
-            <!--
-              key 拼接 refreshKey：当 tagsViewStore.triggerRefresh() 被调用时，
-              refreshKey 递增导致 key 变化，Vue 会销毁旧组件并创建新组件实例，
-              实现页面刷新效果。替代原有的 redirect 中转页机制，避免过渡动画竞态条件。
-            -->
+          <!--
+            页面缓存：keep-alive 的 include 按「组件 name」匹配 cachedViews
+            （只含 meta.keepAlive === true 的路由 name），被缓存页面切换时保留状态。
+
+            为何不再使用 v-slide-x-transition：
+            Vuetify 的 transition 组件要求直接子节点是带真实 DOM 的元素，而 keep-alive
+            是不渲染 DOM 的抽象组件。两者嵌套时 transition 拿不到可过渡的 DOM，
+            会导致页面空白。因此按「状态保留优先于切换动画」的取舍，移除 transition。
+
+            key 拼接 refreshKey：triggerRefresh() 递增 refreshKey → key 变化 →
+            Vue 销毁旧实例并重建，实现页面刷新（替代原 redirect 中转页机制）。
+          -->
+          <keep-alive :include="tagsViewStore.cachedViews">
             <component :is="Component" :key="`${route.path}-${tagsViewStore.refreshKey}`" />
-          </v-slide-x-transition>
+          </keep-alive>
         </router-view>
       </AppMain>
 
@@ -94,12 +108,8 @@ const notificationItems = computed(() =>
   }))
 );
 
-// 通过provide向下传递消息和通知数据，供AppHeader及其子组件（NotificationMenu）使用
-provide('messages', messageItems);
-provide('notifications', notificationItems);
+  // 通过provide向下传递消息和通知数据，供AppHeader及其子组件（NotificationMenu）使用
+  provide('messages', messageItems);
+  provide('notifications', notificationItems);
 </script>
 
-<style lang="scss" scoped>
-// 引入测试样式文件（用于布局调试或自定义样式）
-@use '@/styles/test';
-</style>

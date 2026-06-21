@@ -1,2 +1,5 @@
-// Spacing
+// src/styles/test.scss
+//
+// 间距变量定义（供 settings.scss 覆写 Vuetify $spacer 使用）
+// 命名沿用历史，后续可在统一样式重构时更名为 _spacing.scss。
 $spacer: 8px;

@@ -31,8 +31,20 @@
 
       <!-- 菜单项 -->
       <v-list density="compact" nav>
-        <v-list-item prepend-icon="mdi-account-outline" title="个人中心" to="/profile" @click="menu = false" />
-        <v-list-item prepend-icon="mdi-cog-outline" title="系统设置" to="/settings" @click="menu = false" />
+        <!--
+          「个人中心」「系统设置」对应路由尚未实现，暂禁用以避免点击后落入 404。
+          实现对应页面（/profile、/settings）后移除 disabled 即可启用。
+        -->
+        <v-tooltip location="left" text="功能开发中">
+          <template #activator="{ props }">
+            <v-list-item v-bind="props" prepend-icon="mdi-account-outline" title="个人中心" disabled />
+          </template>
+        </v-tooltip>
+        <v-tooltip location="left" text="功能开发中">
+          <template #activator="{ props }">
+            <v-list-item v-bind="props" prepend-icon="mdi-cog-outline" title="系统设置" disabled />
+          </template>
+        </v-tooltip>
         <v-list-item v-if="authStore.hasRole('admin')" prepend-icon="mdi-shield-account-outline" title="系统管理" to="/system/user" @click="menu = false" />
       </v-list>
 

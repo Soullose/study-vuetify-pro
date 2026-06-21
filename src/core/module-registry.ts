@@ -129,6 +129,10 @@ class ModuleRegistry {
   /**
    * 从模块配置中提取菜单数据
    *
+   * @deprecated 菜单数据现已以后端 getUserMenus() 为唯一数据源（见 stores/permission）。
+   *             此静态菜单提取逻辑保留仅为兼容性考虑，其结果不再被任何侧边栏组件消费。
+   *             后续如确认无其它依赖，可连同 menuItems / getMenuItems / getMenuByLayout 一并移除。
+   *
    * @param config - 模块配置
    * @private
    */

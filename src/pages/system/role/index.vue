@@ -11,4 +11,6 @@
  * @author Architecture Team
  * @date 2026-04-05
  */
+// 组件名须与路由 name 一致，keep-alive 的 include 才能正确匹配（见 admin.vue）
+defineOptions({ name: 'module-system-role' });
 </script>

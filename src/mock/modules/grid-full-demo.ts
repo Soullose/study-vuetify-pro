@@ -33,7 +33,6 @@ interface DemoEmployee {
 
 const firstNames = ['张伟', '王芳', '李娜', '刘洋', '陈静', '杨帆', '赵敏', '黄磊', '周杰', '吴桐',
   '徐峰', '孙悦', '马超', '朱琳', '胡明', '郭鑫', '何雨', '高远', '林涛', '郑洁']
-const lastNames = ['', '', '', '']
 const departments = ['技术部', '产品部', '设计部', '市场部', '运营部', '人事部', '财务部']
 const statuses: DemoEmployee['status'][] = ['active', 'inactive', 'pending', 'archived']
 const levels: DemoEmployee['level'][] = ['junior', 'mid', 'senior', 'lead']
