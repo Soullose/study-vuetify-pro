@@ -13,7 +13,7 @@ import { registerPlugins } from '@/plugins';
 import App from './App.vue';
 
 // Composables
-import 'virtual:uno.css';
+// import 'virtual:uno.css';
 import { createApp } from 'vue';
 
 const app = createApp(App);

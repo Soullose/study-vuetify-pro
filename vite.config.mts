@@ -66,83 +66,14 @@ export default defineConfig(({ command, mode }) => {
           configFile: 'src/styles/settings.scss'
         }
       }),
-      Fonts({
-        // google: {
-        //   families: [
-        //     {
-        //       name: 'Roboto',
-        //       styles: 'wght@100;300;400;500;700;900'
-        //     }
-        //   ]
-        // }
-        // Custom fonts.
-        // custom: {
-        //   /**
-        //    * Fonts families lists
-        //    */
-        //   families: [
-        //     {
-        //       /**
-        //        * Name of the font family.
-        //        */
-        //       name: 'Roboto',
-        //       /**
-        //        * Local name of the font. Used to add `src: local()` to `@font-rule`.
-        //        */
-        //       local: 'Roboto',
-        //       /**
-        //        * Regex(es) of font files to import. The names of the files will
-        //        * predicate the `font-style` and `font-weight` values of the `@font-rule`'s.
-        //        */
-        //       src: './src/assets/fonts/*.ttf',
-        //       /**
-        //        * This function allow you to transform the font object before it is used
-        //        * to generate the `@font-rule` and head tags.
-        //        */
-        //       transform(font) {
-        //         if (font.basename === 'Roboto-Bold') {
-        //           // update the font weight
-        //           font.weight = 700;
-        //         }
-        //         // we can also return null to skip the font
-        //         return font;
-        //       }
-        //     }
-        //   ],
-        //   /**
-        //    * Defines the default `font-display` value used for the generated
-        //    * `@font-rule` classes.
-        //    */
-        //   display: 'auto',
-        //   /**
-        //    * Using `<link rel="preload">` will trigger a request for the WebFont
-        //    * early in the critical rendering path, without having to wait for the
-        //    * CSSOM to be created.
-        //    */
-        //   preload: true,
-        //   /**
-        //    * Using `<link rel="prefetch">` is intended for prefetching resources
-        //    * that will be used in the next navigation/page load
-        //    * (e.g. when you go to the next page)
-        //    *
-        //    * Note: this can not be used with `preload`
-        //    */
-        //   prefetch: false,
-        //   /**
-        //    * define where the font load tags should be inserted
-        //    * default: 'head-prepend'
-        //    *   values: 'head' | 'body' | 'head-prepend' | 'body-prepend'
-        //    */
-        //   injectTo: 'head-prepend'
-        // }
-      }),
+      Fonts({}),
       compression(),
       esToolkitPlugin(),
       Icons({
         compiler: 'vue3',
         autoInstall: true
       }),
-      UnoCSS(),
+      // UnoCSS(),
       // Mock 服务 - 仅在开发环境启用
       viteMockServe({
         mockPath: 'src/mock/modules',
@@ -170,8 +101,8 @@ export default defineConfig(({ command, mode }) => {
       },
       hmr: true,
       /// 设为 true 时若端口已被占用则会直接退出，而不是尝试下一个可用端口。
-      strictPort: false,
-      open: '/'
+      strictPort: false
+      // open: '/'
     },
     // esbuild: {
     //   pure: ['console.log'], // 删除 console.log
