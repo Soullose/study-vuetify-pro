@@ -5,35 +5,13 @@
 import type { MockMethod } from 'vite-plugin-mock';
 import Mock from 'mockjs';
 import type { UserInfo } from '@/api/modules/auth';
+import { users } from '../data/auth';
 
 /**
  * 模拟用户数据库
  * 可根据需要扩展更多测试账号
  */
-export const mockUsers: Array<UserInfo & { password: string }> = [
-  {
-    id: '1',
-    username: 'admin',
-    password: 'admin123',
-    nickname: '管理员',
-    avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=admin',
-    email: 'admin@example.com',
-    phone: '13800138000',
-    roles: ['admin'],
-    permissions: ['*']
-  },
-  {
-    id: '2',
-    username: 'user',
-    password: 'user123',
-    nickname: '普通用户',
-    avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=user',
-    email: 'user@example.com',
-    phone: '13800138001',
-    roles: ['user'],
-    permissions: ['dashboard:view', 'profile:view', 'profile:edit']
-  }
-];
+export const mockUsers: Array<UserInfo & { password: string }> = users;
 
 /** 含密码的完整用户记录类型 */
 type MockUserRecord = UserInfo & { password: string };
