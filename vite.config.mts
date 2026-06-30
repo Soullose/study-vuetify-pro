@@ -113,6 +113,15 @@ export default defineConfig(({ command, mode }) => {
       reportCompressedSize: true,
       rollupOptions: {
         output: {
+          assetFileNames: (asset) => {
+            if (asset.type === 'asset' && /\.(jpe?g|png|gif|svg)$/i.test(asset.names[0])) {
+              return 'img/[ext]/[name]-[hash][extname]';
+            }
+            if (asset.type === 'asset' && /\.(ttf|woff|woff2|eot)$/i.test(asset.names[0])) {
+              return 'fonts/[ext]/[name]-[hash][extname]';
+            }
+            return '[ext]/[name]-[hash][extname]';
+          },
           manualChunks: {
             vue: ['vue'],
             pinia: ['pinia'],
